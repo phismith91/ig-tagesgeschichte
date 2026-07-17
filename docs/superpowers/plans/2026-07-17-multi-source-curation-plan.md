@@ -303,7 +303,7 @@ def test_fetch_wikipedia_maps_candidates(monkeypatch):
     assert "\xad" not in first["text"]
     assert first["source_url"] == "https://de.wikipedia.org/wiki/Montreal"
     assert first["text_de"] is None
-    assert candidates[1]["source_url"] == ""
+    assert candidates[1]["source_url"] is None
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -331,7 +331,7 @@ def fetch_wikipedia(month: int, day: int) -> list[dict]:
             "year": ev.get("year"),
             "text": ev.get("text", "").replace("\xad", ""),
             "text_de": None,
-            "source_url": page.get("content_urls", {}).get("desktop", {}).get("page", ""),
+            "source_url": page.get("content_urls", {}).get("desktop", {}).get("page"),
         })
     return candidates
 ```

@@ -39,6 +39,6 @@ def fetch_wikipedia(month: int, day: int) -> list[dict]:
             "year": ev.get("year"),
             "text": ev.get("text", "").replace("\xad", ""),
             "text_de": None,
-            "source_url": page.get("content_urls", {}).get("desktop", {}).get("page", ""),
+            "source_url": page.get("content_urls", {}).get("desktop", {}).get("page"),
         })
     return candidates

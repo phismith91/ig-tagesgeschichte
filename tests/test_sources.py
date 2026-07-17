@@ -64,4 +64,4 @@ def test_fetch_wikipedia_maps_candidates(monkeypatch):
     assert "\xad" not in first["text"]
     assert first["source_url"] == "https://de.wikipedia.org/wiki/Montreal"
     assert first["text_de"] is None
-    assert candidates[1]["source_url"] == ""
+    assert candidates[1]["source_url"] is None
