@@ -71,6 +71,14 @@ paar Zeilen `KEY=VALUE`-Parsing reichen, `python-dotenv` wird nicht
 gebraucht). `.env` ist gitignored, `.env.example` mit leerem
 `DEEPL_API_KEY=` liegt im Repo.
 
+**Free-Tier-Endpoint:** Free-Keys enden auf `:fx` und laufen über
+`api-free.deepl.com/v2/translate` (nicht `api.deepl.com` — das ist nur für
+zahlende Pro-Accounts, würde mit einem Free-Key einen Auth-Fehler werfen).
+Endpoint-Wahl im Code anhand des `:fx`-Suffix im Key automatisch treffen,
+keine extra Config nötig. Free-Tier: 500.000 Zeichen/Monat, unser
+tatsächlicher Bedarf liegt bei ~10-15k Zeichen/Monat — reicht mit
+großem Puffer.
+
 **Schema** `candidates/YYYY-MM/DD.json`:
 ```json
 {
