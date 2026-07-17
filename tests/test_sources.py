@@ -38,3 +38,30 @@ def test_get_with_retry_retries_on_429(monkeypatch):
     resp = sources.get_with_retry("https://example.com")
     assert resp.json() == {"ok": True}
     assert len(calls) == 2
+
+
+WIKIPEDIA_SAMPLE = {
+    "selected": [
+        {
+            "year": 1976,
+            "text": "In der kanadischen Stadt Montreal werden die XXI. Olym\xadpischen Sommerspiele eröffnet.",
+            "pages": [{"content_urls": {"desktop": {"page": "https://de.wikipedia.org/wiki/Montreal"}}}],
+        },
+        {"year": 1941, "text": "Deutschland ...", "pages": []},
+    ]
+}
+
+
+def test_fetch_wikipedia_maps_candidates(monkeypatch):
+    monkeypatch.setattr(sources, "get_with_retry", lambda url, **kw: FakeResponse(200, WIKIPEDIA_SAMPLE))
+    candidates = sources.fetch_wikipedia(7, 17)
+    assert len(candidates) == 2
+    first = candidates[0]
+    assert first["id"] == "wp-0"
+    assert first["source"] == "wikipedia"
+    assert first["lang"] == "de"
+    assert first["year"] == 1976
+    assert "\xad" not in first["text"]
+    assert first["source_url"] == "https://de.wikipedia.org/wiki/Montreal"
+    assert first["text_de"] is None
+    assert candidates[1]["source_url"] == ""

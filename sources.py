@@ -20,3 +20,25 @@ def get_with_retry(url: str, timeout: int = 15, **kwargs) -> requests.Response:
         return resp
     resp.raise_for_status()
     return resp
+
+
+WIKIPEDIA_API = "https://de.wikipedia.org/api/rest_v1/feed/onthisday/selected/{mm}/{dd}"
+
+
+def fetch_wikipedia(month: int, day: int) -> list[dict]:
+    url = WIKIPEDIA_API.format(mm=f"{month:02d}", dd=f"{day:02d}")
+    resp = get_with_retry(url, headers=USER_AGENT)
+    events = resp.json().get("selected", [])
+    candidates = []
+    for i, ev in enumerate(events):
+        page = (ev.get("pages") or [{}])[0]
+        candidates.append({
+            "id": f"wp-{i}",
+            "source": "wikipedia",
+            "lang": "de",
+            "year": ev.get("year"),
+            "text": ev.get("text", "").replace("\xad", ""),
+            "text_de": None,
+            "source_url": page.get("content_urls", {}).get("desktop", {}).get("page", ""),
+        })
+    return candidates
