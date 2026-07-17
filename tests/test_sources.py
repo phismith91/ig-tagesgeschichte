@@ -135,3 +135,21 @@ def test_fetch_muffinlabs_maps_candidates(monkeypatch):
     assert candidates[0]["year"] == 1976
     assert candidates[0]["source_url"] == "https://en.wikipedia.org/wiki/1976_Summer_Olympics"
     assert candidates[1]["source_url"] is None
+
+
+def test_fetch_numbersapi_found(monkeypatch):
+    sample = {"text": "July 17th is the day...", "year": 1976, "found": True}
+    monkeypatch.setattr(sources, "get_with_retry", lambda url, **kw: FakeResponse(200, sample))
+    candidates = sources.fetch_numbersapi(7, 17)
+    assert len(candidates) == 1
+    assert candidates[0]["id"] == "na-0"
+    assert candidates[0]["source"] == "numbersapi"
+    assert candidates[0]["lang"] == "en"
+    assert candidates[0]["year"] == 1976
+
+
+def test_fetch_numbersapi_not_found(monkeypatch):
+    sample = {"found": False}
+    monkeypatch.setattr(sources, "get_with_retry", lambda url, **kw: FakeResponse(200, sample))
+    candidates = sources.fetch_numbersapi(7, 17)
+    assert candidates == []

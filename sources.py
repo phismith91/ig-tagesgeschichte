@@ -103,3 +103,22 @@ def fetch_muffinlabs(month: int, day: int) -> list[dict]:
             "source_url": links[0]["link"] if links else None,
         })
     return candidates
+
+
+NUMBERSAPI_API = "https://numbersapi.com/{m}/{d}/date"
+
+
+def fetch_numbersapi(month: int, day: int) -> list[dict]:
+    resp = get_with_retry(NUMBERSAPI_API.format(m=month, d=day), params={"json": "true"}, headers=USER_AGENT)
+    body = resp.json()
+    if not body.get("found"):
+        return []
+    return [{
+        "id": "na-0",
+        "source": "numbersapi",
+        "lang": "en",
+        "year": body.get("year"),
+        "text": body.get("text", ""),
+        "text_de": None,
+        "source_url": None,
+    }]
