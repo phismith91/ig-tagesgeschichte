@@ -82,3 +82,24 @@ def fetch_wikidata(month: int, day: int) -> list[dict]:
             "source_url": None,
         })
     return candidates
+
+
+MUFFINLABS_API = "https://history.muffinlabs.com/date/{m}/{d}"
+
+
+def fetch_muffinlabs(month: int, day: int) -> list[dict]:
+    resp = get_with_retry(MUFFINLABS_API.format(m=month, d=day), headers=USER_AGENT)
+    events = resp.json().get("data", {}).get("Events", [])
+    candidates = []
+    for i, ev in enumerate(events):
+        links = ev.get("links") or []
+        candidates.append({
+            "id": f"ml-{i}",
+            "source": "muffinlabs",
+            "lang": "en",
+            "year": int(ev["year"]) if ev.get("year") else None,
+            "text": ev.get("text", ""),
+            "text_de": None,
+            "source_url": links[0]["link"] if links else None,
+        })
+    return candidates

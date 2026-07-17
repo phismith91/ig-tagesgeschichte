@@ -109,3 +109,29 @@ def test_fetch_wikidata_handles_bce_year(monkeypatch):
     monkeypatch.setattr(sources, "get_with_retry", lambda url, **kw: FakeResponse(200, sample))
     candidates = sources.fetch_wikidata(3, 15)
     assert candidates[0]["year"] == -44
+
+
+MUFFINLABS_SAMPLE = {
+    "data": {
+        "Events": [
+            {
+                "year": "1976",
+                "text": "The Games of the XXI Olympiad open in Montreal.",
+                "links": [{"title": "1976 Summer Olympics", "link": "https://en.wikipedia.org/wiki/1976_Summer_Olympics"}],
+            },
+            {"year": "1941", "text": "Germany invades the Soviet Union.", "links": []},
+        ]
+    }
+}
+
+
+def test_fetch_muffinlabs_maps_candidates(monkeypatch):
+    monkeypatch.setattr(sources, "get_with_retry", lambda url, **kw: FakeResponse(200, MUFFINLABS_SAMPLE))
+    candidates = sources.fetch_muffinlabs(7, 17)
+    assert len(candidates) == 2
+    assert candidates[0]["id"] == "ml-0"
+    assert candidates[0]["source"] == "muffinlabs"
+    assert candidates[0]["lang"] == "en"
+    assert candidates[0]["year"] == 1976
+    assert candidates[0]["source_url"] == "https://en.wikipedia.org/wiki/1976_Summer_Olympics"
+    assert candidates[1]["source_url"] is None
