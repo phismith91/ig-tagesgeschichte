@@ -65,3 +65,31 @@ def test_fetch_wikipedia_maps_candidates(monkeypatch):
     assert first["source_url"] == "https://de.wikipedia.org/wiki/Montreal"
     assert first["text_de"] is None
     assert candidates[1]["source_url"] is None
+
+
+WIKIDATA_SAMPLE = {
+    "results": {
+        "bindings": [
+            {
+                "date": {"value": "1976-07-17T00:00:00Z"},
+                "eventLabel": {"value": "Eröffnung der Olympischen Sommerspiele", "xml:lang": "de"},
+            },
+            {
+                "date": {"value": "1941-07-17T00:00:00Z"},
+                "eventLabel": {"value": "Germany invades USSR", "xml:lang": "en"},
+            },
+        ]
+    }
+}
+
+
+def test_fetch_wikidata_maps_candidates(monkeypatch):
+    monkeypatch.setattr(sources, "get_with_retry", lambda url, **kw: FakeResponse(200, WIKIDATA_SAMPLE))
+    candidates = sources.fetch_wikidata(7, 17)
+    assert len(candidates) == 2
+    assert candidates[0]["id"] == "wd-0"
+    assert candidates[0]["source"] == "wikidata"
+    assert candidates[0]["year"] == 1976
+    assert candidates[0]["lang"] == "de"
+    assert candidates[1]["lang"] == "en"
+    assert candidates[0]["source_url"] is None

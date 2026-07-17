@@ -42,3 +42,42 @@ def fetch_wikipedia(month: int, day: int) -> list[dict]:
             "source_url": page.get("content_urls", {}).get("desktop", {}).get("page"),
         })
     return candidates
+
+
+WIKIDATA_ENDPOINT = "https://query.wikidata.org/sparql"
+
+WIKIDATA_QUERY_TEMPLATE = """
+SELECT ?eventLabel ?date WHERE {{
+  ?event wdt:P31/wdt:P279* wd:Q1190554 .
+  ?event wdt:P585 ?date .
+  FILTER(MONTH(?date) = {month} && DAY(?date) = {day})
+  ?event wikibase:sitelinks ?sitelinks .
+  FILTER(?sitelinks > 30)
+  SERVICE wikibase:label {{ bd:serviceParam wikibase:language "de,en". }}
+}}
+ORDER BY DESC(?sitelinks)
+LIMIT 10
+"""
+
+
+def fetch_wikidata(month: int, day: int) -> list[dict]:
+    query = WIKIDATA_QUERY_TEMPLATE.format(month=month, day=day)
+    resp = get_with_retry(
+        WIKIDATA_ENDPOINT,
+        params={"query": query, "format": "json"},
+        headers=USER_AGENT,
+        timeout=30,
+    )
+    bindings = resp.json()["results"]["bindings"]
+    candidates = []
+    for i, b in enumerate(bindings):
+        candidates.append({
+            "id": f"wd-{i}",
+            "source": "wikidata",
+            "lang": b["eventLabel"].get("xml:lang", "en"),
+            "year": int(b["date"]["value"][:4]),
+            "text": b["eventLabel"]["value"],
+            "text_de": None,
+            "source_url": None,
+        })
+    return candidates
