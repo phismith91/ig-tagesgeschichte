@@ -93,3 +93,19 @@ def test_fetch_wikidata_maps_candidates(monkeypatch):
     assert candidates[0]["lang"] == "de"
     assert candidates[1]["lang"] == "en"
     assert candidates[0]["source_url"] is None
+
+
+def test_fetch_wikidata_handles_bce_year(monkeypatch):
+    sample = {
+        "results": {
+            "bindings": [
+                {
+                    "date": {"value": "-0044-03-15T00:00:00Z"},
+                    "eventLabel": {"value": "Ermordung Caesars", "xml:lang": "de"},
+                },
+            ]
+        }
+    }
+    monkeypatch.setattr(sources, "get_with_retry", lambda url, **kw: FakeResponse(200, sample))
+    candidates = sources.fetch_wikidata(3, 15)
+    assert candidates[0]["year"] == -44

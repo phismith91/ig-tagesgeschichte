@@ -1,5 +1,6 @@
 """Kandidaten-Fetcher für 4 Quellen. Jede fetch_*-Funktion gibt eine Liste roher Kandidaten-Dicts zurück
 oder wirft eine Exception — Isolation gegen Ausfälle passiert im Aufrufer (fetch_candidates.py)."""
+import re
 import time
 
 import requests
@@ -75,7 +76,7 @@ def fetch_wikidata(month: int, day: int) -> list[dict]:
             "id": f"wd-{i}",
             "source": "wikidata",
             "lang": b["eventLabel"].get("xml:lang", "en"),
-            "year": int(b["date"]["value"][:4]),
+            "year": int(re.match(r"-?\d+", b["date"]["value"]).group()),
             "text": b["eventLabel"]["value"],
             "text_de": None,
             "source_url": None,

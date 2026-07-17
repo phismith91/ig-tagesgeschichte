@@ -428,7 +428,7 @@ def fetch_wikidata(month: int, day: int) -> list[dict]:
             "id": f"wd-{i}",
             "source": "wikidata",
             "lang": b["eventLabel"].get("xml:lang", "en"),
-            "year": int(b["date"]["value"][:4]),
+            "year": int(re.match(r"-?\d+", b["date"]["value"]).group()),
             "text": b["eventLabel"]["value"],
             "text_de": None,
             "source_url": None,
