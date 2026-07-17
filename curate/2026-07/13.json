@@ -1,0 +1,20 @@
+{
+  "date": "2026-07-13",
+  "facts": [
+    {
+      "year": 2006,
+      "text": "In den Berner Alpen brechen rund 500.000 Kubikmeter der Eiger-Ostflanke ab und stürzen auf den Unteren Grindelwaldgletscher herab.",
+      "source_url": "https://de.wikipedia.org/wiki/Eiger"
+    },
+    {
+      "year": 1936,
+      "text": "In Istanbul stirbt die Schriftstellerin Fatma Aliye Topuz.",
+      "source_url": "https://de.wikipedia.org/wiki/Fatma_Aliye_Topuz"
+    },
+    {
+      "year": 1901,
+      "text": "Im sich ausweitenden Glasarbeiterkonflikt kündigen 628 Gerresheimer Glasmacher, sofern ihre Forderungen nicht erfüllt werden.",
+      "source_url": "https://de.wikipedia.org/wiki/Glasarbeiterstreik_von_1901"
+    }
+  ]
+}

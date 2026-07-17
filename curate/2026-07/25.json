@@ -1,0 +1,20 @@
+{
+  "date": "2026-07-25",
+  "facts": [
+    {
+      "year": 2000,
+      "text": "Beim Absturz einer Concorde während des Starts vom Flughafen Paris-Charles-de-Gaulle verlieren 113 Menschen das Leben.",
+      "source_url": "https://de.wikipedia.org/wiki/Air-France-Flug_4590"
+    },
+    {
+      "year": 1980,
+      "text": "Das Album Back in Black der australischen Hard-Rock-Band AC/DC, eines der meistverkauften Alben der Welt, wird veröffentlicht.",
+      "source_url": "https://de.wikipedia.org/wiki/Back_in_Black"
+    },
+    {
+      "year": 1750,
+      "text": "Henry Knox, Offizier der Kontinentalarmee und erster Kriegsminister der Vereinigten Staaten, kommt in Boston zur Welt.",
+      "source_url": "https://de.wikipedia.org/wiki/Henry_Knox"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "date": "2026-07-19",
+  "facts": [
+    {
+      "year": 1965,
+      "text": "Der 11.611 Meter lange Mont-Blanc-Tunnel zwischen dem französischen Département Haute-Savoie und Courmayeur im italienischen Aostatal wird eröffnet.",
+      "source_url": "https://de.wikipedia.org/wiki/Mont-Blanc-Tunnel"
+    },
+    {
+      "year": 1950,
+      "text": "In Frankfurt am Main wird der Zentralrat der Juden in Deutschland gegründet.",
+      "source_url": "https://de.wikipedia.org/wiki/Frankfurt_am_Main"
+    },
+    {
+      "year": 1900,
+      "text": "Anlässlich der Pariser Weltausstellung wird die erste Linie der Métro Paris in Betrieb genommen.",
+      "source_url": "https://de.wikipedia.org/wiki/Weltausstellung_Paris_1900"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "date": "2026-07-22",
+  "facts": [
+    {
+      "year": 1986,
+      "text": "Die Rockband Bon Jovi veröffentlicht ihre Single You Give Love a Bad Name.",
+      "source_url": "https://de.wikipedia.org/wiki/Bon_Jovi"
+    },
+    {
+      "year": 1976,
+      "text": "Mário Soares von der Partido Socialista wird zum ersten frei gewählten Ministerpräsidenten Portugals nach der Nelkenrevolution; er führt eine Minderheitsregierung.",
+      "source_url": "https://de.wikipedia.org/wiki/M%C3%A1rio_Soares"
+    },
+    {
+      "year": 1936,
+      "text": "In Schweinfurt wird das Willy-Sachs-Stadion eingeweiht.",
+      "source_url": "https://de.wikipedia.org/wiki/Schweinfurt"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "date": "2026-07-07",
+  "facts": [
+    {
+      "year": 2001,
+      "text": "Der erste Schmid Peoplemover, ein Personenbeförderungssystem, dessen Kabine sich zwischen zwei Türmen und einer dazwischenliegenden Brücke vertikal und horizontal bewegt, wird in Pfullingen eingeweiht.",
+      "source_url": "https://de.wikipedia.org/wiki/Schmid_Peoplemover"
+    },
+    {
+      "year": 1976,
+      "text": "Gustav Heinemann, von 1969 bis 1974 dritter Bundespräsident der Bundesrepublik Deutschland, stirbt in Essen.",
+      "source_url": "https://de.wikipedia.org/wiki/Gustav_Heinemann"
+    },
+    {
+      "year": 1926,
+      "text": "Die ersten Exemplare des Wright J-5, eines luftgekühlten Flugmotors von Wright Aeronautical, werden an die US Navy ausgeliefert; später nutzt Charles Lindbergh den Motor für seinen Transatlantikflug.",
+      "source_url": "https://de.wikipedia.org/wiki/Wright_J-5"
+    }
+  ]
+}

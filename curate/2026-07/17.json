@@ -1,0 +1,20 @@
+{
+  "date": "2026-07-17",
+  "facts": [
+    {
+      "year": 1976,
+      "text": "In der kanadischen Stadt Montreal werden die XXI. Olympischen Sommerspiele eröffnet.",
+      "source_url": "https://de.wikipedia.org/wiki/Montreal"
+    },
+    {
+      "year": 1941,
+      "text": "Vier Wochen nach dem deutschen Angriff auf die Sowjetunion wird Alfred Rosenberg durch Hitler zum „Reichsminister für die besetzten Ostgebiete“ ernannt.",
+      "source_url": "https://de.wikipedia.org/wiki/Deutsch-Sowjetischer_Krieg"
+    },
+    {
+      "year": 1936,
+      "text": "Eine Militärrevolte in Spanisch-Marokko gegen die Zweite Spanische Republik führt zum Ausbruch des Spanischen Bürgerkriegs.",
+      "source_url": "https://de.wikipedia.org/wiki/Spanisch-Marokko"
+    }
+  ]
+}
