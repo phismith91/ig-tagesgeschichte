@@ -74,9 +74,13 @@ class CurateHandler(BaseHTTPRequestHandler):
             return
         date_str = parsed.path.removeprefix("/api/day/")
         length = int(self.headers.get("Content-Length", 0))
-        body = json.loads(self.rfile.read(length) or b"{}")
-        selected_ids = body.get("selected_ids", [])
         try:
+            body = json.loads(self.rfile.read(length) or b"{}")
+            if not isinstance(body, dict):
+                raise ValueError("Body muss ein JSON-Objekt sein")
+            selected_ids = body.get("selected_ids", [])
+            if not isinstance(selected_ids, list):
+                raise ValueError("selected_ids muss eine Liste sein")
             candidates = curate_logic.load_candidates(CANDIDATES_DIR, date_str)
             if not candidates:
                 self._json(404, {"error": f"keine Kandidaten für {date_str}"})

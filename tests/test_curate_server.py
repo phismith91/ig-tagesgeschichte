@@ -103,6 +103,42 @@ def test_post_day_too_many_selected_400(tmp_path, monkeypatch):
         server.shutdown()
 
 
+def test_post_day_malformed_json_400(tmp_path, monkeypatch):
+    server = _start_server(tmp_path, monkeypatch, 8429)
+    try:
+        req = urllib.request.Request(
+            "http://localhost:8429/api/day/2026-07-17",
+            data=b"not json at all",
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            urllib.request.urlopen(req)
+            assert False, "sollte 400 werfen"
+        except urllib.error.HTTPError as e:
+            assert e.code == 400
+    finally:
+        server.shutdown()
+
+
+def test_post_day_non_dict_json_400(tmp_path, monkeypatch):
+    server = _start_server(tmp_path, monkeypatch, 8430)
+    try:
+        req = urllib.request.Request(
+            "http://localhost:8430/api/day/2026-07-17",
+            data=json.dumps([1, 2, 3]).encode(),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            urllib.request.urlopen(req)
+            assert False, "sollte 400 werfen"
+        except urllib.error.HTTPError as e:
+            assert e.code == 400
+    finally:
+        server.shutdown()
+
+
 def test_get_next_returns_date(tmp_path, monkeypatch):
     server = _start_server(tmp_path, monkeypatch, 8426)
     try:

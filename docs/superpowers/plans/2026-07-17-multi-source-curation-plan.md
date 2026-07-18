@@ -1129,7 +1129,11 @@ class CurateHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == "/api/next":
             month = parse_qs(parsed.query).get("month", [""])[0]
-            date = curate_logic.next_unfinished_day(CANDIDATES_DIR, CURATE_DIR, month)
+            try:
+                date = curate_logic.next_unfinished_day(CANDIDATES_DIR, CURATE_DIR, month)
+            except ValueError as e:
+                self._json(400, {"error": str(e)})
+                return
             if date is None:
                 self._json(404, {"error": f"keine Kandidaten für Monat {month}"})
                 return
@@ -1137,11 +1141,15 @@ class CurateHandler(BaseHTTPRequestHandler):
             return
         if parsed.path.startswith("/api/day/"):
             date_str = parsed.path.removeprefix("/api/day/")
-            candidates = curate_logic.load_candidates(CANDIDATES_DIR, date_str)
-            if not candidates:
-                self._json(404, {"error": f"keine Kandidaten für {date_str}"})
+            try:
+                candidates = curate_logic.load_candidates(CANDIDATES_DIR, date_str)
+                if not candidates:
+                    self._json(404, {"error": f"keine Kandidaten für {date_str}"})
+                    return
+                selected_ids = curate_logic.load_selected_ids(CURATE_DIR, date_str)
+            except ValueError as e:
+                self._json(400, {"error": str(e)})
                 return
-            selected_ids = curate_logic.load_selected_ids(CURATE_DIR, date_str)
             self._json(200, {"date": date_str, "candidates": candidates, "selected_ids": selected_ids})
             return
         self._json(404, {"error": "not found"})
@@ -1153,13 +1161,17 @@ class CurateHandler(BaseHTTPRequestHandler):
             return
         date_str = parsed.path.removeprefix("/api/day/")
         length = int(self.headers.get("Content-Length", 0))
-        body = json.loads(self.rfile.read(length) or b"{}")
-        selected_ids = body.get("selected_ids", [])
-        candidates = curate_logic.load_candidates(CANDIDATES_DIR, date_str)
-        if not candidates:
-            self._json(404, {"error": f"keine Kandidaten für {date_str}"})
-            return
         try:
+            body = json.loads(self.rfile.read(length) or b"{}")
+            if not isinstance(body, dict):
+                raise ValueError("Body muss ein JSON-Objekt sein")
+            selected_ids = body.get("selected_ids", [])
+            if not isinstance(selected_ids, list):
+                raise ValueError("selected_ids muss eine Liste sein")
+            candidates = curate_logic.load_candidates(CANDIDATES_DIR, date_str)
+            if not candidates:
+                self._json(404, {"error": f"keine Kandidaten für {date_str}"})
+                return
             curate_logic.save_selection(CURATE_DIR, date_str, candidates, selected_ids)
         except ValueError as e:
             self._json(400, {"error": str(e)})
