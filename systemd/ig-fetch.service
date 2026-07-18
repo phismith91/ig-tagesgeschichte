@@ -1,0 +1,7 @@
+[Unit]
+Description=ig-tagesgeschichte: Kandidaten für nächsten Monat holen
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/projects/ig-tagesgeschichte
+ExecStart=%h/projects/ig-tagesgeschichte/fetch_next_month.sh

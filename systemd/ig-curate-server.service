@@ -1,0 +1,10 @@
+[Unit]
+Description=ig-tagesgeschichte Kuratier-Server
+
+[Service]
+WorkingDirectory=%h/projects/ig-tagesgeschichte
+ExecStart=/usr/bin/python3 curate_server.py
+Restart=always
+
+[Install]
+WantedBy=default.target
