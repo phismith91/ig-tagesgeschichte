@@ -22,4 +22,8 @@ REFERENCE_DATE=2026-12-15 "$DIR/fetch_next_month.sh"
 GOT="$(cat "$TMP/captured")"
 [[ "$GOT" == "fetch_candidates.py 2027 1" ]] || { echo "FAIL rollover: got '$GOT'"; exit 1; }
 
+REFERENCE_DATE=2026-01-31 "$DIR/fetch_next_month.sh"
+GOT="$(cat "$TMP/captured")"
+[[ "$GOT" == "fetch_candidates.py 2026 2" ]] || { echo "FAIL month-end overflow: got '$GOT'"; exit 1; }
+
 echo "PASS"
