@@ -9,6 +9,7 @@ import argparse
 import calendar
 import json
 import sys
+import time
 from pathlib import Path
 
 import sources
@@ -59,6 +60,7 @@ def main():
             "candidates": candidates,
         }, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"geschrieben: {out_file.name} ({len(candidates)} Kandidaten)")
+        time.sleep(1.5)  # ponytail: Schonfrist für die öffentlichen APIs zwischen Tagen
 
 
 if __name__ == "__main__":

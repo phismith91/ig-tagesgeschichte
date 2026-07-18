@@ -5,11 +5,13 @@ als fertiges Bild im festen Design + Caption-Text.
 
 ## Workflow
 
-1. **Fetch** (einmal pro Monat, im Voraus): zieht Kandidaten von Wikipedia
+1. **Fetch** (einmal pro Monat, im Voraus): zieht Kandidaten aus 4 Quellen
+   (Wikipedia, Wikidata, muffinlabs, numbersapi)
    ```
-   python3 fetch_month.py 2026 8
+   python3 fetch_candidates.py 2026 8
    ```
-   Schreibt `curate/2026-08/01.json` … `31.json` — je 3 Fakten (Jahr, Text, Quelle).
+   Schreibt `candidates/2026-08/01.json` … `31.json` — Rohdaten, noch nicht kuratiert.
+   (Kuratier-Tool folgt in einer eigenen Doku-Ergänzung.)
 
 2. **Kuratieren**: die JSON-Dateien in `curate/2026-08/` von Hand durchgehen,
    Texte anpassen/kürzen, schlechte Fakten austauschen. Feld `facts` ist eine
