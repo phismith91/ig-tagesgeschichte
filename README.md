@@ -5,25 +5,33 @@ als fertiges Bild im festen Design + Caption-Text.
 
 ## Workflow
 
-1. **Fetch** (einmal pro Monat, im Voraus): zieht Kandidaten aus 4 Quellen
-   (Wikipedia, Wikidata, muffinlabs, numbersapi)
+1. **Kandidaten holen** (einmal pro Monat, im Voraus): zieht Kandidaten aus
+   4 Quellen (Wikipedia, Wikidata, muffinlabs, numbersapi), übersetzt
+   nicht-deutsche Kandidaten automatisch per DeepL
    ```
    python3 fetch_candidates.py 2026 8
    ```
-   Schreibt `candidates/2026-08/01.json` … `31.json` — Rohdaten, noch nicht kuratiert.
-   (Kuratier-Tool folgt in einer eigenen Doku-Ergänzung.)
+   Schreibt `candidates/2026-08/01.json` … `31.json`. Braucht `DEEPL_API_KEY`
+   in `.env` (Vorlage: `.env.example`), sonst bleiben englische Kandidaten
+   unübersetzt.
 
-2. **Kuratieren**: die JSON-Dateien in `curate/2026-08/` von Hand durchgehen,
-   Texte anpassen/kürzen, schlechte Fakten austauschen. Feld `facts` ist eine
-   einfache Liste `{year, text, source_url}` — direkt editierbar.
+2. **Kuratieren im Browser**:
+   ```
+   python3 curate_server.py
+   ```
+   `http://localhost:8420` öffnen, Kandidaten anklicken (Reihenfolge der
+   Klicks = spätere Slide-Reihenfolge, max. 9 pro Tag), „Speichern & weiter"
+   springt automatisch zum nächsten unkuratierten Tag. Schreibt
+   `curate/2026-08/01.json` … `31.json`.
 
 3. **Rendern**: erzeugt die fertigen Bilder + Captions
    ```
    python3 render.py curate/2026-08          # ganzer Monat
    python3 render.py curate/2026-08/17.json  # einzelner Tag
    ```
-   Ergebnis in `output/2026-08/`: `17.png` (1080×1080, postfertig) +
-   `17_caption.txt` (Text + Hashtags zum Reinkopieren).
+   Ergebnis in `output/2026-08/`: `17.png` (1080×1080) + `17_caption.txt`.
+   (Aktuell noch 1-Bild-Format; Carousel-Rendering mit einem Slide pro
+   kuratiertem Event kommt als eigene Spec.)
 
 4. **Posten**: manuell, oder mit einem Scheduler (Meta Business Suite, Buffer,
    Later …) — Instagram-Posting selbst ist hier nicht automatisiert.
