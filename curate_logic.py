@@ -1,11 +1,17 @@
 """Reine Datei-Logik fürs Kuratier-Tool, ohne HTTP — leicht testbar, curate_server.py verdrahtet das nur."""
 import json
+import re
 from pathlib import Path
 
 MAX_SELECTED = 9  # Instagram-Carousel-Limit: 9 Events + 1 Cover-Slide
 
+_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_MONTH_RE = re.compile(r"^\d{4}-\d{2}$")
+
 
 def _day_path(base: Path, date_str: str) -> Path:
+    if not _DATE_RE.match(date_str):
+        raise ValueError(f"ungültiges Datum: {date_str!r}")
     return base / date_str[:7] / f"{date_str[-2:]}.json"
 
 
@@ -42,6 +48,8 @@ def save_selection(curate_dir: Path, date_str: str, candidates: list[dict], sele
 
 
 def next_unfinished_day(candidates_dir: Path, curate_dir: Path, month: str) -> str | None:
+    if not _MONTH_RE.match(month):
+        raise ValueError(f"ungültiger Monat: {month!r}")
     month_path = candidates_dir / month
     if not month_path.exists():
         return None

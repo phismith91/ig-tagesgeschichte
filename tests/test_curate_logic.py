@@ -77,3 +77,27 @@ def test_next_unfinished_day_all_done_returns_first(tmp_path):
 
 def test_next_unfinished_day_no_candidates_returns_none(tmp_path):
     assert curate_logic.next_unfinished_day(tmp_path / "candidates", tmp_path / "curate", "2026-07") is None
+
+
+def test_load_candidates_rejects_path_traversal(tmp_path):
+    try:
+        curate_logic.load_candidates(tmp_path, "a/b")
+        assert False, "sollte ValueError werfen"
+    except ValueError:
+        pass
+
+
+def test_save_selection_rejects_absolute_reset_date(tmp_path):
+    try:
+        curate_logic.save_selection(tmp_path, "2026-07/../../etc", [], [])
+        assert False, "sollte ValueError werfen"
+    except ValueError:
+        pass
+
+
+def test_next_unfinished_day_rejects_bad_month(tmp_path):
+    try:
+        curate_logic.next_unfinished_day(tmp_path, tmp_path, "/etc")
+        assert False, "sollte ValueError werfen"
+    except ValueError:
+        pass
