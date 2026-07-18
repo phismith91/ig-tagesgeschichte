@@ -36,6 +36,37 @@ als fertiges Bild im festen Design + Caption-Text.
 4. **Posten**: manuell, oder mit einem Scheduler (Meta Business Suite, Buffer,
    Later …) — Instagram-Posting selbst ist hier nicht automatisiert.
 
+## Automatisierung (optional)
+
+Fetch, Render und der Kuratier-Server lassen sich als systemd-`--user`-Units
+laufen lassen, dann bleibt als manueller Schritt nur noch das Kuratieren im
+Browser (Schritt 2). Einmaliges Setup:
+
+```bash
+mkdir -p ~/.config/systemd/user
+cp systemd/*.service systemd/*.timer ~/.config/systemd/user/
+chmod +x fetch_next_month.sh render_today.sh
+loginctl enable-linger $USER
+systemctl --user daemon-reload
+systemctl --user enable --now ig-curate-server.service
+systemctl --user enable --now ig-fetch.timer
+systemctl --user enable --now ig-render.timer
+```
+
+`loginctl enable-linger $USER` ist nötig, damit die Dienste auch ohne aktive
+Login-Session weiterlaufen (z.B. nach Neustart ohne Einloggen).
+
+Fetch läuft am 25. jeden Monats (holt den Folgemonat), Render täglich um
+06:00 Uhr für den aktuellen Tag — überspringt still, falls der Tag noch
+nicht kuratiert wurde.
+
+Testen / nachschauen:
+```bash
+systemctl --user start ig-fetch.service      # manuell antriggern
+journalctl --user -u ig-fetch -f             # Log verfolgen
+systemctl --user list-timers                 # Timer-Übersicht
+```
+
 ## Design ändern
 
 Alle visuellen Parameter (Farben, Schriftgrößen, Ränder) stehen oben in
