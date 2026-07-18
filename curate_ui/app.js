@@ -2,7 +2,13 @@ const MAX_SELECTED = 9;
 let state = { date: null, candidates: [], selectedIds: [] };
 
 async function loadDay(date) {
-  const res = await fetch(`/api/day/${date}`);
+  let res;
+  try {
+    res = await fetch(`/api/day/${date}`);
+  } catch (e) {
+    document.getElementById("cards").textContent = "Server nicht erreichbar.";
+    return;
+  }
   if (!res.ok) {
     document.getElementById("cards").textContent = "Keine Kandidaten für diesen Tag.";
     return;
@@ -45,7 +51,7 @@ function buildCard(c, order, disabled) {
 
   const yearSpan = document.createElement("span");
   yearSpan.className = "year";
-  yearSpan.textContent = c.year;
+  yearSpan.textContent = c.year ?? "";
   div.appendChild(yearSpan);
 
   const mainText = document.createElement("p");
@@ -77,11 +83,21 @@ function render() {
 }
 
 async function save() {
-  await fetch(`/api/day/${state.date}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ selected_ids: state.selectedIds }),
-  });
+  let saveRes;
+  try {
+    saveRes = await fetch(`/api/day/${state.date}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ selected_ids: state.selectedIds }),
+    });
+  } catch (e) {
+    document.getElementById("progress").textContent = "Speichern fehlgeschlagen: Server nicht erreichbar.";
+    return;
+  }
+  if (!saveRes.ok) {
+    document.getElementById("progress").textContent = "Speichern fehlgeschlagen — bitte erneut versuchen.";
+    return;
+  }
   const month = state.date.slice(0, 7);
   const res = await fetch(`/api/next?month=${month}`);
   if (res.ok) {
