@@ -913,7 +913,10 @@ def resolve_selection(candidates: list[dict], selected_ids: list[str]) -> list[d
 def save_selection(curate_dir: Path, date_str: str, candidates: list[dict], selected_ids: list[str]) -> None:
     if len(selected_ids) > MAX_SELECTED:
         raise ValueError(f"maximal {MAX_SELECTED} Events pro Tag (Instagram-Carousel-Limit)")
-    facts = resolve_selection(candidates, selected_ids)
+    facts = [
+        {**c, "text": c["text_de"]} if c.get("text_de") else c
+        for c in resolve_selection(candidates, selected_ids)
+    ]
     path = _day_path(curate_dir, date_str)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(

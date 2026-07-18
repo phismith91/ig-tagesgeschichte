@@ -39,6 +39,22 @@ def test_save_selection_writes_facts(tmp_path):
     assert [f["id"] for f in data["facts"]] == ["b", "a"]
 
 
+def test_save_selection_prefers_text_de_over_original(tmp_path):
+    candidates = [{"id": "a", "year": 1941, "text": "Germany invades the Soviet Union.", "text_de": "Deutschland fällt in die Sowjetunion ein."}]
+    curate_logic.save_selection(tmp_path, "2026-07-17", candidates, ["a"])
+    out = tmp_path / "2026-07" / "17.json"
+    data = json.loads(out.read_text(encoding="utf-8"))
+    assert data["facts"][0]["text"] == "Deutschland fällt in die Sowjetunion ein."
+
+
+def test_save_selection_keeps_original_text_when_no_translation(tmp_path):
+    candidates = [{"id": "a", "year": 2000, "text": "x", "text_de": None}]
+    curate_logic.save_selection(tmp_path, "2026-07-17", candidates, ["a"])
+    out = tmp_path / "2026-07" / "17.json"
+    data = json.loads(out.read_text(encoding="utf-8"))
+    assert data["facts"][0]["text"] == "x"
+
+
 def test_save_selection_rejects_more_than_nine(tmp_path):
     candidates = [{"id": str(i)} for i in range(10)]
     try:
