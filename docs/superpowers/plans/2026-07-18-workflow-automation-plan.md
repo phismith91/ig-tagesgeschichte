@@ -166,15 +166,21 @@ git commit -m "feat: render_today.sh Wrapper für täglichen Render-Timer"
 ```ini
 [Unit]
 Description=ig-tagesgeschichte Kuratier-Server
+StartLimitIntervalSec=0
 
 [Service]
 WorkingDirectory=%h/projects/ig-tagesgeschichte
 ExecStart=/usr/bin/python3 curate_server.py
 Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=default.target
 ```
+
+`RestartSec=5` + `StartLimitIntervalSec=0`: verhindert, dass ein Crash-Loop
+(z.B. kaputte venv nach Update) das systemd-Startlimit sprengt und den
+Dienst dauerhaft im `failed`-Zustand stehen lässt (Code-Review-Fund).
 
 - [ ] **Step 2: Create `systemd/ig-fetch.service`**
 
