@@ -1,20 +1,40 @@
 const MAX_SELECTED = 9;
 let state = { date: null, candidates: [], selectedIds: [] };
 
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function shiftDate(dateStr, days) {
+  const d = new Date(dateStr + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
 async function loadDay(date) {
+  // ponytail: state.date wird sofort gesetzt, nicht erst nach Erfolg —
+  // sonst wiederholen ◀/▶ auf einem Tag ohne Kandidaten immer denselben Sprung.
+  state.date = date;
+  state.candidates = [];
+  state.selectedIds = [];
+  document.getElementById("date").textContent = date;
+
   let res;
   try {
     res = await fetch(`/api/day/${date}`);
   } catch (e) {
     document.getElementById("cards").textContent = "Server nicht erreichbar.";
+    document.getElementById("progress").textContent = "";
     return;
   }
   if (!res.ok) {
     document.getElementById("cards").textContent = "Keine Kandidaten für diesen Tag.";
+    document.getElementById("progress").textContent = "";
     return;
   }
   const data = await res.json();
-  state = { date: data.date, candidates: data.candidates, selectedIds: [...data.selected_ids] };
+  state.candidates = data.candidates;
+  state.selectedIds = [...data.selected_ids];
   render();
 }
 
@@ -98,23 +118,13 @@ async function save() {
     document.getElementById("progress").textContent = "Speichern fehlgeschlagen — bitte erneut versuchen.";
     return;
   }
-  const month = state.date.slice(0, 7);
-  const res = await fetch(`/api/next?month=${month}`);
-  if (res.ok) {
-    const { date } = await res.json();
-    loadDay(date);
-  }
+  loadDay(shiftDate(state.date, 1));
 }
 
 document.getElementById("save").addEventListener("click", save);
+document.getElementById("prev").addEventListener("click", () => loadDay(shiftDate(state.date, -1)));
+document.getElementById("next").addEventListener("click", () => loadDay(shiftDate(state.date, 1)));
+document.getElementById("today").addEventListener("click", () => loadDay(todayStr()));
 
 const params = new URLSearchParams(location.search);
-const startDate = params.get("date");
-if (startDate) {
-  loadDay(startDate);
-} else {
-  const currentMonth = new Date().toISOString().slice(0, 7);
-  fetch(`/api/next?month=${currentMonth}`)
-    .then((r) => r.json())
-    .then(({ date }) => loadDay(date));
-}
+loadDay(params.get("date") || todayStr());
