@@ -2,7 +2,10 @@ const MAX_SELECTED = 9;
 let state = { date: null, candidates: [], selectedIds: [] };
 
 function todayStr() {
-  return new Date().toISOString().slice(0, 10);
+  // ponytail: lokale Datumsteile statt toISOString() (UTC) — sonst kippt
+  // "Heute" für ~1-2h um Mitternacht auf den Vortag (Code-Review-Fund).
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 function shiftDate(dateStr, days) {
@@ -11,9 +14,12 @@ function shiftDate(dateStr, days) {
   return d.toISOString().slice(0, 10);
 }
 
+let loadSeq = 0;
+
 async function loadDay(date) {
   // ponytail: state.date wird sofort gesetzt, nicht erst nach Erfolg —
   // sonst wiederholen ◀/▶ auf einem Tag ohne Kandidaten immer denselben Sprung.
+  const mySeq = ++loadSeq;
   state.date = date;
   state.candidates = [];
   state.selectedIds = [];
@@ -23,16 +29,19 @@ async function loadDay(date) {
   try {
     res = await fetch(`/api/day/${date}`);
   } catch (e) {
+    if (mySeq !== loadSeq) return; // von neuerem Nav-Klick überholt
     document.getElementById("cards").textContent = "Server nicht erreichbar.";
     document.getElementById("progress").textContent = "";
     return;
   }
+  if (mySeq !== loadSeq) return; // von neuerem Nav-Klick überholt
   if (!res.ok) {
     document.getElementById("cards").textContent = "Keine Kandidaten für diesen Tag.";
     document.getElementById("progress").textContent = "";
     return;
   }
   const data = await res.json();
+  if (mySeq !== loadSeq) return; // von neuerem Nav-Klick überholt
   state.candidates = data.candidates;
   state.selectedIds = [...data.selected_ids];
   render();

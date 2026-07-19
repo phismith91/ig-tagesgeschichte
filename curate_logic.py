@@ -50,6 +50,10 @@ def save_selection(curate_dir: Path, date_str: str, candidates: list[dict], sele
     )
 
 
+# ponytail: von curate_ui/app.js seit 2026-07-19 nicht mehr automatisch genutzt
+# (siehe fix/curate-day-navigation) — fiel auf days[0] zurück sobald jeder Tag
+# irgendeine curate-Datei hatte, was die UI auf Tag 1 festhängen ließ. Bleibt
+# für mögliche künftige direkte API-Nutzung erhalten (Nutzer-Entscheidung).
 def next_unfinished_day(candidates_dir: Path, curate_dir: Path, month: str) -> str | None:
     if not _MONTH_RE.match(month):
         raise ValueError(f"ungültiger Monat: {month!r}")
