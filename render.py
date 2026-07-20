@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""curate/YYYY-MM/DD.json -> output/YYYY-MM/DD.png + DD_caption.txt
+"""curate/YYYY-MM/DD.json -> output/YYYY-MM/DD/01.png + caption.txt
 
 Nutzung:
     python3 render.py curate/2026-08/17.json
@@ -80,14 +80,18 @@ def render_day(data: dict, out_dir: Path) -> None:
 
     draw.text((MARGIN, SIZE - MARGIN), "@tagesgeschichte", font=f_footer, fill=MUTED)
 
-    out_dir.mkdir(parents=True, exist_ok=True)
-    img.save(out_dir / f"{day:02d}.png")
+    # ponytail: ein Ordner pro Tag statt flacher Dateien im Monatsordner —
+    # 01.png statt DD.png, damit ein künftiges Carousel (02.png, 03.png, ...)
+    # ohne Umbenennen reinpasst.
+    day_dir = out_dir / f"{day:02d}"
+    day_dir.mkdir(parents=True, exist_ok=True)
+    img.save(day_dir / "01.png")
 
     caption_lines = [f"📅 {day}. {MONTHS_DE[month - 1]} {year} — was an diesem Tag geschah:", ""]
     for fact in data["facts"]:
         caption_lines.append(f"• {fact['year']}: {fact['text']}")
     caption_lines += ["", "#aufdenTag #geschichte #onthisday #wissen"]
-    (out_dir / f"{day:02d}_caption.txt").write_text("\n".join(caption_lines), encoding="utf-8")
+    (day_dir / "caption.txt").write_text("\n".join(caption_lines), encoding="utf-8")
 
 
 def main():
@@ -100,7 +104,7 @@ def main():
         data = json.loads(f.read_text(encoding="utf-8"))
         month_key = data["date"][:7]
         render_day(data, OUT_DIR / month_key)
-        print(f"gerendert: {f.name} -> output/{month_key}/{f.stem}.png")
+        print(f"gerendert: {f.name} -> output/{month_key}/{f.stem}/01.png")
 
 
 if __name__ == "__main__":

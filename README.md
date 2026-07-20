@@ -29,9 +29,9 @@ als fertiges Bild im festen Design + Caption-Text.
    python3 render.py curate/2026-08          # ganzer Monat
    python3 render.py curate/2026-08/17.json  # einzelner Tag
    ```
-   Ergebnis in `output/2026-08/`: `17.png` (1080×1080) + `17_caption.txt`.
-   (Aktuell noch 1-Bild-Format; Carousel-Rendering mit einem Slide pro
-   kuratiertem Event kommt als eigene Spec.)
+   Ergebnis in `output/2026-08/17/`: `01.png` (1080×1080) + `caption.txt`.
+   (Aktuell noch 1 Bild pro Tag; ein künftiges Carousel legt weitere Slides
+   als `02.png`, `03.png`, … in denselben Tagesordner — kommt als eigene Spec.)
 
 4. **Posten**: manuell, oder mit einem Scheduler (Meta Business Suite, Buffer,
    Later …) — Instagram-Posting selbst ist hier nicht automatisiert.
