@@ -77,6 +77,21 @@ Kein Sonderfall: `post_today.sh` postet ausschließlich `output/<heutiges Datum>
 5. IDs (`ig-user-id`, `page-id`) ebenfalls über den Graph API Explorer ermitteln
 6. Alle drei Werte in `.env` eintragen
 
+## Phasen-Entscheidung (2026-07-20)
+
+Facebook-Seite ist noch nicht eingerichtet. Erste Implementierung deckt **nur Instagram** ab
+(`post_today.sh` postet ausschließlich auf Instagram). Facebook-Teil (Abschnitt "Meta Graph API
+— Facebook Page", `FB_PAGE_ID`) folgt als separate Erweiterung, sobald die Seite existiert —
+kein Code dafür in dieser Runde.
+
+**Zusätzlich per Live-Setup ermittelt (weicht von ursprünglicher Setup-Reihenfolge oben ab):**
+Diese Instagram-App nutzt den neueren "Instagram API"-Flow (Instagram Business Login, nicht
+Facebook Login) unter `graph.instagram.com`. Generierter Access-Token war bereits long-lived
+(~60 Tage), kein Exchange-Schritt nötig. Die für Graph-Calls relevante ID ist die App-Scoped
+User-ID aus `/me` (hier `28194940543437064`) — **nicht** die im Setup-Dashboard angezeigte
+klassische Business-Account-ID (`17841449503289529`, altes Facebook-Login-Format). `.env` enthält
+bereits `META_ACCESS_TOKEN` + `IG_USER_ID` mit den korrekten Werten.
+
 ## Nicht-Ziele (explizit)
 
 - Kein automatischer Token-Refresh
