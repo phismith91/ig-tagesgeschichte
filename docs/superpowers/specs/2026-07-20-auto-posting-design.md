@@ -24,7 +24,7 @@ Metas Graph API verlangt für Instagram-Media-Container zwingend eine öffentlic
 
 Zwei-Schritt-Prozess (Meta-Pflicht, kein Ein-Schritt-Posten möglich):
 
-```
+```http
 POST https://graph.facebook.com/v21.0/{ig-user-id}/media
   params: image_url=<raw-url>, caption=<caption.txt>, access_token=<token>
   -> { "id": "<creation_id>" }
@@ -38,7 +38,7 @@ POST https://graph.facebook.com/v21.0/{ig-user-id}/media_publish
 
 Ein-Schritt (Page-Fotos erlauben URL direkt mit `published=true`):
 
-```
+```http
 POST https://graph.facebook.com/v21.0/{page-id}/photos
   params: url=<raw-url>, caption=<caption.txt>, published=true, access_token=<page-access-token>
   -> { "id": "<photo_id>", "post_id": "<post_id>" }
@@ -46,7 +46,7 @@ POST https://graph.facebook.com/v21.0/{page-id}/photos
 
 ## Neue `.env`-Variablen
 
-```
+```dotenv
 META_ACCESS_TOKEN=...      # long-lived Page-Access-Token (~60 Tage gültig)
 IG_USER_ID=...             # Instagram Business Account ID
 FB_PAGE_ID=...             # Facebook Page ID
@@ -68,10 +68,14 @@ Kein Sonderfall: `post_today.sh` postet ausschließlich `output/<heutiges Datum>
 ## Setup-Reihenfolge (extern, durch Nutzer)
 
 1. Facebook-Seite anlegen, mit Instagram-Account verknüpfen
-2. Meta-App auf developers.facebook.com + Produkt "Instagram Graph API"
-3. Access-Token generieren (zunächst kurzlebig, dann gegen long-lived tauschen)
-4. IDs (`ig-user-id`, `page-id`) über Graph-API-Explorer ermitteln
-5. Alle drei Werte in `.env` eintragen
+2. Meta-App auf developers.facebook.com anlegen, Produkt "Instagram" hinzufügen
+   (Berechtigungen: `instagram_basic`, `instagram_content_publish`,
+   `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`)
+3. Mit dem **Graph API Explorer** (Test-Tool im App-Dashboard, kein eigenes
+   Produkt) einen Access-Token generieren und die Berechtigungen zuweisen
+4. Token gegen long-lived Version tauschen (kurzlebig → ~60 Tage gültig)
+5. IDs (`ig-user-id`, `page-id`) ebenfalls über den Graph API Explorer ermitteln
+6. Alle drei Werte in `.env` eintragen
 
 ## Nicht-Ziele (explizit)
 
