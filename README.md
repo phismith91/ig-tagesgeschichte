@@ -72,10 +72,16 @@ tokens). Das Repo muss ein public GitHub-Repo mit Remote `origin` sein — Bilde
 HTTPS-Bild-URL verlangt (kein Datei-Upload). Kein manueller Freigabe-Schritt — die Kuratierung
 selbst ist die Freigabe.
 
+`post_today.sh` macht `git push` — vor dem Aktivieren von `ig-post.timer` einmal manuell
+prüfen, dass Push aus der `--user`-Session heraus ohne Passphrase-Eingabe klappt (SSH-Agent
+erreichbar bzw. Deploy-Key ohne Passphrase), sonst scheitert der Timer täglich still im Log.
+
 Testen / nachschauen:
 ```bash
 systemctl --user start ig-fetch.service      # manuell antriggern
 journalctl --user -u ig-fetch -f             # Log verfolgen
+systemctl --user start ig-post.service       # Posting manuell antriggern
+journalctl --user -u ig-post -f              # Log verfolgen
 systemctl --user list-timers                 # Timer-Übersicht
 ```
 
