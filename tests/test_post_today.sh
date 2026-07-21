@@ -65,4 +65,47 @@ if [ -s "$GIT_CALLS_LOG" ] || [ -s "$PYTHON_CALLS_LOG" ]; then
   exit 1
 fi
 
+# Testfall 3: "nichts zu committen" (Retry nach bereits gepushtem Render, oder
+# identisches Re-Render) darf das Skript NICHT abbrechen. Der git-Stub simuliert
+# das: "diff --staged --quiet" meldet einen sauberen Baum (exit 0), "commit"
+# schlägt fehl (exit 1), so wie es echtes git bei "nothing to commit" täte.
+# Ohne den diff-Guard in post_today.sh (git commit unconditional) würde set -e
+# hier abbrechen, bevor push/post_instagram.py laufen — genau die Regression
+# aus Commit 39827f4, die dieser Test abfangen soll.
+cat > "$TMP/git" <<'EOF'
+#!/bin/bash
+echo "git $*" >> "$GIT_CALLS_LOG"
+case "$1" in
+  commit) exit 1 ;;
+  *) exit 0 ;;
+esac
+EOF
+chmod +x "$TMP/git"
+
+mkdir -p "output/2099-03/01"
+echo "fake" > "output/2099-03/01/01.png"
+echo "Testcaption" > "output/2099-03/01/caption.txt"
+: > "$GIT_CALLS_LOG"
+: > "$PYTHON_CALLS_LOG"
+
+RC=0
+REFERENCE_DATE="2099-03-01" ./post_today.sh || RC=$?
+rm -rf "output/2099-03"
+
+if [ "$RC" -ne 0 ]; then
+  echo "FAIL: post_today.sh ist abgebrochen, obwohl 'nichts zu committen' nur den commit betrifft"
+  cat "$GIT_CALLS_LOG"
+  exit 1
+fi
+if ! grep -q "^git push$" "$GIT_CALLS_LOG"; then
+  echo "FAIL: git push wurde trotz No-Op-Commit nicht aufgerufen (Diff-Guard fehlt?)"
+  cat "$GIT_CALLS_LOG"
+  exit 1
+fi
+if ! grep -qE "post_instagram\.py .*2099-03/01/01\.png.*2099-03/01/caption\.txt" "$PYTHON_CALLS_LOG"; then
+  echo "FAIL: post_instagram.py wurde trotz No-Op-Commit nicht aufgerufen (Diff-Guard fehlt?)"
+  cat "$PYTHON_CALLS_LOG"
+  exit 1
+fi
+
 echo "PASS"

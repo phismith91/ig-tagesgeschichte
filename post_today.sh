@@ -15,7 +15,10 @@ if [ ! -f "$IMG" ]; then
 fi
 
 git add "$IMG" "$CAPTION"
-git commit -m "render: $MONTH/$DAY"
+# ponytail: no-op commit ("nothing to commit") darf das Skript nicht abbrechen —
+# sonst kann ein Operator nach fehlgeschlagenem Instagram-Post nicht neu
+# anstoßen, wenn der Git-Teil beim ersten Versuch schon durchgelaufen war.
+git diff --staged --quiet || git commit -m "render: $MONTH/$DAY"
 git push
 
 # ponytail: set -e sorgt dafür, dass ein fehlgeschlagener push hier abbricht —
