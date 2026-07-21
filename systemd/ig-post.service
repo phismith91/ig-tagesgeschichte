@@ -1,0 +1,7 @@
+[Unit]
+Description=ig-tagesgeschichte: heutigen Tag auf Instagram posten
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/projects/ig-tagesgeschichte
+ExecStart=%h/projects/ig-tagesgeschichte/post_today.sh
