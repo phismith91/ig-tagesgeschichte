@@ -45,12 +45,13 @@ Browser (Schritt 2). Einmaliges Setup:
 ```bash
 mkdir -p ~/.config/systemd/user
 cp systemd/*.service systemd/*.timer ~/.config/systemd/user/
-chmod +x fetch_next_month.sh render_today.sh
+chmod +x fetch_next_month.sh render_today.sh post_today.sh
 loginctl enable-linger $USER
 systemctl --user daemon-reload
 systemctl --user enable --now ig-curate-server.service
 systemctl --user enable --now ig-fetch.timer
 systemctl --user enable --now ig-render.timer
+systemctl --user enable --now ig-post.timer
 ```
 
 `loginctl enable-linger $USER` ist nötig, damit die Dienste auch ohne aktive
@@ -58,7 +59,18 @@ Login-Session weiterlaufen (z.B. nach Neustart ohne Einloggen).
 
 Fetch läuft am 25. jeden Monats (holt den Folgemonat), Render täglich um
 06:00 Uhr für den aktuellen Tag — überspringt still, falls der Tag noch
-nicht kuratiert wurde.
+nicht kuratiert wurde. Posten läuft täglich um 06:10 Uhr (10 Minuten nach
+dem Rendern) und lädt das Ergebnis automatisch auf Instagram hoch —
+überspringt still, falls für heute noch nichts gerendert wurde.
+
+### Instagram-Posting
+
+Voraussetzung: `.env` enthält `META_ACCESS_TOKEN` (long-lived Access-Token) und `IG_USER_ID`
+(App-Scoped Instagram-User-ID, siehe Meta-App-Dashboard → Instagram API → Generate access
+tokens). Das Repo muss ein public GitHub-Repo mit Remote `origin` sein — Bilder werden über
+`raw.githubusercontent.com` öffentlich gehostet, da die Instagram Graph API eine öffentliche
+HTTPS-Bild-URL verlangt (kein Datei-Upload). Kein manueller Freigabe-Schritt — die Kuratierung
+selbst ist die Freigabe.
 
 Testen / nachschauen:
 ```bash
