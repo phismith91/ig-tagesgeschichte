@@ -1,4 +1,9 @@
-"""DeepL-Übersetzung für nicht-deutsche Kandidaten. Key kommt aus .env (Free-Tier, kein python-dotenv nötig)."""
+"""DeepL-Übersetzung für nicht-deutsche Kandidaten. Key kommt aus .env (Free-Tier, kein python-dotenv nötig).
+
+ponytail: Auth per Header (Authorization: DeepL-Auth-Key ...) statt Body-Parameter —
+DeepL hat den Body-Parameter "auth_key" im Nov. 2025 als Legacy-Methode abgeschafft
+(https://developers.deepl.com/docs/resources/breaking-changes-change-notices/november-2025-deprecation-of-legacy-auth-methods).
+"""
 from pathlib import Path
 
 import requests
@@ -27,8 +32,8 @@ def translate(text: str, source_lang: str, api_key: str | None) -> str | None:
     try:
         resp = requests.post(
             deepl_endpoint(api_key),
+            headers={"Authorization": f"DeepL-Auth-Key {api_key}"},
             data={
-                "auth_key": api_key,
                 "text": text,
                 "source_lang": source_lang.upper(),
                 "target_lang": "DE",

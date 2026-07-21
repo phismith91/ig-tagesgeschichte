@@ -44,8 +44,9 @@ def test_translate_calls_correct_endpoint(monkeypatch):
         def json(self):
             return {"translations": [{"text": "hallo"}]}
 
-    def fake_post(url, data=None, timeout=None):
+    def fake_post(url, headers=None, data=None, timeout=None):
         captured["url"] = url
+        captured["headers"] = headers
         captured["data"] = data
         return FakeResponse()
 
@@ -53,13 +54,15 @@ def test_translate_calls_correct_endpoint(monkeypatch):
     result = translate.translate("hello", "en", "abc123:fx")
     assert result == "hallo"
     assert captured["url"] == "https://api-free.deepl.com/v2/translate"
+    assert captured["headers"]["Authorization"] == "DeepL-Auth-Key abc123:fx"
+    assert "auth_key" not in captured["data"]
     assert captured["data"]["text"] == "hello"
     assert captured["data"]["source_lang"] == "EN"
     assert captured["data"]["target_lang"] == "DE"
 
 
 def test_translate_returns_none_on_error(monkeypatch):
-    def fake_post(url, data=None, timeout=None):
+    def fake_post(url, headers=None, data=None, timeout=None):
         raise ConnectionError("down")
 
     monkeypatch.setattr(translate.requests, "post", fake_post)
