@@ -15,7 +15,7 @@ if [ ! -f "$IMG" ]; then
 fi
 
 git add "$IMG" "$CAPTION"
-git diff --staged --quiet || git commit -m "render: $MONTH/$DAY"
+git commit -m "render: $MONTH/$DAY"
 git push
 
 # ponytail: set -e sorgt dafür, dass ein fehlgeschlagener push hier abbricht —
