@@ -28,7 +28,8 @@ def build_caption(data: dict) -> str:
     year, month, day = (int(x) for x in data["date"].split("-"))
     lines = [f"📅 {day}. {MONTHS_DE[month - 1]} {year} — was an diesem Tag geschah:", ""]
     for fact in data["facts"]:
-        lines.append(f"• {fact['year']}: {fact['text']}")
+        year_label = f"{fact['year']}: " if fact.get("year") else ""
+        lines.append(f"• {year_label}{fact['text']}")
     lines += ["", "#aufdenTag #geschichte #onthisday #wissen"]
     return "\n".join(lines)
 

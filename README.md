@@ -1,7 +1,7 @@
 # ig-tagesgeschichte
 
-Faceless-Instagram-Channel: täglich 3 historische Ereignisse zum aktuellen Datum,
-als fertiges Bild im festen Design + Caption-Text.
+Faceless-Instagram-Channel: täglich bis zu 9 historische Ereignisse zum aktuellen
+Datum, als Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
 
 ## Workflow
 

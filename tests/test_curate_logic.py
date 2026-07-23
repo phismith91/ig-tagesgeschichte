@@ -64,6 +64,15 @@ def test_save_selection_rejects_more_than_nine(tmp_path):
         pass
 
 
+def test_save_selection_rejects_empty_selection(tmp_path):
+    candidates = [{"id": "1"}]
+    try:
+        curate_logic.save_selection(tmp_path, "2026-07-17", candidates, [])
+        assert False, "sollte ValueError werfen"
+    except ValueError:
+        pass
+
+
 def test_load_selected_ids_missing_returns_empty(tmp_path):
     assert curate_logic.load_selected_ids(tmp_path, "2026-07-17") == []
 

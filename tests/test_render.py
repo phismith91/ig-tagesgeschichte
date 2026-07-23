@@ -49,6 +49,16 @@ def test_build_caption_format():
     assert caption.endswith("#aufdenTag #geschichte #onthisday #wissen")
 
 
+def test_build_caption_omits_year_when_missing():
+    data = {
+        "date": "2026-08-07",
+        "facts": [{"year": None, "text": "Ein Ereignis ohne bekanntes Jahr."}],
+    }
+    caption = build_caption(data)
+    assert "• Ein Ereignis ohne bekanntes Jahr." in caption
+    assert "None" not in caption
+
+
 def test_render_day_no_leftover_render_html_in_templates_dir():
     # ponytail: die temporäre Render-HTML wird in templates/ geschrieben (Font-Pfad-Fix,
     # siehe Plan-Kopf) — dieser Test stellt sicher, dass sie danach wieder aufgeräumt wird.
