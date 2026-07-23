@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Postet ein Bild+Caption auf Instagram via graph.instagram.com (2-Schritt-Flow)."""
+"""Postet ein Bild (Einzelbild) oder mehrere Bilder (Carousel) auf Instagram via graph.instagram.com."""
 import sys
 from pathlib import Path
 
@@ -86,20 +86,26 @@ def _create_carousel_container(children: list[str], caption: str, ig_user_id: st
 
 def post_carousel_to_instagram(image_urls: list[str], caption: str, ig_user_id: str, access_token: str) -> str:
     children = []
+    successful_urls = []
+    errors = []
     for image_url in image_urls:
         try:
             children.append(_create_carousel_item(image_url, ig_user_id, access_token))
-        except RuntimeError as e:
+            successful_urls.append(image_url)
+        except (RuntimeError, requests.exceptions.RequestException) as e:
             print(f"Slide übersprungen ({image_url}): {e}", file=sys.stderr)
+            errors.append(str(e))
 
     if len(children) == 0:
-        raise RuntimeError("Carousel-Post abgebrochen: 0 von {} Slides erfolgreich".format(len(image_urls)))
+        last_error = errors[-1] if errors else "unbekannter Fehler"
+        raise RuntimeError(f"Carousel-Post abgebrochen: 0 von {len(image_urls)} Slides erfolgreich ({last_error})")
 
     if len(children) == 1:
         # ponytail: der schon erstellte Kind-Container hat kein caption (Slides tragen nie
         # eine eigene Caption) und kann nicht direkt publiziert werden — daher normaler
-        # Einzelbild-Flow von Grund auf, mit dem Bild, das als einziges durchkam.
-        return post_to_instagram(image_urls[0], caption, ig_user_id, access_token)
+        # Einzelbild-Flow von Grund auf, mit dem Bild, das als einziges durchkam
+        # (successful_urls[0], NICHT image_urls[0] — der Überlebende muss nicht der erste sein).
+        return post_to_instagram(successful_urls[0], caption, ig_user_id, access_token)
 
     carousel_id = _create_carousel_container(children, caption, ig_user_id, access_token)
     return _publish_media(carousel_id, ig_user_id, access_token)

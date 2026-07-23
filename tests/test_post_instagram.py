@@ -236,6 +236,34 @@ def test_post_carousel_falls_back_to_single_image_when_only_one_slide_succeeds(m
 
 
 @patch("post_instagram.requests.post")
+def test_post_carousel_fallback_uses_actual_survivor_not_first_url(mock_post):
+    # Slide 1 und 3 schlagen fehl, nur Slide 2 überlebt -> Fallback MUSS die URL von
+    # Slide 2 benutzen, nicht image_urls[0] (Regressionstest für den Bug, bei dem
+    # hartkodiert immer die erste URL gepostet wurde, egal welcher Slide überlebte).
+    mock_post.side_effect = [
+        MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
+        MagicMock(status_code=200, json=lambda: {"id": "child-2"}),
+        MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
+        MagicMock(status_code=200, json=lambda: {"id": "single-container"}),
+        MagicMock(status_code=200, json=lambda: {"id": "media-final"}),
+    ]
+
+    media_id = post_carousel_to_instagram(
+        image_urls=["https://example.com/1.png", "https://example.com/2.png", "https://example.com/3.png"],
+        caption="Testcaption",
+        ig_user_id="28194940543437064",
+        access_token="dummy-token",
+    )
+
+    assert media_id == "media-final"
+    assert mock_post.call_count == 5
+
+    fallback_call = mock_post.call_args_list[3]
+    assert fallback_call.kwargs["data"]["image_url"] == "https://example.com/2.png"
+    assert fallback_call.kwargs["data"]["caption"] == "Testcaption"
+
+
+@patch("post_instagram.requests.post")
 def test_post_carousel_raises_when_all_slides_fail(mock_post):
     mock_post.side_effect = [
         MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
