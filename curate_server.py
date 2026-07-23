@@ -4,7 +4,7 @@ import argparse
 import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse
 
 import curate_logic
 
@@ -39,18 +39,6 @@ class CurateHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(content)))
             self.end_headers()
             self.wfile.write(content)
-            return
-        if parsed.path == "/api/next":
-            month = parse_qs(parsed.query).get("month", [""])[0]
-            try:
-                date = curate_logic.next_unfinished_day(CANDIDATES_DIR, CURATE_DIR, month)
-            except ValueError as e:
-                self._json(400, {"error": str(e)})
-                return
-            if date is None:
-                self._json(404, {"error": f"keine Kandidaten für Monat {month}"})
-                return
-            self._json(200, {"date": date})
             return
         if parsed.path.startswith("/api/day/"):
             date_str = parsed.path.removeprefix("/api/day/")

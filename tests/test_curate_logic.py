@@ -83,27 +83,6 @@ def test_load_selected_ids_reads_existing_selection(tmp_path):
     assert curate_logic.load_selected_ids(tmp_path, "2026-07-17") == ["a"]
 
 
-def test_next_unfinished_day_skips_curated(tmp_path):
-    candidates_dir = tmp_path / "candidates"
-    curate_dir = tmp_path / "curate"
-    _write_candidates(candidates_dir, "2026-07-01", [{"id": "a"}])
-    _write_candidates(candidates_dir, "2026-07-02", [{"id": "b"}])
-    curate_logic.save_selection(curate_dir, "2026-07-01", [{"id": "a", "year": 1, "text": "x"}], ["a"])
-    assert curate_logic.next_unfinished_day(candidates_dir, curate_dir, "2026-07") == "2026-07-02"
-
-
-def test_next_unfinished_day_all_done_returns_first(tmp_path):
-    candidates_dir = tmp_path / "candidates"
-    curate_dir = tmp_path / "curate"
-    _write_candidates(candidates_dir, "2026-07-01", [{"id": "a"}])
-    curate_logic.save_selection(curate_dir, "2026-07-01", [{"id": "a", "year": 1, "text": "x"}], ["a"])
-    assert curate_logic.next_unfinished_day(candidates_dir, curate_dir, "2026-07") == "2026-07-01"
-
-
-def test_next_unfinished_day_no_candidates_returns_none(tmp_path):
-    assert curate_logic.next_unfinished_day(tmp_path / "candidates", tmp_path / "curate", "2026-07") is None
-
-
 def test_load_candidates_rejects_path_traversal(tmp_path):
     try:
         curate_logic.load_candidates(tmp_path, "a/b")
@@ -119,10 +98,3 @@ def test_save_selection_rejects_absolute_reset_date(tmp_path):
     except ValueError:
         pass
 
-
-def test_next_unfinished_day_rejects_bad_month(tmp_path):
-    try:
-        curate_logic.next_unfinished_day(tmp_path, tmp_path, "/etc")
-        assert False, "sollte ValueError werfen"
-    except ValueError:
-        pass

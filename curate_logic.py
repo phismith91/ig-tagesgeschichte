@@ -6,7 +6,6 @@ from pathlib import Path
 MAX_SELECTED = 9  # Instagram-Carousel-Limit: 9 Events + 1 Cover-Slide
 
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-_MONTH_RE = re.compile(r"^\d{4}-\d{2}$")
 
 
 def _day_path(base: Path, date_str: str) -> Path:
@@ -51,22 +50,3 @@ def save_selection(curate_dir: Path, date_str: str, candidates: list[dict], sele
         encoding="utf-8",
     )
 
-
-# ponytail: von curate_ui/app.js seit 2026-07-19 nicht mehr automatisch genutzt
-# (siehe fix/curate-day-navigation) — fiel auf days[0] zurück sobald jeder Tag
-# irgendeine curate-Datei hatte, was die UI auf Tag 1 festhängen ließ. Bleibt
-# für mögliche künftige direkte API-Nutzung erhalten (Nutzer-Entscheidung).
-def next_unfinished_day(candidates_dir: Path, curate_dir: Path, month: str) -> str | None:
-    if not _MONTH_RE.match(month):
-        raise ValueError(f"ungültiger Monat: {month!r}")
-    month_path = candidates_dir / month
-    if not month_path.exists():
-        return None
-    days = sorted(p.stem for p in month_path.glob("*.json"))
-    if not days:
-        return None
-    for day in days:
-        date_str = f"{month}-{day}"
-        if not _day_path(curate_dir, date_str).exists():
-            return date_str
-    return f"{month}-{days[0]}"

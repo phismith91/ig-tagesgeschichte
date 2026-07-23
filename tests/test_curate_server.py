@@ -139,16 +139,6 @@ def test_post_day_non_dict_json_400(tmp_path, monkeypatch):
         server.shutdown()
 
 
-def test_get_next_returns_date(tmp_path, monkeypatch):
-    server = _start_server(tmp_path, monkeypatch, 8426)
-    try:
-        with urllib.request.urlopen("http://localhost:8426/api/next?month=2026-07") as resp:
-            data = json.loads(resp.read())
-            assert data["date"] == "2026-07-17"
-    finally:
-        server.shutdown()
-
-
 def test_get_day_malformed_date_400(tmp_path, monkeypatch):
     server = _start_server(tmp_path, monkeypatch, 8427)
     try:
@@ -160,14 +150,3 @@ def test_get_day_malformed_date_400(tmp_path, monkeypatch):
     finally:
         server.shutdown()
 
-
-def test_get_next_malformed_month_400(tmp_path, monkeypatch):
-    server = _start_server(tmp_path, monkeypatch, 8428)
-    try:
-        try:
-            urllib.request.urlopen("http://localhost:8428/api/next?month=not-a-month")
-            assert False, "sollte 400 werfen"
-        except urllib.error.HTTPError as e:
-            assert e.code == 400
-    finally:
-        server.shutdown()
