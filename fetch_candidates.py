@@ -18,17 +18,19 @@ import translate
 
 CANDIDATES_DIR = Path(__file__).parent / "candidates"
 
-FETCHER_NAMES = ["fetch_wikipedia", "fetch_wikidata", "fetch_muffinlabs", "fetch_numbersapi"]
-
 
 def fetch_day(month: int, day: int, api_key: str | None) -> list[dict]:
     candidates = []
-    for name in FETCHER_NAMES:
-        fetcher = getattr(sources, name)
+    # ponytail: Funktionsreferenzen HIER innerhalb der Funktion aufgebaut (nicht als
+    # Modul-Konstante) — sonst würde monkeypatch.setattr(sources, "fetch_wikipedia", ...)
+    # in Tests wirkungslos, weil eine Modul-Konstante die alte Referenz schon beim Import
+    # fest einfrieren würde. So wird sources.fetch_wikipedia bei jedem Aufruf live nachgeschlagen.
+    fetchers = (sources.fetch_wikipedia, sources.fetch_wikidata, sources.fetch_muffinlabs, sources.fetch_numbersapi)
+    for fetcher in fetchers:
         try:
             candidates.extend(fetcher(month, day))
         except Exception as e:
-            print(f"  {name} fehlgeschlagen: {e}")
+            print(f"  {fetcher.__name__} fehlgeschlagen: {e}")
     for c in candidates:
         if c["lang"] != "de":
             c["text_de"] = translate.translate(c["text"], c["lang"], api_key)
