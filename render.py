@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""curate/YYYY-MM/DD.json -> output/YYYY-MM/DD/01.png + caption.txt
+"""curate/YYYY-MM/DD.json -> output/YYYY-MM/DD/01.png..NN.png (ein Bild pro Fakt) + caption.txt
 
 Nutzung:
     python3 render.py curate/2026-08/17.json
@@ -7,91 +7,66 @@ Nutzung:
 """
 import json
 import sys
-import textwrap
+import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from jinja2 import Environment, FileSystemLoader
+from playwright.sync_api import sync_playwright
 
 SIZE = 1080
-BG = (18, 18, 26)
-ACCENT = (255, 200, 60)
-TEXT = (240, 240, 240)
-MUTED = (170, 170, 180)
-MARGIN = 80
 OUT_DIR = Path(__file__).parent / "output"
+TEMPLATE_DIR = Path(__file__).parent / "templates"
 
 MONTHS_DE = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
              "August", "September", "Oktober", "November", "Dezember"]
 
-
-FONT_REGULAR = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-FONT_BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-
-
-def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(FONT_BOLD if bold else FONT_REGULAR, size)
+_env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
+_template = _env.get_template("post_card.html.j2")
 
 
-MAX_LINES_PER_FACT = 3
+def build_caption(data: dict) -> str:
+    year, month, day = (int(x) for x in data["date"].split("-"))
+    lines = [f"📅 {day}. {MONTHS_DE[month - 1]} {year} — was an diesem Tag geschah:", ""]
+    for fact in data["facts"]:
+        year_label = f"{fact['year']}: " if fact.get("year") else ""
+        lines.append(f"• {year_label}{fact['text']}")
+    lines += ["", "#aufdenTag #geschichte #onthisday #wissen"]
+    return "\n".join(lines)
 
 
-def wrap(draw: ImageDraw.ImageDraw, text: str, f: ImageFont.FreeTypeFont, max_width: int) -> list[str]:
-    avg_char_w = draw.textlength("x", font=f) or 10
-    chars_per_line = max(10, int(max_width / avg_char_w))
-    lines = textwrap.wrap(text, width=chars_per_line)
-    if len(lines) > MAX_LINES_PER_FACT:
-        lines = lines[:MAX_LINES_PER_FACT]
-        lines[-1] = lines[-1].rstrip(".,;: ") + " …"
-    return lines
+def render_fact_png(day: str, month: str, fact: dict, index: int, total: int, out_path: Path) -> None:
+    html = _template.render(day=day, month=month, fact=fact, index=index, total=total)
+
+    # ponytail: Template referenziert Fonts relativ ("../fonts/..."), das setzt voraus,
+    # dass die gerenderte HTML NEBEN dem Template liegt (templates/) — nicht im tief
+    # verschachtelten output/<Monat>/<Tag>/. Sonst laden die Fonts lautlos nicht
+    # (verifiziert: Font-Status "error", falscher Pfad output/<Monat>/fonts/).
+    with tempfile.NamedTemporaryFile(dir=TEMPLATE_DIR, suffix=".html", delete=False) as f:
+        tmp_html = Path(f.name)
+        f.write(html.encode("utf-8"))
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": SIZE, "height": SIZE}, device_scale_factor=1)
+            page.goto(tmp_html.resolve().as_uri())
+            page.evaluate("document.fonts.ready")
+            page.screenshot(path=str(out_path), clip={"x": 0, "y": 0, "width": SIZE, "height": SIZE})
+            browser.close()
+    finally:
+        tmp_html.unlink()
 
 
 def render_day(data: dict, out_dir: Path) -> None:
-    year, month, day = (int(x) for x in data["date"].split("-"))
-    img = Image.new("RGB", (SIZE, SIZE), BG)
-    draw = ImageDraw.Draw(img)
-
-    f_daynum = font(140, bold=True)
-    f_month = font(46)
-    f_headline = font(38)
-    f_year = font(34, bold=True)
-    f_fact = font(30)
-    f_footer = font(24)
-
-    y = MARGIN
-    draw.text((MARGIN, y), f"{day}.", font=f_daynum, fill=ACCENT)
-    daynum_w = draw.textlength(f"{day}.", font=f_daynum)
-    draw.text((MARGIN + daynum_w + 20, y + 55), MONTHS_DE[month - 1], font=f_month, fill=TEXT)
-    y += 190
-
-    draw.text((MARGIN, y), "Das geschah an diesem Tag", font=f_headline, fill=MUTED)
-    y += 70
-    draw.line([(MARGIN, y), (SIZE - MARGIN, y)], fill=ACCENT, width=3)
-    y += 40
-
-    max_width = SIZE - 2 * MARGIN
-    for fact in data["facts"]:
-        year_label = str(fact["year"]) if fact.get("year") else ""
-        draw.text((MARGIN, y), year_label, font=f_year, fill=ACCENT)
-        y += 44
-        for line in wrap(draw, fact["text"], f_fact, max_width):
-            draw.text((MARGIN, y), line, font=f_fact, fill=TEXT)
-            y += 40
-        y += 26
-
-    draw.text((MARGIN, SIZE - MARGIN), "@tagesgeschichte", font=f_footer, fill=MUTED)
-
-    # ponytail: ein Ordner pro Tag statt flacher Dateien im Monatsordner —
-    # 01.png statt DD.png, damit ein künftiges Carousel (02.png, 03.png, ...)
-    # ohne Umbenennen reinpasst.
+    _, month, day = (int(x) for x in data["date"].split("-"))
     day_dir = out_dir / f"{day:02d}"
     day_dir.mkdir(parents=True, exist_ok=True)
-    img.save(day_dir / "01.png")
 
-    caption_lines = [f"📅 {day}. {MONTHS_DE[month - 1]} {year} — was an diesem Tag geschah:", ""]
-    for fact in data["facts"]:
-        caption_lines.append(f"• {fact['year']}: {fact['text']}")
-    caption_lines += ["", "#aufdenTag #geschichte #onthisday #wissen"]
-    (day_dir / "caption.txt").write_text("\n".join(caption_lines), encoding="utf-8")
+    facts = data["facts"]
+    for i, fact in enumerate(facts, start=1):
+        render_fact_png(str(day), MONTHS_DE[month - 1], fact, i, len(facts), day_dir / f"{i:02d}.png")
+
+    (day_dir / "caption.txt").write_text(build_caption(data), encoding="utf-8")
 
 
 def main():
@@ -104,7 +79,7 @@ def main():
         data = json.loads(f.read_text(encoding="utf-8"))
         month_key = data["date"][:7]
         render_day(data, OUT_DIR / month_key)
-        print(f"gerendert: {f.name} -> output/{month_key}/{f.stem}/01.png")
+        print(f"gerendert: {f.name} -> output/{month_key}/{f.stem}/ ({len(data['facts'])} Slides)")
 
 
 if __name__ == "__main__":

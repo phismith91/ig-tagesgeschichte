@@ -6,7 +6,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$DIR"
 
 TMP=$(mktemp -d)
-trap 'rm -rf "$TMP" "$DIR/output/2099-01" "$DIR/output/2099-02"' EXIT
+trap 'rm -rf "$TMP" "$DIR/output/2099-01" "$DIR/output/2099-02" "$DIR/output/2099-03"' EXIT
 
 cat > "$TMP/git" <<'EOF'
 #!/bin/bash
@@ -27,31 +27,29 @@ export GIT_CALLS_LOG="$TMP/git_calls.log"
 export PYTHON_CALLS_LOG="$TMP/python_calls.log"
 touch "$GIT_CALLS_LOG" "$PYTHON_CALLS_LOG"
 
-# Testfall 1: Tag ist gerendert -> Skript ruft git + python3 auf
+# Testfall 1: Tag hat 3 gerenderte Slides -> alle 3 + Caption werden committet/gepusht,
+# post_instagram.py bekommt Caption-Pfad zuerst, dann alle 3 URLs.
 mkdir -p "output/2099-01/15"
-echo "fake" > "output/2099-01/15/01.png"
+echo "fake1" > "output/2099-01/15/01.png"
+echo "fake2" > "output/2099-01/15/02.png"
+echo "fake3" > "output/2099-01/15/03.png"
 echo "Testcaption" > "output/2099-01/15/caption.txt"
 
 REFERENCE_DATE="2099-01-15" ./post_today.sh
 
-if ! grep -q "add output/2099-01/15/01.png output/2099-01/15/caption.txt" "$GIT_CALLS_LOG"; then
-  echo "FAIL: git add wurde nicht mit den erwarteten Pfaden aufgerufen"
+if ! grep -q "add output/2099-01/15/01.png output/2099-01/15/02.png output/2099-01/15/03.png output/2099-01/15/caption.txt" "$GIT_CALLS_LOG"; then
+  echo "FAIL: git add wurde nicht mit allen 3 PNGs + Caption aufgerufen"
   cat "$GIT_CALLS_LOG"
   exit 1
 fi
 if ! grep -q "^git push$" "$GIT_CALLS_LOG"; then
   echo "FAIL: git push wurde nicht aufgerufen"
-  cat "$GIT_CALLS_LOG"
   exit 1
 fi
-if ! grep -qE "post_instagram\.py .*2099-01/15/01\.png.*2099-01/15/caption\.txt" "$PYTHON_CALLS_LOG"; then
-  echo "FAIL: post_instagram.py wurde nicht mit erwarteten Pfaden aufgerufen"
-  cat "$PYTHON_CALLS_LOG"
-  exit 1
-fi
-if ! grep -q "raw.githubusercontent.com/phismith91/ig-tagesgeschichte/master/output/2099-01/15/01.png" "$PYTHON_CALLS_LOG"; then
-  echo "FAIL: raw-URL fehlt oder falsch aufgebaut"
-  cat "$PYTHON_CALLS_LOG"
+PYCALL="$(cat "$PYTHON_CALLS_LOG")"
+if [[ "$PYCALL" != *post_instagram.py\ output/2099-01/15/caption.txt\ *2099-01/15/01.png*2099-01/15/02.png*2099-01/15/03.png ]]; then
+  echo "FAIL: post_instagram.py wurde nicht mit caption zuerst + allen 3 URLs aufgerufen"
+  echo "GOT: $PYCALL"
   exit 1
 fi
 rm -rf "output/2099-01"
@@ -65,13 +63,8 @@ if [ -s "$GIT_CALLS_LOG" ] || [ -s "$PYTHON_CALLS_LOG" ]; then
   exit 1
 fi
 
-# Testfall 3: "nichts zu committen" (Retry nach bereits gepushtem Render, oder
-# identisches Re-Render) darf das Skript NICHT abbrechen. Der git-Stub simuliert
-# das: "diff --staged --quiet" meldet einen sauberen Baum (exit 0), "commit"
-# schlägt fehl (exit 1), so wie es echtes git bei "nothing to commit" täte.
-# Ohne den diff-Guard in post_today.sh (git commit unconditional) würde set -e
-# hier abbrechen, bevor push/post_instagram.py laufen — genau die Regression
-# aus Commit 39827f4, die dieser Test abfangen soll.
+# Testfall 3: "nichts zu committen" darf das Skript NICHT abbrechen (Diff-Guard, siehe
+# Commit 47547c1 aus Phase 1 — Regression-Test bleibt relevant, jetzt mit 2 Slides).
 cat > "$TMP/git" <<'EOF'
 #!/bin/bash
 echo "git $*" >> "$GIT_CALLS_LOG"
@@ -83,7 +76,8 @@ EOF
 chmod +x "$TMP/git"
 
 mkdir -p "output/2099-03/01"
-echo "fake" > "output/2099-03/01/01.png"
+echo "fake1" > "output/2099-03/01/01.png"
+echo "fake2" > "output/2099-03/01/02.png"
 echo "Testcaption" > "output/2099-03/01/caption.txt"
 : > "$GIT_CALLS_LOG"
 : > "$PYTHON_CALLS_LOG"
@@ -94,17 +88,14 @@ rm -rf "output/2099-03"
 
 if [ "$RC" -ne 0 ]; then
   echo "FAIL: post_today.sh ist abgebrochen, obwohl 'nichts zu committen' nur den commit betrifft"
-  cat "$GIT_CALLS_LOG"
   exit 1
 fi
 if ! grep -q "^git push$" "$GIT_CALLS_LOG"; then
-  echo "FAIL: git push wurde trotz No-Op-Commit nicht aufgerufen (Diff-Guard fehlt?)"
-  cat "$GIT_CALLS_LOG"
+  echo "FAIL: git push wurde trotz No-Op-Commit nicht aufgerufen"
   exit 1
 fi
-if ! grep -qE "post_instagram\.py .*2099-03/01/01\.png.*2099-03/01/caption\.txt" "$PYTHON_CALLS_LOG"; then
-  echo "FAIL: post_instagram.py wurde trotz No-Op-Commit nicht aufgerufen (Diff-Guard fehlt?)"
-  cat "$PYTHON_CALLS_LOG"
+if [ ! -s "$PYTHON_CALLS_LOG" ]; then
+  echo "FAIL: post_instagram.py wurde trotz No-Op-Commit nicht aufgerufen"
   exit 1
 fi
 

@@ -1,7 +1,7 @@
 # ig-tagesgeschichte
 
-Faceless-Instagram-Channel: täglich 3 historische Ereignisse zum aktuellen Datum,
-als fertiges Bild im festen Design + Caption-Text.
+Faceless-Instagram-Channel: täglich bis zu 9 historische Ereignisse zum aktuellen
+Datum, als Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
 
 ## Workflow
 
@@ -24,17 +24,19 @@ als fertiges Bild im festen Design + Caption-Text.
    springt automatisch zum nächsten unkuratierten Tag. Schreibt
    `curate/2026-08/01.json` … `31.json`.
 
-3. **Rendern**: erzeugt die fertigen Bilder + Captions
+3. **Rendern**: erzeugt die fertigen Bilder + Captions (Jinja2-Template + Playwright-
+   Screenshot, ein Bild pro kuratiertem Fakt)
    ```
    python3 render.py curate/2026-08          # ganzer Monat
    python3 render.py curate/2026-08/17.json  # einzelner Tag
    ```
-   Ergebnis in `output/2026-08/17/`: `01.png` (1080×1080) + `caption.txt`.
-   (Aktuell noch 1 Bild pro Tag; ein künftiges Carousel legt weitere Slides
-   als `02.png`, `03.png`, … in denselben Tagesordner — kommt als eigene Spec.)
+   Ergebnis in `output/2026-08/17/`: `01.png` … `NN.png` (1080×1080, eins pro
+   Fakt, bis zu 9) + `caption.txt`. Rendering nutzt Playwright (headless
+   Chromium) statt eines reinen Python-Zeichners — Setup siehe unten.
 
-4. **Posten**: manuell, oder mit einem Scheduler (Meta Business Suite, Buffer,
-   Later …) — Instagram-Posting selbst ist hier nicht automatisiert.
+4. **Posten**: läuft automatisch als Instagram-Carousel, siehe
+   „Automatisierung" unten (`ig-post.timer`). Kuratierung ist der einzige
+   manuelle Schritt, danach läuft alles von selbst.
 
 ## Automatisierung (optional)
 
@@ -87,11 +89,13 @@ systemctl --user list-timers                 # Timer-Übersicht
 
 ## Design ändern
 
-Alle visuellen Parameter (Farben, Schriftgrößen, Ränder) stehen oben in
-`render.py` als Konstanten (`BG`, `ACCENT`, `TEXT`, `SIZE`, …).
+Layout, Farben und Typografie stehen in `templates/post_card.html.j2`
+(HTML/CSS, Jinja2-Platzhalter für Tag/Monat/Fakt). Fonts liegen als woff2
+unter `fonts/`.
 
 ## Setup
 
-```
-pip install -r requirements.txt
+```bash
+pip install --user --break-system-packages -r requirements.txt
+python3 -m playwright install chromium
 ```

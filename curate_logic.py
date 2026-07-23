@@ -38,6 +38,8 @@ def resolve_selection(candidates: list[dict], selected_ids: list[str]) -> list[d
 def save_selection(curate_dir: Path, date_str: str, candidates: list[dict], selected_ids: list[str]) -> None:
     if len(selected_ids) > MAX_SELECTED:
         raise ValueError(f"maximal {MAX_SELECTED} Events pro Tag (Instagram-Carousel-Limit)")
+    if len(selected_ids) == 0:
+        raise ValueError("mindestens 1 Event pro Tag auswählen")
     facts = [
         {**c, "text": c["text_de"]} if c.get("text_de") else c
         for c in resolve_selection(candidates, selected_ids)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Postet ein Bild+Caption auf Instagram via graph.instagram.com (2-Schritt-Flow)."""
+"""Postet ein Bild (Einzelbild) oder mehrere Bilder (Carousel) auf Instagram via graph.instagram.com."""
 import sys
 from pathlib import Path
 
@@ -57,14 +57,68 @@ def _extract_error(res) -> str:
         return res.text
 
 
+def _create_carousel_item(image_url: str, ig_user_id: str, access_token: str) -> str:
+    res = requests.post(
+        f"{GRAPH_API_BASE}/{ig_user_id}/media",
+        data={"image_url": image_url, "is_carousel_item": "true", "access_token": access_token},
+        timeout=TIMEOUT_SECONDS,
+    )
+    if res.status_code != 200:
+        raise RuntimeError(f"Carousel-Kind-Container fehlgeschlagen: {_extract_error(res)}")
+    return res.json()["id"]
+
+
+def _create_carousel_container(children: list[str], caption: str, ig_user_id: str, access_token: str) -> str:
+    res = requests.post(
+        f"{GRAPH_API_BASE}/{ig_user_id}/media",
+        data={
+            "media_type": "CAROUSEL",
+            "children": ",".join(children),
+            "caption": caption,
+            "access_token": access_token,
+        },
+        timeout=TIMEOUT_SECONDS,
+    )
+    if res.status_code != 200:
+        raise RuntimeError(f"Carousel-Container fehlgeschlagen: {_extract_error(res)}")
+    return res.json()["id"]
+
+
+def post_carousel_to_instagram(image_urls: list[str], caption: str, ig_user_id: str, access_token: str) -> str:
+    children = []
+    successful_urls = []
+    errors = []
+    for image_url in image_urls:
+        try:
+            children.append(_create_carousel_item(image_url, ig_user_id, access_token))
+            successful_urls.append(image_url)
+        except (RuntimeError, requests.exceptions.RequestException) as e:
+            print(f"Slide übersprungen ({image_url}): {e}", file=sys.stderr)
+            errors.append(str(e))
+
+    if len(children) == 0:
+        last_error = errors[-1] if errors else "unbekannter Fehler"
+        raise RuntimeError(f"Carousel-Post abgebrochen: 0 von {len(image_urls)} Slides erfolgreich ({last_error})")
+
+    if len(children) == 1:
+        # ponytail: der schon erstellte Kind-Container hat kein caption (Slides tragen nie
+        # eine eigene Caption) und kann nicht direkt publiziert werden — daher normaler
+        # Einzelbild-Flow von Grund auf, mit dem Bild, das als einziges durchkam
+        # (successful_urls[0], NICHT image_urls[0] — der Überlebende muss nicht der erste sein).
+        return post_to_instagram(successful_urls[0], caption, ig_user_id, access_token)
+
+    carousel_id = _create_carousel_container(children, caption, ig_user_id, access_token)
+    return _publish_media(carousel_id, ig_user_id, access_token)
+
+
 def main():
-    if len(sys.argv) != 3:
-        print("Nutzung: python3 post_instagram.py <image_url> <caption_datei>", file=sys.stderr)
+    if len(sys.argv) < 3:
+        print("Nutzung: python3 post_instagram.py <caption_datei> <url1> [<url2> ...]", file=sys.stderr)
         sys.exit(1)
 
-    image_url = sys.argv[1]
-    with open(sys.argv[2], encoding="utf-8") as f:
+    with open(sys.argv[1], encoding="utf-8") as f:
         caption = f.read()
+    image_urls = sys.argv[2:]
 
     ig_user_id = load_env_var("IG_USER_ID")
     if not ig_user_id:
@@ -74,7 +128,10 @@ def main():
     if not access_token:
         raise RuntimeError("META_ACCESS_TOKEN fehlt in .env")
 
-    media_id = post_to_instagram(image_url, caption, ig_user_id, access_token)
+    if len(image_urls) == 1:
+        media_id = post_to_instagram(image_urls[0], caption, ig_user_id, access_token)
+    else:
+        media_id = post_carousel_to_instagram(image_urls, caption, ig_user_id, access_token)
     print(f"gepostet: {media_id}")
 
 
