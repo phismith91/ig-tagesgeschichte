@@ -1,25 +1,4 @@
-from pathlib import Path
-
 import translate
-
-
-def test_load_api_key_reads_env_file(tmp_path, monkeypatch):
-    env_file = tmp_path / ".env"
-    env_file.write_text("DEEPL_API_KEY=abc123:fx\n")
-    monkeypatch.chdir(tmp_path)
-    assert translate.load_api_key() == "abc123:fx"
-
-
-def test_load_api_key_missing_file_returns_none(tmp_path, monkeypatch):
-    monkeypatch.chdir(tmp_path)
-    assert translate.load_api_key() is None
-
-
-def test_load_api_key_empty_value_returns_none(tmp_path, monkeypatch):
-    env_file = tmp_path / ".env"
-    env_file.write_text("DEEPL_API_KEY=\n")
-    monkeypatch.chdir(tmp_path)
-    assert translate.load_api_key() is None
 
 
 def test_deepl_endpoint_free_key():

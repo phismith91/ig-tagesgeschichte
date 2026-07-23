@@ -34,7 +34,7 @@ def test_main_writes_candidates_file(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(fetch_candidates, "CANDIDATES_DIR", tmp_path / "candidates")
     monkeypatch.setattr(fetch_candidates, "fetch_day", lambda month, day, api_key: [_candidate(f"x-{day}")])
-    monkeypatch.setattr(fetch_candidates.translate, "load_api_key", lambda: None)
+    monkeypatch.setattr(fetch_candidates.env, "load_env_var", lambda key: None)
     monkeypatch.setattr(fetch_candidates.time, "sleep", lambda s: None)
     monkeypatch.setattr("sys.argv", ["fetch_candidates.py", "2026", "2"])
 

@@ -12,6 +12,7 @@ import sys
 import time
 from pathlib import Path
 
+import env
 import sources
 import translate
 
@@ -41,7 +42,7 @@ def main():
     p.add_argument("--force", action="store_true")
     args = p.parse_args()
 
-    api_key = translate.load_api_key()
+    api_key = env.load_env_var("DEEPL_API_KEY")
     if not api_key:
         print("Kein DEEPL_API_KEY in .env gefunden — englische Kandidaten bleiben unübersetzt.")
 

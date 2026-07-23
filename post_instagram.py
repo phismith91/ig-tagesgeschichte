@@ -1,25 +1,13 @@
 #!/usr/bin/env python3
 """Postet ein Bild (Einzelbild) oder mehrere Bilder (Carousel) auf Instagram via graph.instagram.com."""
 import sys
-from pathlib import Path
 
 import requests
 
+from env import load_env_var
+
 GRAPH_API_BASE = "https://graph.instagram.com/v21.0"
 TIMEOUT_SECONDS = 15
-
-
-def load_env_var(key: str, env_path: str = ".env") -> str | None:
-    """Liest einen einzelnen Wert aus einer .env-Datei (kein python-dotenv nötig)."""
-    path = Path(env_path)
-    if not path.exists():
-        return None
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line.startswith(f"{key}="):
-            value = line.split("=", 1)[1].strip()
-            return value or None
-    return None
 
 
 def post_to_instagram(image_url: str, caption: str, ig_user_id: str, access_token: str) -> str:

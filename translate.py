@@ -4,21 +4,7 @@ ponytail: Auth per Header (Authorization: DeepL-Auth-Key ...) statt Body-Paramet
 DeepL hat den Body-Parameter "auth_key" im Nov. 2025 als Legacy-Methode abgeschafft
 (https://developers.deepl.com/docs/resources/breaking-changes-change-notices/november-2025-deprecation-of-legacy-auth-methods).
 """
-from pathlib import Path
-
 import requests
-
-
-def load_api_key(env_path: str = ".env") -> str | None:
-    path = Path(env_path)
-    if not path.exists():
-        return None
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line.startswith("DEEPL_API_KEY="):
-            value = line.split("=", 1)[1].strip()
-            return value or None
-    return None
 
 
 def deepl_endpoint(api_key: str) -> str:
