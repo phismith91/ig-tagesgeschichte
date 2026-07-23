@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>heute.today — Fakten-Karte</title>
+<style>
+@font-face{font-family:'Space Grotesk';src:url('../fonts/SpaceGrotesk-Medium.woff2') format('woff2');font-weight:500;font-display:block;}
+@font-face{font-family:'Space Grotesk';src:url('../fonts/SpaceGrotesk-Bold.woff2') format('woff2');font-weight:700;font-display:block;}
+@font-face{font-family:'Source Sans 3';src:url('../fonts/SourceSans3-Regular.woff2') format('woff2');font-weight:400;font-display:block;}
+@font-face{font-family:'Source Sans 3';src:url('../fonts/SourceSans3-SemiBold.woff2') format('woff2');font-weight:600;font-display:block;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1080px;overflow:hidden;}
+body{background:oklch(0.17 0.02 260);font-family:'Source Sans 3',sans-serif;}
+</style>
+</head>
+<body>
+{% set raw_text = fact.text %}
+{% set len = raw_text|length %}
+{% if len > 260 %}{% set fact_text = raw_text[:257] ~ '…' %}{% else %}{% set fact_text = raw_text %}{% endif %}
+{% if len <= 70 %}{% set text_size = 64 %}
+{% elif len <= 130 %}{% set text_size = 54 %}
+{% elif len <= 200 %}{% set text_size = 46 %}
+{% else %}{% set text_size = 40 %}
+{% endif %}
+  <div style="position:relative;width:1080px;height:1080px;overflow:hidden;color:oklch(0.97 0.005 260);">
+    <div style="position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(oklch(0.55 0.17 210/0.35),transparent 70%);top:-260px;right:-320px;filter:blur(10px);"></div>
+    <div style="position:relative;height:100%;display:flex;flex-direction:column;padding:80px 72px;">
+      <div style="font:600 30px 'Source Sans 3',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:oklch(0.75 0.17 210);">{{ day }}. {{ month }}</div>
+      {% if fact.year %}
+      <div style="font:700 220px/0.95 'Space Grotesk',sans-serif;margin:16px 0 30px;">{{ fact.year }}</div>
+      {% else %}
+      <div style="height:64px"></div>
+      {% endif %}
+      <div style="flex:1;display:flex;align-items:center;">
+        <p style="font:500 {{ text_size }}px/1.35 'Source Sans 3',sans-serif;margin:0;max-width:880px;text-wrap:pretty;">{{ fact_text }}</p>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid oklch(1 0 0/0.15);padding-top:28px;">
+        <div style="font:700 28px 'Space Grotesk',sans-serif;color:oklch(0.75 0.17 210);">heute.today</div>
+        {% if total and total > 1 %}<div style="font:500 24px 'Source Sans 3',sans-serif;color:oklch(0.97 0.005 260/0.6);">{{ index }} / {{ total }}</div>{% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>
