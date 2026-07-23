@@ -140,3 +140,115 @@ def test_post_to_instagram_passes_timeout(mock_post):
 
     for call in mock_post.call_args_list:
         assert call.kwargs["timeout"] == 15
+
+
+from post_instagram import post_carousel_to_instagram
+
+
+@patch("post_instagram.requests.post")
+def test_post_carousel_with_multiple_slides(mock_post):
+    # 3 Kind-Container, dann Carousel-Container, dann Publish
+    mock_post.side_effect = [
+        MagicMock(status_code=200, json=lambda: {"id": "child-1"}),
+        MagicMock(status_code=200, json=lambda: {"id": "child-2"}),
+        MagicMock(status_code=200, json=lambda: {"id": "child-3"}),
+        MagicMock(status_code=200, json=lambda: {"id": "carousel-container"}),
+        MagicMock(status_code=200, json=lambda: {"id": "media-final"}),
+    ]
+
+    media_id = post_carousel_to_instagram(
+        image_urls=["https://example.com/1.png", "https://example.com/2.png", "https://example.com/3.png"],
+        caption="Testcaption",
+        ig_user_id="28194940543437064",
+        access_token="dummy-token",
+    )
+
+    assert media_id == "media-final"
+    assert mock_post.call_count == 5
+
+    for i, call in enumerate(mock_post.call_args_list[:3]):
+        assert call.args[0] == "https://graph.instagram.com/v21.0/28194940543437064/media"
+        assert call.kwargs["data"]["image_url"] == f"https://example.com/{i + 1}.png"
+        assert call.kwargs["data"]["is_carousel_item"] == "true"
+        assert "caption" not in call.kwargs["data"]
+
+    carousel_call = mock_post.call_args_list[3]
+    assert carousel_call.args[0] == "https://graph.instagram.com/v21.0/28194940543437064/media"
+    assert carousel_call.kwargs["data"]["media_type"] == "CAROUSEL"
+    assert carousel_call.kwargs["data"]["children"] == "child-1,child-2,child-3"
+    assert carousel_call.kwargs["data"]["caption"] == "Testcaption"
+
+    publish_call = mock_post.call_args_list[4]
+    assert publish_call.args[0] == "https://graph.instagram.com/v21.0/28194940543437064/media_publish"
+    assert publish_call.kwargs["data"]["creation_id"] == "carousel-container"
+
+
+@patch("post_instagram.requests.post")
+def test_post_carousel_skips_failed_slide_but_continues(mock_post):
+    # Slide 2 schlägt fehl (Kind-Container-Erstellung), Rest läuft normal weiter.
+    mock_post.side_effect = [
+        MagicMock(status_code=200, json=lambda: {"id": "child-1"}),
+        MagicMock(status_code=400, json=lambda: {"error": {"message": "slide 2 broken"}}),
+        MagicMock(status_code=200, json=lambda: {"id": "child-3"}),
+        MagicMock(status_code=200, json=lambda: {"id": "carousel-container"}),
+        MagicMock(status_code=200, json=lambda: {"id": "media-final"}),
+    ]
+
+    media_id = post_carousel_to_instagram(
+        image_urls=["https://example.com/1.png", "https://example.com/2.png", "https://example.com/3.png"],
+        caption="Testcaption",
+        ig_user_id="28194940543437064",
+        access_token="dummy-token",
+    )
+
+    assert media_id == "media-final"
+    carousel_call = mock_post.call_args_list[3]
+    assert carousel_call.kwargs["data"]["children"] == "child-1,child-3"
+
+
+@patch("post_instagram.requests.post")
+def test_post_carousel_falls_back_to_single_image_when_only_one_slide_succeeds(mock_post):
+    # 2 von 3 Kind-Containern schlagen fehl -> nur 1 Slide übrig -> normaler Einzelbild-Post
+    # (NICHT der schon erstellte Kind-Container, da der ohne caption erstellt wurde).
+    mock_post.side_effect = [
+        MagicMock(status_code=200, json=lambda: {"id": "child-1"}),
+        MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
+        MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
+        MagicMock(status_code=200, json=lambda: {"id": "single-container"}),
+        MagicMock(status_code=200, json=lambda: {"id": "media-final"}),
+    ]
+
+    media_id = post_carousel_to_instagram(
+        image_urls=["https://example.com/1.png", "https://example.com/2.png", "https://example.com/3.png"],
+        caption="Testcaption",
+        ig_user_id="28194940543437064",
+        access_token="dummy-token",
+    )
+
+    assert media_id == "media-final"
+    assert mock_post.call_count == 5
+
+    fallback_call = mock_post.call_args_list[3]
+    assert fallback_call.kwargs["data"]["image_url"] == "https://example.com/1.png"
+    assert fallback_call.kwargs["data"]["caption"] == "Testcaption"
+    assert "is_carousel_item" not in fallback_call.kwargs["data"]
+    assert "media_type" not in fallback_call.kwargs["data"]
+
+
+@patch("post_instagram.requests.post")
+def test_post_carousel_raises_when_all_slides_fail(mock_post):
+    mock_post.side_effect = [
+        MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
+        MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
+    ]
+
+    try:
+        post_carousel_to_instagram(
+            image_urls=["https://example.com/1.png", "https://example.com/2.png"],
+            caption="Testcaption",
+            ig_user_id="28194940543437064",
+            access_token="dummy-token",
+        )
+        assert False, "sollte RuntimeError werfen"
+    except RuntimeError as e:
+        assert "kein Slide" in str(e) or "0 von" in str(e)
