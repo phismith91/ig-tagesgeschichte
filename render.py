@@ -26,7 +26,13 @@ _template = _env.get_template("post_card.html.j2")
 
 def build_caption(data: dict) -> str:
     year, month, day = (int(x) for x in data["date"].split("-"))
-    lines = [f"📅 {day}. {MONTHS_DE[month - 1]} {year} — was an diesem Tag geschah:", ""]
+    intro = data.get("caption_intro", "").strip()
+
+    if intro:
+        lines = [f"📅 {day}. {MONTHS_DE[month - 1]} {year}: {intro}", ""]
+    else:
+        lines = [f"📅 {day}. {MONTHS_DE[month - 1]} {year} — was an diesem Tag geschah:", ""]
+
     for fact in data["facts"]:
         year_label = f"{fact['year']}: " if fact.get("year") else ""
         lines.append(f"• {year_label}{fact['text']}")

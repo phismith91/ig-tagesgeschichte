@@ -1,0 +1,9 @@
+[Unit]
+Description=Täglicher Trigger für ig-curate.service
+
+[Timer]
+OnCalendar=*-*-* 05:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
