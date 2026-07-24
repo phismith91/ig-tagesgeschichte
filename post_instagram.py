@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Postet ein Bild (Einzelbild) oder mehrere Bilder (Carousel) auf Instagram via graph.instagram.com."""
 import sys
+import time
 
 import requests
 
@@ -8,10 +9,15 @@ from env import load_env_var
 
 GRAPH_API_BASE = "https://graph.instagram.com/v21.0"
 TIMEOUT_SECONDS = 15
+# ponytail: Instagram braucht eine kurze Verarbeitungszeit, bis ein Container
+# publiziert werden kann. Wir pollen den Status, statt sofort zu publish.
+STATUS_POLL_INTERVAL_SECONDS = 2
+STATUS_POLL_MAX_WAIT_SECONDS = 60
 
 
 def post_to_instagram(image_url: str, caption: str, ig_user_id: str, access_token: str) -> str:
     creation_id = _create_media_container(image_url, caption, ig_user_id, access_token)
+    _wait_for_media_container(creation_id, ig_user_id, access_token)
     return _publish_media(creation_id, ig_user_id, access_token)
 
 
@@ -24,6 +30,27 @@ def _create_media_container(image_url: str, caption: str, ig_user_id: str, acces
     if res.status_code != 200:
         raise RuntimeError(f"Instagram-Media-Container fehlgeschlagen: {_extract_error(res)}")
     return res.json()["id"]
+
+
+def _wait_for_media_container(creation_id: str, ig_user_id: str, access_token: str) -> None:
+    """Pollt den Container-Status, bis Instagram die Verarbeitung abgeschlossen hat."""
+    url = f"{GRAPH_API_BASE}/{creation_id}"
+    params = {
+        "fields": "status_code",
+        "access_token": access_token,
+    }
+    deadline = time.time() + STATUS_POLL_MAX_WAIT_SECONDS
+    while time.time() < deadline:
+        res = requests.get(url, params=params, timeout=TIMEOUT_SECONDS)
+        if res.status_code == 200:
+            data = res.json()
+            status = data.get("status_code")
+            if status == "FINISHED":
+                return
+            if status in ("ERROR", "EXPIRED"):
+                raise RuntimeError(f"Instagram-Container fehlgeschlagen (Status: {status})")
+        time.sleep(STATUS_POLL_INTERVAL_SECONDS)
+    raise RuntimeError("Timeout: Instagram-Container wurde nicht fertig")
 
 
 def _publish_media(creation_id: str, ig_user_id: str, access_token: str) -> str:
@@ -78,7 +105,9 @@ def post_carousel_to_instagram(image_urls: list[str], caption: str, ig_user_id: 
     errors = []
     for image_url in image_urls:
         try:
-            children.append(_create_carousel_item(image_url, ig_user_id, access_token))
+            child_id = _create_carousel_item(image_url, ig_user_id, access_token)
+            _wait_for_media_container(child_id, ig_user_id, access_token)
+            children.append(child_id)
             successful_urls.append(image_url)
         except (RuntimeError, requests.exceptions.RequestException) as e:
             print(f"Slide übersprungen ({image_url}): {e}", file=sys.stderr)
@@ -96,6 +125,7 @@ def post_carousel_to_instagram(image_urls: list[str], caption: str, ig_user_id: 
         return post_to_instagram(successful_urls[0], caption, ig_user_id, access_token)
 
     carousel_id = _create_carousel_container(children, caption, ig_user_id, access_token)
+    _wait_for_media_container(carousel_id, ig_user_id, access_token)
     return _publish_media(carousel_id, ig_user_id, access_token)
 
 

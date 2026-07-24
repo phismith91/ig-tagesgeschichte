@@ -1,0 +1,50 @@
+{
+  "date": "2026-07-24",
+  "facts": [
+    {
+      "id": "wp-0",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1996,
+      "text": "Bürgerkrieg in Sri Lanka: Bei einem Bombenanschlag auf einen Vorortszug in der Hauptstadt Colombo durch die tamilische Terrororganisation LTTE kommen 64 Menschen ums Leben.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/B%C3%BCrgerkrieg_in_Sri_Lanka"
+    },
+    {
+      "id": "wp-2",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1911,
+      "text": "Eine Expedition unter Leitung von Hiram Bingham entdeckt in den peruanischen Anden die Ruinen der von den Inka im 15. Jahrhundert erbauten Stadt Machu Picchu.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Hiram_Bingham_III."
+    },
+    {
+      "id": "ml-4",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1411,
+      "text": "Die Schlacht von Harlaw, eine der blutigsten Schlachten in Schottland, findet statt.",
+      "text_de": "Die Schlacht von Harlaw, eine der blutigsten Schlachten in Schottland, findet statt.",
+      "source_url": "https://wikipedia.org/wiki/Battle_of_Harlaw"
+    },
+    {
+      "id": "ml-14",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1866,
+      "text": "Wiederaufbau: Tennessee ist der erste US-Bundesstaat, der nach dem Amerikanischen Bürgerkrieg wieder in den Kongress aufgenommen wird.",
+      "text_de": "Wiederaufbau: Tennessee ist der erste US-Bundesstaat, der nach dem Amerikanischen Bürgerkrieg wieder in den Kongress aufgenommen wird.",
+      "source_url": "https://wikipedia.org/wiki/Reconstruction_Era"
+    },
+    {
+      "id": "ml-26",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1950,
+      "text": "Die Cape Canaveral Air Force Station nimmt mit dem Start einer „Bumper“-Rakete ihren Betrieb auf.",
+      "text_de": "Die Cape Canaveral Air Force Station nimmt mit dem Start einer „Bumper“-Rakete ihren Betrieb auf.",
+      "source_url": "https://wikipedia.org/wiki/Cape_Canaveral_Air_Force_Station"
+    }
+  ]
+}

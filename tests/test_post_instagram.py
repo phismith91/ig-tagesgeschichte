@@ -4,6 +4,14 @@ import post_instagram
 from post_instagram import post_to_instagram
 
 
+def _fake_get_response(*args, **kwargs):
+    """Gibt für jeden Container-Status-Check FINISHED zurück."""
+    response = MagicMock()
+    response.status_code = 200
+    response.json.return_value = {"status_code": "FINISHED"}
+    return response
+
+
 def test_load_env_var_reads_env_file(tmp_path, monkeypatch):
     env_file = tmp_path / ".env"
     env_file.write_text("IG_USER_ID=28194940543437064\nMETA_ACCESS_TOKEN=dummy-token\n")
@@ -31,8 +39,9 @@ def test_load_env_var_empty_value_returns_none(tmp_path, monkeypatch):
     assert post_instagram.load_env_var("IG_USER_ID") is None
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_to_instagram_two_step_flow(mock_post):
+def test_post_to_instagram_two_step_flow(mock_post, mock_get):
     # Schritt 1: /media -> creation_id, Schritt 2: /media_publish -> media_id
     mock_post.side_effect = [
         MagicMock(status_code=200, json=lambda: {"id": "creation-123"}),
@@ -61,8 +70,9 @@ def test_post_to_instagram_two_step_flow(mock_post):
     assert second_call.kwargs["data"]["access_token"] == "dummy-token"
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_to_instagram_raises_on_api_error(mock_post):
+def test_post_to_instagram_raises_on_api_error(mock_post, mock_get):
     mock_post.return_value = MagicMock(
         status_code=400,
         json=lambda: {"error": {"message": "Invalid token"}},
@@ -80,8 +90,9 @@ def test_post_to_instagram_raises_on_api_error(mock_post):
         assert "Invalid token" in str(e)
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_to_instagram_raises_on_publish_error(mock_post):
+def test_post_to_instagram_raises_on_publish_error(mock_post, mock_get):
     # Schritt 1 (/media) klappt, Schritt 2 (/media_publish) schlägt fehl.
     mock_post.side_effect = [
         MagicMock(status_code=200, json=lambda: {"id": "creation-123"}),
@@ -100,8 +111,9 @@ def test_post_to_instagram_raises_on_publish_error(mock_post):
         assert "Publish failed" in str(e)
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_to_instagram_raises_with_raw_text_on_non_json_error_body(mock_post):
+def test_post_to_instagram_raises_with_raw_text_on_non_json_error_body(mock_post, mock_get):
     # Manche Fehlerantworten (z.B. Gateway-Timeout, HTML-Error-Page) sind kein JSON.
     def _raise_value_error():
         raise ValueError("not JSON")
@@ -124,8 +136,9 @@ def test_post_to_instagram_raises_with_raw_text_on_non_json_error_body(mock_post
         assert "Bad Gateway" in str(e)
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_to_instagram_passes_timeout(mock_post):
+def test_post_to_instagram_passes_timeout(mock_post, mock_get):
     mock_post.side_effect = [
         MagicMock(status_code=200, json=lambda: {"id": "creation-123"}),
         MagicMock(status_code=200, json=lambda: {"id": "media-456"}),
@@ -145,8 +158,9 @@ def test_post_to_instagram_passes_timeout(mock_post):
 from post_instagram import post_carousel_to_instagram
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_carousel_with_multiple_slides(mock_post):
+def test_post_carousel_with_multiple_slides(mock_post, mock_get):
     # 3 Kind-Container, dann Carousel-Container, dann Publish
     mock_post.side_effect = [
         MagicMock(status_code=200, json=lambda: {"id": "child-1"}),
@@ -183,8 +197,9 @@ def test_post_carousel_with_multiple_slides(mock_post):
     assert publish_call.kwargs["data"]["creation_id"] == "carousel-container"
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_carousel_skips_failed_slide_but_continues(mock_post):
+def test_post_carousel_skips_failed_slide_but_continues(mock_post, mock_get):
     # Slide 2 schlägt fehl (Kind-Container-Erstellung), Rest läuft normal weiter.
     mock_post.side_effect = [
         MagicMock(status_code=200, json=lambda: {"id": "child-1"}),
@@ -206,8 +221,9 @@ def test_post_carousel_skips_failed_slide_but_continues(mock_post):
     assert carousel_call.kwargs["data"]["children"] == "child-1,child-3"
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_carousel_falls_back_to_single_image_when_only_one_slide_succeeds(mock_post):
+def test_post_carousel_falls_back_to_single_image_when_only_one_slide_succeeds(mock_post, mock_get):
     # 2 von 3 Kind-Containern schlagen fehl -> nur 1 Slide übrig -> normaler Einzelbild-Post
     # (NICHT der schon erstellte Kind-Container, da der ohne caption erstellt wurde).
     mock_post.side_effect = [
@@ -235,8 +251,9 @@ def test_post_carousel_falls_back_to_single_image_when_only_one_slide_succeeds(m
     assert "media_type" not in fallback_call.kwargs["data"]
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_carousel_fallback_uses_actual_survivor_not_first_url(mock_post):
+def test_post_carousel_fallback_uses_actual_survivor_not_first_url(mock_post, mock_get):
     # Slide 1 und 3 schlagen fehl, nur Slide 2 überlebt -> Fallback MUSS die URL von
     # Slide 2 benutzen, nicht image_urls[0] (Regressionstest für den Bug, bei dem
     # hartkodiert immer die erste URL gepostet wurde, egal welcher Slide überlebte).
@@ -263,8 +280,9 @@ def test_post_carousel_fallback_uses_actual_survivor_not_first_url(mock_post):
     assert fallback_call.kwargs["data"]["caption"] == "Testcaption"
 
 
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
 @patch("post_instagram.requests.post")
-def test_post_carousel_raises_when_all_slides_fail(mock_post):
+def test_post_carousel_raises_when_all_slides_fail(mock_post, mock_get):
     mock_post.side_effect = [
         MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
         MagicMock(status_code=400, json=lambda: {"error": {"message": "broken"}}),
