@@ -35,9 +35,15 @@ body{background:oklch(0.17 0.02 260);font-family:'Source Sans 3',sans-serif;}
         <p style="font:500 {{ text_size }}px/1.35 'Source Sans 3',sans-serif;margin:0;max-width:880px;text-wrap:pretty;">{{ fact_text }}</p>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid oklch(1 0 0/0.15);padding-top:28px;">
-        <div style="font:700 28px 'Space Grotesk',sans-serif;color:oklch(0.75 0.17 210);">heute.today</div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:12px;height:12px;border-radius:50%;background:oklch(0.75 0.17 210);"></div>
+          <div style="font:700 34px 'Space Grotesk',sans-serif;color:oklch(0.97 0.005 260);letter-spacing:-0.02em;">heute.today</div>
+        </div>
         {% if total and total > 1 %}<div style="font:500 24px 'Source Sans 3',sans-serif;color:oklch(0.97 0.005 260/0.6);">{{ index }} / {{ total }}</div>{% endif %}
       </div>
+      {% if total and index == total %}
+      <div style="margin-top:16px;font:600 26px 'Source Sans 3',sans-serif;color:oklch(0.75 0.17 210);text-align:right;">Folge @heute.today für tägliche Fakten</div>
+      {% endif %}
     </div>
   </div>
 </body>
