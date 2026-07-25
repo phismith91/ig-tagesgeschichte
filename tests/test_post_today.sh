@@ -21,6 +21,10 @@ cat > "$TMP/python3" <<'EOF'
 if [[ "$*" == *"post_state.is_posted"* ]]; then
   exit 1
 fi
+# post_instagram.py-Stub simuliert erfolgreichen Post.
+if [[ "$*" == *"post_instagram.py"* ]]; then
+  echo "gepostet: media-123"
+fi
 echo "python3 $*" >> "$PYTHON_CALLS_LOG"
 exit 0
 EOF
@@ -54,6 +58,11 @@ PYCALL="$(head -n1 "$PYTHON_CALLS_LOG")"
 if [[ "$PYCALL" != *post_instagram.py\ output/2099-01/15/caption.txt\ *2099-01/15/01.png*2099-01/15/02.png*2099-01/15/03.png ]]; then
   echo "FAIL: post_instagram.py wurde nicht mit caption zuerst + allen 3 URLs aufgerufen"
   echo "GOT: $PYCALL"
+  exit 1
+fi
+if ! grep -q "post_state.mark_posted" "$PYTHON_CALLS_LOG"; then
+  echo "FAIL: post_state.mark_posted wurde nicht aufgerufen"
+  cat "$PYTHON_CALLS_LOG"
   exit 1
 fi
 rm -rf "output/2099-01"
@@ -114,6 +123,10 @@ cat > "$TMP/python3" <<'EOF'
 #!/bin/bash
 if [[ "$*" == *"post_state.is_posted"* ]]; then
   exit 1
+fi
+# post_instagram.py-Stub simuliert erfolgreichen Post.
+if [[ "$*" == *"post_instagram.py"* ]]; then
+  echo "gepostet: media-123"
 fi
 echo "python3 $*" >> "$PYTHON_CALLS_LOG"
 exit 0
