@@ -1,4 +1,7 @@
+import time
 from unittest.mock import patch, MagicMock
+
+import requests
 
 import post_instagram
 from post_instagram import post_to_instagram
@@ -298,3 +301,49 @@ def test_post_carousel_raises_when_all_slides_fail(mock_post, mock_get):
         assert False, "sollte RuntimeError werfen"
     except RuntimeError as e:
         assert "kein Slide" in str(e) or "0 von" in str(e)
+
+
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
+@patch("post_instagram.requests.post")
+@patch("time.sleep")
+def test_post_to_instagram_retries_on_502_and_succeeds(mock_sleep, mock_post, mock_get):
+    mock_post.side_effect = [
+        MagicMock(status_code=502, json=lambda: {"error": {"message": "Bad Gateway"}}, text="Bad Gateway"),
+        MagicMock(status_code=200, json=lambda: {"id": "creation-123"}),
+        MagicMock(status_code=200, json=lambda: {"id": "media-456"}),
+    ]
+
+    media_id = post_to_instagram(
+        image_url="https://example.com/1.png",
+        caption="Testcaption",
+        ig_user_id="28194940543437064",
+        access_token="dummy-token",
+    )
+
+    assert media_id == "media-456"
+    assert mock_post.call_count == 3
+    assert mock_sleep.call_count == 1
+
+
+@patch("post_instagram.requests.get", side_effect=_fake_get_response)
+@patch("post_instagram.requests.post")
+@patch("time.sleep")
+def test_post_to_instagram_does_not_retry_401(mock_sleep, mock_post, mock_get):
+    mock_post.return_value = MagicMock(
+        status_code=401,
+        json=lambda: {"error": {"message": "Invalid token"}},
+    )
+
+    try:
+        post_to_instagram(
+            image_url="https://example.com/1.png",
+            caption="Testcaption",
+            ig_user_id="28194940543437064",
+            access_token="dummy-token",
+        )
+        assert False, "sollte RuntimeError werfen"
+    except RuntimeError as e:
+        assert "Invalid token" in str(e)
+
+    assert mock_post.call_count == 1
+    assert mock_sleep.call_count == 0
