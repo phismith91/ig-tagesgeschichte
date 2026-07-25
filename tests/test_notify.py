@@ -105,3 +105,9 @@ def test_notify_post_catches_smtp_exception():
     with patch("notify.send_email", side_effect=smtplib.SMTPException("boom")), patch("notify.load_smtp_config") as mock_load:
         mock_load.return_value = {"to": "to@example.com", "from": "from@example.com"}
         notify.notify_post_result("2026-07-25", success=True)
+
+
+def test_notify_post_catches_oserror():
+    with patch("notify.send_email", side_effect=OSError("dns failure")), patch("notify.load_smtp_config") as mock_load:
+        mock_load.return_value = {"to": "to@example.com", "from": "from@example.com"}
+        notify.notify_post_result("2026-07-25", success=True)

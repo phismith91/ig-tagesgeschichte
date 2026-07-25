@@ -82,5 +82,5 @@ def notify_post_result(date_str: str, success: bool, **kwargs) -> None:
 
     try:
         send_email(subject, body, config)
-    except smtplib.SMTPException:
+    except (smtplib.SMTPException, OSError):
         logger.exception("notify: E-Mail konnte nicht gesendet werden")
