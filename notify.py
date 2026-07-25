@@ -1,9 +1,12 @@
 """E-Mail-Benachrichtigungen für heute.today."""
+import logging
 import smtplib
 from email.message import EmailMessage
 from pathlib import Path
 
 from env import load_env_var
+
+logger = logging.getLogger(__name__)
 
 
 def load_smtp_config(env_path: str = ".env") -> dict | None:
@@ -17,14 +20,19 @@ def load_smtp_config(env_path: str = ".env") -> dict | None:
     user = load_env_var("SMTP_USER", env_path)
     password = load_env_var("SMTP_PASSWORD", env_path)
     from_addr = load_env_var("SMTP_FROM", env_path)
-    to_addr = load_env_var("NOTIFY_EMAIL_TO", env_path)
+    to_addr = load_env_var("NOTIFY_EMAIL_TO", env_path) or "philippdschmidt@outlook.com"
 
-    if not all([host, port, user, password, from_addr, to_addr]):
+    if not all([host, port, user, password, from_addr]):
+        return None
+
+    try:
+        port_int = int(port)
+    except ValueError:
         return None
 
     return {
         "host": host,
-        "port": int(port),
+        "port": port_int,
         "user": user,
         "password": password,
         "from": from_addr,
@@ -40,18 +48,17 @@ def send_email(subject: str, body: str, config: dict) -> None:
     msg["To"] = config["to"]
     msg.set_content(body)
 
-    server = smtplib.SMTP(config["host"], config["port"])
-    server.starttls()
-    server.login(config["user"], config["password"])
-    server.send_message(msg)
-    server.quit()
+    with smtplib.SMTP(config["host"], config["port"]) as server:
+        server.starttls()
+        server.login(config["user"], config["password"])
+        server.send_message(msg)
 
 
 def notify_post_result(date_str: str, success: bool, **kwargs) -> None:
     """Benachrichtigt über Posting-Erfolg oder -Fehler."""
     config = load_smtp_config()
     if not config:
-        print("notify: SMTP nicht konfiguriert — überspringe E-Mail")
+        logger.warning("notify: SMTP nicht konfiguriert — überspringe E-Mail")
         return
 
     if success:
@@ -73,4 +80,7 @@ def notify_post_result(date_str: str, success: bool, **kwargs) -> None:
             f"Fehler: {error}\n"
         )
 
-    send_email(subject, body, config=config)
+    try:
+        send_email(subject, body, config)
+    except smtplib.SMTPException:
+        logger.exception("notify: E-Mail konnte nicht gesendet werden")
