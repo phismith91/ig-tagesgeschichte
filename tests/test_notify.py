@@ -1,0 +1,64 @@
+from unittest.mock import patch, MagicMock
+
+import notify
+
+
+def test_load_smtp_config_reads_env(tmp_path, monkeypatch):
+    env_file = tmp_path / ".env"
+    env_file.write_text(
+        "SMTP_HOST=smtp.example.com\n"
+        "SMTP_PORT=587\n"
+        "SMTP_USER=user@example.com\n"
+        "SMTP_PASSWORD=secret\n"
+        "SMTP_FROM=from@example.com\n"
+        "NOTIFY_EMAIL_TO=to@example.com\n"
+    )
+    monkeypatch.chdir(tmp_path)
+    config = notify.load_smtp_config()
+    assert config["host"] == "smtp.example.com"
+    assert config["port"] == 587
+    assert config["to"] == "to@example.com"
+
+
+def test_load_smtp_config_returns_none_when_missing():
+    assert notify.load_smtp_config("nonexistent.env") is None
+
+
+@patch("notify.smtplib.SMTP")
+def test_send_email_sends_correctly(mock_smtp):
+    config = {
+        "host": "smtp.example.com",
+        "port": 587,
+        "user": "user@example.com",
+        "password": "secret",
+        "from": "from@example.com",
+        "to": "to@example.com",
+    }
+    notify.send_email("Test Subject", "Test Body", config)
+
+    mock_smtp.assert_called_once_with("smtp.example.com", 587)
+    server = mock_smtp.return_value
+    server.starttls.assert_called_once()
+    server.login.assert_called_once_with("user@example.com", "secret")
+    server.send_message.assert_called_once()
+    server.quit.assert_called_once()
+
+
+def test_notify_post_success_builds_email():
+    with patch("notify.send_email") as mock_send, patch("notify.load_smtp_config") as mock_load:
+        mock_load.return_value = {"to": "to@example.com", "from": "from@example.com"}
+        notify.notify_post_result("2026-07-25", success=True, media_id="media-123", image_count=5)
+        mock_send.assert_called_once()
+        subject, body = mock_send.call_args[0]
+        assert "erfolgreich" in subject.lower()
+        assert "media-123" in body
+
+
+def test_notify_post_failure_builds_email():
+    with patch("notify.send_email") as mock_send, patch("notify.load_smtp_config") as mock_load:
+        mock_load.return_value = {"to": "to@example.com", "from": "from@example.com"}
+        notify.notify_post_result("2026-07-25", success=False, error="Token invalid", step="media_publish")
+        mock_send.assert_called_once()
+        subject, body = mock_send.call_args[0]
+        assert "fehlgeschlagen" in subject.lower()
+        assert "Token invalid" in body
