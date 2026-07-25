@@ -35,7 +35,8 @@ def build_caption(data: dict) -> str:
 
     for fact in data["facts"]:
         year_label = f"{fact['year']}: " if fact.get("year") else ""
-        lines.append(f"• {year_label}{fact['text']}")
+        text = fact.get("text_de") or fact["text"]
+        lines.append(f"• {year_label}{text}")
     lines += ["", "#aufdenTag #geschichte #onthisday #wissen"]
     return "\n".join(lines)
 

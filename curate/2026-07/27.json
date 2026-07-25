@@ -2,86 +2,76 @@
   "date": "2026-07-27",
   "facts": [
     {
-      "id": "ml-0",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1054,
-      "text": "Siward, Earl of Northumbria, invades Scotland and defeats Macbeth, King of Scotland, somewhere north of the Firth of Forth. This is known as the Battle of Dunsinane.",
-      "text_de": "Siward, Graf von Northumbria, fällt in Schottland ein und besiegt Macbeth, König von Schottland, irgendwo nördlich des Firth of Forth. Diese Schlacht ist als Schlacht von Dunsinane bekannt.",
-      "source_url": "https://wikipedia.org/wiki/Siward,_Earl_of_Northumbria"
-    },
-    {
       "id": "ml-1",
       "source": "muffinlabs",
       "lang": "en",
       "year": 1189,
-      "text": "Friedrich Barbarossa arrives at Niš, the capital of Serbian King Stefan Nemanja, during the Third Crusade.",
+      "text": "Friedrich Barbarossa erreicht während des Dritten Kreuzzugs Niš, die Hauptstadt des serbischen Königs Stefan Nemanja.",
       "text_de": "Friedrich Barbarossa erreicht während des Dritten Kreuzzugs Niš, die Hauptstadt des serbischen Königs Stefan Nemanja.",
       "source_url": "https://wikipedia.org/wiki/Friedrich_Barbarossa"
     },
     {
-      "id": "ml-2",
+      "id": "ml-45",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1202,
-      "text": "Georgian-Seljuk wars: At the Battle of Basian the Kingdom of Georgia defeats the Sultanate of Rum.",
-      "text_de": "Georgisch-seldschukische Kriege: In der Schlacht von Basian besiegt das Königreich Georgien das Sultanat von Rum.",
-      "source_url": "https://wikipedia.org/wiki/Georgian%E2%80%93Seljuk_wars"
+      "year": 2002,
+      "text": "Flugshow-Katastrophe in der Ukraine: Ein Kampfflugzeug vom Typ Suchoi Su-27 stürzt während einer Flugshow in Lemberg (Ukraine) ab. Dabei kommen 77 Menschen ums Leben und mehr als 500 weitere werden verletzt – damit ist dies die tödlichste Flugshow-Katastrophe der Geschichte.",
+      "text_de": "Flugshow-Katastrophe in der Ukraine: Ein Kampfflugzeug vom Typ Suchoi Su-27 stürzt während einer Flugshow in Lemberg (Ukraine) ab. Dabei kommen 77 Menschen ums Leben und mehr als 500 weitere werden verletzt – damit ist dies die tödlichste Flugshow-Katastrophe der Geschichte.",
+      "source_url": "https://wikipedia.org/wiki/Ukraine_airshow_disaster"
     },
     {
-      "id": "ml-3",
+      "id": "ml-35",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1214,
-      "text": "Battle of Bouvines: Philip II of France decisively defeats Imperial, English and Flemish armies, effectively ending John of England's Angevin Empire.",
-      "text_de": "Schlacht bei Bouvines: Philipp II. von Frankreich besiegt die kaiserlichen, englischen und flämischen Heere entscheidend und beendet damit faktisch das angevinische Reich unter Johann von England.",
-      "source_url": "https://wikipedia.org/wiki/Battle_of_Bouvines"
+      "year": 1964,
+      "text": "Vietnamkrieg: Weitere 5.000 amerikanische Militärberater werden nach Südvietnam entsandt, wodurch sich die Gesamtzahl der US-Streitkräfte in Vietnam auf 21.000 erhöht.",
+      "text_de": "Vietnamkrieg: Weitere 5.000 amerikanische Militärberater werden nach Südvietnam entsandt, wodurch sich die Gesamtzahl der US-Streitkräfte in Vietnam auf 21.000 erhöht.",
+      "source_url": "https://wikipedia.org/wiki/Vietnam_War"
     },
     {
-      "id": "ml-4",
+      "id": "ml-24",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1299,
-      "text": "According to Edward Gibbon, Osman I invades the territory of Nicomedia for the first time, usually considered to be the founding day of the Ottoman state.",
-      "text_de": "Laut Edward Gibbon dringt Osman I. zum ersten Mal in das Gebiet von Nikomedia ein; dieser Tag wird gemeinhin als Gründungstag des osmanischen Staates angesehen.",
-      "source_url": "https://wikipedia.org/wiki/Edward_Gibbon"
+      "year": 1921,
+      "text": "Forscher der Universität Toronto unter der Leitung des Biochemikers Frederick Banting weisen nach, dass das Hormon Insulin den Blutzuckerspiegel reguliert.",
+      "text_de": "Forscher der Universität Toronto unter der Leitung des Biochemikers Frederick Banting weisen nach, dass das Hormon Insulin den Blutzuckerspiegel reguliert.",
+      "source_url": "https://wikipedia.org/wiki/University_of_Toronto"
     },
     {
-      "id": "ml-5",
+      "id": "ml-20",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1302,
-      "text": "Battle of Bapheus: Decisive Ottoman victory over the Byzantines opening up Bithynia for Turkish conquest.",
-      "text_de": "Schlacht bei Bapheus: Entscheidender Sieg der Osmanen über die Byzantiner, der Bithynien für die türkische Eroberung öffnete.",
-      "source_url": "https://wikipedia.org/wiki/Battle_of_Bapheus"
+      "year": 1890,
+      "text": "Vincent van Gogh erschießt sich und stirbt zwei Tage später.",
+      "text_de": "Vincent van Gogh erschießt sich und stirbt zwei Tage später.",
+      "source_url": "https://wikipedia.org/wiki/Vincent_van_Gogh"
     },
     {
-      "id": "ml-6",
+      "id": "ml-18",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1549,
-      "text": "The Jesuit priest Francis Xavier's ship reaches Japan.",
-      "text_de": "Das Schiff des Jesuitenpriesters Franz Xaver erreicht Japan.",
-      "source_url": "https://wikipedia.org/wiki/Jesuit"
+      "year": 1866,
+      "text": "Das erste permanente transatlantische Telegrafenkabel, das von Valentia Island in Irland bis nach Heart’s Content in Neufundland verläuft, wird erfolgreich fertiggestellt.",
+      "text_de": "Das erste permanente transatlantische Telegrafenkabel, das von Valentia Island in Irland bis nach Heart’s Content in Neufundland verläuft, wird erfolgreich fertiggestellt.",
+      "source_url": "https://wikipedia.org/wiki/Transatlantic_telegraph_cable"
     },
     {
-      "id": "ml-7",
+      "id": "ml-25",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1663,
-      "text": "The English Parliament passes the second Navigation Act requiring that all goods bound for the American colonies have to be sent in English ships from English ports. After the Acts of Union 1707, Scotland would be included in the Act.",
-      "text_de": "Das englische Parlament verabschiedet das zweite Schifffahrtsgesetz, wonach alle für die amerikanischen Kolonien bestimmten Waren auf englischen Schiffen von englischen Häfen aus verschifft werden müssen. Nach den Unionsakten von 1707 wurde auch Schottland in das Gesetz einbezogen.",
-      "source_url": "https://wikipedia.org/wiki/English_Parliament"
+      "year": 1929,
+      "text": "Die Genfer Konvention von 1929 über die Behandlung von Kriegsgefangenen wird von 53 Staaten unterzeichnet.",
+      "text_de": "Die Genfer Konvention von 1929 über die Behandlung von Kriegsgefangenen wird von 53 Staaten unterzeichnet.",
+      "source_url": "https://wikipedia.org/wiki/Geneva_Convention_of_1929"
     },
     {
-      "id": "ml-8",
+      "id": "ml-29",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1689,
-      "text": "Glorious Revolution: The Battle of Killiecrankie is a victory for the Jacobites.",
-      "text_de": "„Glorious Revolution: Die Schlacht von Killiecrankie“ endet mit einem Sieg der Jakobiten.",
-      "source_url": "https://wikipedia.org/wiki/Glorious_Revolution"
+      "year": 1949,
+      "text": "Erstflug der de Havilland Comet, des ersten Düsenverkehrsflugzeugs.",
+      "text_de": "Erstflug der de Havilland Comet, des ersten Düsenverkehrsflugzeugs.",
+      "source_url": "https://wikipedia.org/wiki/De_Havilland_Comet"
     }
-  ],
-  "caption_intro": "Vom Jahr 1054 bis 1689: Dieser Tag hat Geschichte geschrieben — 9 Ereignisse, die man kennen sollte."
+  ]
 }

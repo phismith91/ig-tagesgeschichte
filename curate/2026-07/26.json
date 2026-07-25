@@ -2,86 +2,67 @@
   "date": "2026-07-26",
   "facts": [
     {
-      "id": "ml-0",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 657,
-      "text": "First Fitna: In the Battle of Siffin, troops led by Ali ibn Abu Talib clash with those led by Muawiyah I.",
-      "text_de": "Erste Fitna: In der Schlacht von Siffin treffen die Truppen unter dem Kommando von Ali ibn Abu Talib auf die Truppen unter dem Kommando von Muawiyah I.",
-      "source_url": "https://wikipedia.org/wiki/First_Fitna"
+      "id": "wp-0",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 2005,
+      "text": "Erstmals startet zweieinhalb Jahre nach dem Columbia-Unglück mit der Mission STS-114 wieder ein bemanntes Space Shuttle in den Weltraum.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Columbia_(Raumf%C3%A4hre)"
     },
     {
-      "id": "ml-1",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 811,
-      "text": "Battle of Pliska: Byzantine Emperor Nikephoros I is killed and his heir Staurakios is seriously wounded.",
-      "text_de": "Schlacht bei Pliska: Der byzantinische Kaiser Nikephoros I. kommt ums Leben, sein Thronfolger Staurakios wird schwer verwundet.",
-      "source_url": "https://wikipedia.org/wiki/Battle_of_Pliska"
+      "id": "wp-1",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1965,
+      "text": "Die Malediven, seit dem 18. Jahrhundert unter britischer Fremdherrschaft, erlangen die Unabhängigkeit.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Malediven"
     },
     {
-      "id": "ml-2",
+      "id": "ml-72",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 920,
-      "text": "Rout of an alliance of Christian troops from Navarre and Léon against the Muslims at the Battle of Valdejunquera.",
-      "text_de": "Niederlage einer Allianz christlicher Truppen aus Navarra und León gegen die Muslime in der Schlacht von Valdejunquera.",
-      "source_url": "https://wikipedia.org/wiki/Navarre"
+      "year": 2016,
+      "text": "Die „Solar Impulse 2“ ist das erste solarbetriebene Flugzeug, das die Erde umrundet hat.",
+      "text_de": "Die „Solar Impulse 2“ ist das erste solarbetriebene Flugzeug, das die Erde umrundet hat.",
+      "source_url": "https://wikipedia.org/wiki/Solar_Impulse_2"
     },
     {
-      "id": "ml-3",
+      "id": "ml-66",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1184,
-      "text": "Erfurt latrine disaster: At a Hoftag, a meeting with local notables, organized by Henry VI, the building collapses and many of the nobles in attendance drown in the sewage pits below.",
-      "text_de": "Die Latrinenkatastrophe von Erfurt: Bei einem von Heinrich VI. organisierten Hoftag, einem Treffen mit lokalen Würdenträgern, stürzt das Gebäude ein, und viele der anwesenden Adligen ertrinken in den darunter liegenden Abwassergruben.",
-      "source_url": "https://wikipedia.org/wiki/Erfurt_latrine_disaster"
+      "year": 2005,
+      "text": "In Mumbai, Indien, fallen innerhalb von 24 Stunden 99,5 cm Regen (39,17 Zoll), was zu Überschwemmungen führt, bei denen über 5.000 Menschen ums Leben kommen.",
+      "text_de": "In Mumbai, Indien, fallen innerhalb von 24 Stunden 99,5 cm Regen (39,17 Zoll), was zu Überschwemmungen führt, bei denen über 5.000 Menschen ums Leben kommen.",
+      "source_url": "https://wikipedia.org/wiki/Mumbai"
     },
     {
-      "id": "ml-4",
+      "id": "ml-62",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1309,
-      "text": "Henry VII is recognized King of the Romans (Holy Roman Emperor) by Pope Clement V.",
-      "text_de": "Heinrich VII. wird von Papst Clemens V. als König der Römer (Kaiser des Heiligen Römischen Reiches) anerkannt.",
-      "source_url": "https://wikipedia.org/wiki/Henry_VII,_Holy_Roman_Emperor"
+      "year": 1990,
+      "text": "Das Gesetz zur Gleichstellung von Menschen mit Behinderungen (Americans with Disabilities Act) von 1990 wird von Präsident George H. W. Bush unterzeichnet.",
+      "text_de": "Das Gesetz zur Gleichstellung von Menschen mit Behinderungen (Americans with Disabilities Act) von 1990 wird von Präsident George H. W. Bush unterzeichnet.",
+      "source_url": "https://wikipedia.org/wiki/Americans_with_Disabilities_Act_of_1990"
     },
     {
-      "id": "ml-5",
+      "id": "ml-58",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1509,
-      "text": "Krishnadevaraya ascends to the throne as Emperor of Vijayanagara, marking the beginning of the regeneration of the Vijayanagara Empire.",
-      "text_de": "Krishnadevaraya besteigt den Thron als Kaiser von Vijayanagara und läutet damit den Beginn des Wiederaufschwungs des Vijayanagara-Reiches ein.",
-      "source_url": "https://wikipedia.org/wiki/Krishnadevaraya"
+      "year": 1971,
+      "text": "Apollo-Programm: Start von Apollo 15 im Rahmen der ersten Apollo-„J-Mission“ und erster Einsatz eines Mondfahrzeugs.",
+      "text_de": "Apollo-Programm: Start von Apollo 15 im Rahmen der ersten Apollo-„J-Mission“ und erster Einsatz eines Mondfahrzeugs.",
+      "source_url": "https://wikipedia.org/wiki/Apollo_program"
     },
     {
-      "id": "ml-6",
+      "id": "ml-33",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1529,
-      "text": "Francisco Pizarro González, Spanish conquistador, is appointed governor of Peru.",
-      "text_de": "Francisco Pizarro González, ein spanischer Konquistador, wird zum Gouverneur von Peru ernannt.",
-      "source_url": "https://wikipedia.org/wiki/Francisco_Pizarro_Gonz%C3%A1lez"
-    },
-    {
-      "id": "ml-7",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1579,
-      "text": "Francis Drake, the English explorer, discovers a \"fair and good\" bay on the coast of the Pacific Northwest (probably Oregon or Washington).",
-      "text_de": "Der englische Entdecker Francis Drake entdeckt eine „schöne und gute“ Bucht an der Küste des pazifischen Nordwestens (vermutlich in Oregon oder Washington).",
-      "source_url": "https://wikipedia.org/wiki/Francis_Drake"
-    },
-    {
-      "id": "ml-8",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1581,
-      "text": "Plakkaat van Verlatinghe (Act of Abjuration): The northern Low Countries declare their independence from the Spanish king, Philip II.",
-      "text_de": "Plakkaat van Verlatinghe (Abtretungsurkunde): Die nördlichen Niederlande erklären ihre Unabhängigkeit vom spanischen König Philipp II.",
-      "source_url": "https://wikipedia.org/wiki/Act_of_Abjuration"
+      "year": 1936,
+      "text": "Spanischer Bürgerkrieg: Deutschland und Italien beschließen, zur Unterstützung von Francisco Franco und der nationalistischen Seite in den Krieg einzugreifen.",
+      "text_de": "Spanischer Bürgerkrieg: Deutschland und Italien beschließen, zur Unterstützung von Francisco Franco und der nationalistischen Seite in den Krieg einzugreifen.",
+      "source_url": "https://wikipedia.org/wiki/Spanish_Civil_War"
     }
-  ],
-  "caption_intro": "Vom Jahr 657 bis 1581: Dieser Tag hat Geschichte geschrieben — 9 Ereignisse, die man kennen sollte."
+  ]
 }

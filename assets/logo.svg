@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-label="heute.today logo">
+  <defs>
+    <!-- dunkler Hintergrund wie die Posts -->
+    <radialGradient id="bg-glow" cx="85%" cy="15%" r="55%">
+      <stop offset="0%" stop-color="#1a3a45" stop-opacity="0.7"/>
+      <stop offset="55%" stop-color="#0b1220" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0b1220" stop-opacity="1"/>
+    </radialGradient>
+    <!-- türkiser Akzentpunkt -->
+    <radialGradient id="dot-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4eeaff"/>
+      <stop offset="100%" stop-color="#2ecde0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Hintergrund -->
+  <rect width="1080" height="1080" fill="#0b1220"/>
+  <rect width="1080" height="1080" fill="url(#bg-glow)"/>
+
+  <!-- feiner Rahmen / Maske -->
+  <circle cx="540" cy="540" r="460" fill="none" stroke="#1a2a3a" stroke-width="2"/>
+
+  <!-- Monogramm "h." -->
+  <g transform="translate(540, 540)">
+    <!-- das "h" -->
+    <text x="-170" y="85"
+          font-family="'Space Grotesk', 'Helvetica Neue', Arial, sans-serif"
+          font-size="420"
+          font-weight="700"
+          fill="#f8fafc"
+          letter-spacing="-0.04em">h</text>
+    <!-- der Punkt -->
+    <circle cx="155" cy="85" r="55" fill="url(#dot-glow)"/>
+  </g>
+
+  <!-- optionales Micro-Wordmark unten (eher dezent) -->
+  <text x="540" y="960"
+        font-family="'Source Sans 3', 'Helvetica Neue', Arial, sans-serif"
+        font-size="60"
+        font-weight="600"
+        fill="#f8fafc"
+        opacity="0.55"
+        text-anchor="middle"
+        letter-spacing="0.18em">HEUTE.TODAY</text>
+</svg>

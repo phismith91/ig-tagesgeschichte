@@ -1,0 +1,86 @@
+{
+  "date": "2026-07-30",
+  "facts": [
+    {
+      "id": "ml-0",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 762,
+      "text": "Bagdad wird gegründet.",
+      "text_de": "Bagdad wird gegründet.",
+      "source_url": "https://wikipedia.org/wiki/Baghdad"
+    },
+    {
+      "id": "wp-3",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1775,
+      "text": "James Cook kehrt nach drei Jahren und 18 Tagen von seiner zweiten Südseereise nach Großbritannien zurück.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/James_Cook"
+    },
+    {
+      "id": "ml-21",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1912,
+      "text": "Japans Kaiser Meiji stirbt und wird von seinem Sohn Yoshihito beerbt, der nun als Kaiser Taishō bekannt ist.",
+      "text_de": "Japans Kaiser Meiji stirbt und wird von seinem Sohn Yoshihito beerbt, der nun als Kaiser Taishō bekannt ist.",
+      "source_url": "https://wikipedia.org/wiki/Emperor_Meiji"
+    },
+    {
+      "id": "ml-23",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1930,
+      "text": "In Montevideo gewinnt Uruguay die erste FIFA-Weltmeisterschaft durch einen Sieg über Argentinien.",
+      "text_de": "In Montevideo gewinnt Uruguay die erste FIFA-Weltmeisterschaft durch einen Sieg über Argentinien.",
+      "source_url": "https://wikipedia.org/wiki/Montevideo"
+    },
+    {
+      "id": "ml-28",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1965,
+      "text": "US-Präsident Lyndon B. Johnson unterzeichnet das Sozialversicherungsgesetz von 1965 und führt damit Medicare und Medicaid ein.",
+      "text_de": "US-Präsident Lyndon B. Johnson unterzeichnet das Sozialversicherungsgesetz von 1965 und führt damit Medicare und Medicaid ein.",
+      "source_url": "https://wikipedia.org/wiki/Lyndon_B._Johnson"
+    },
+    {
+      "id": "ml-29",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1966,
+      "text": "England besiegt die Bundesrepublik Deutschland und gewinnt die FIFA-Weltmeisterschaft im Wembley-Stadion mit 4:2 nach Verlängerung.",
+      "text_de": "England besiegt die Bundesrepublik Deutschland und gewinnt die FIFA-Weltmeisterschaft im Wembley-Stadion mit 4:2 nach Verlängerung.",
+      "source_url": "https://wikipedia.org/wiki/England_national_football_team"
+    },
+    {
+      "id": "ml-31",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1971,
+      "text": "Apollo-Programm: Bei der Mission Apollo 15 landen David Scott und James Irwin in der Apollo-Mondlandefähre „Falcon“ mit dem ersten Mondrover auf dem Mond.",
+      "text_de": "Apollo-Programm: Bei der Mission Apollo 15 landen David Scott und James Irwin in der Apollo-Mondlandefähre „Falcon“ mit dem ersten Mondrover auf dem Mond.",
+      "source_url": "https://wikipedia.org/wiki/Apollo_program"
+    },
+    {
+      "id": "ml-40",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 2003,
+      "text": "In Mexiko rollt der letzte Volkswagen Käfer im „alten Stil“ vom Band.",
+      "text_de": "In Mexiko rollt der letzte Volkswagen Käfer im „alten Stil“ vom Band.",
+      "source_url": "https://wikipedia.org/wiki/Volkswagen_Beetle"
+    },
+    {
+      "id": "ml-35",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1978,
+      "text": "Die 730: Die Präfektur Okinawa stellt den Verkehr von der rechten auf die linke Straßenseite um.",
+      "text_de": "Die 730: Die Präfektur Okinawa stellt den Verkehr von der rechten auf die linke Straßenseite um.",
+      "source_url": "https://wikipedia.org/wiki/730_(transport)"
+    }
+  ]
+}

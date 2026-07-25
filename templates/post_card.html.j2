@@ -14,7 +14,7 @@ body{background:oklch(0.17 0.02 260);font-family:'Source Sans 3',sans-serif;}
 </style>
 </head>
 <body>
-{% set raw_text = fact.text %}
+{% set raw_text = fact.text_de if fact.text_de else fact.text %}
 {% set len = raw_text|length %}
 {% if len > 260 %}{% set fact_text = raw_text[:257] ~ '…' %}{% else %}{% set fact_text = raw_text %}{% endif %}
 {% if len <= 70 %}{% set text_size = 64 %}

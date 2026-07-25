@@ -1,0 +1,77 @@
+{
+  "date": "2026-07-28",
+  "facts": [
+    {
+      "id": "wp-0",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1975,
+      "text": "Einer polnischen 5er-Seilschaft gelingt die Erstbesteigung des 8011 m hohen Broad Peak Central; beim Abstieg verunglücken drei der Bergsteiger tödlich.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Broad_Peak_Central"
+    },
+    {
+      "id": "wp-1",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1925,
+      "text": "Durch Zusammenschluss des Funkkartells mit dem Funktechnischen Verein entsteht der Deutsche Funktechnische Verband der Funkamateure.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Deutsches_Funk-Kartell"
+    },
+    {
+      "id": "wp-2",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1875,
+      "text": "Bei der Niederschlagung eines Arbeiterstreiks während des Baus des Gotthardtunnels werden in Göschenen vier italienische Tunnelarbeiter erschossen.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Unruhen_in_G%C3%B6schenen_1875"
+    },
+    {
+      "id": "wp-4",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1750,
+      "text": "In Leipzig stirbt der Komponist Johann Sebastian Bach.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Johann_Sebastian_Bach"
+    },
+    {
+      "id": "ml-25",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1942,
+      "text": "Zweiter Weltkrieg: Der sowjetische Staatschef Josef Stalin erlässt den Befehl Nr. 227. Als Reaktion auf die besorgniserregenden deutschen Vorstöße sollen alle, die sich ohne Befehl zurückziehen oder auf andere Weise ihre Stellungen verlassen, vor ein Militärgericht gestellt werden; die Strafen reichen von Dienst in einem „Schtrafbat“-Bataillon über Haft im Gulag bis hin zur Hinrichtung.",
+      "text_de": "Zweiter Weltkrieg: Der sowjetische Staatschef Josef Stalin erlässt den Befehl Nr. 227. Als Reaktion auf die besorgniserregenden deutschen Vorstöße sollen alle, die sich ohne Befehl zurückziehen oder auf andere Weise ihre Stellungen verlassen, vor ein Militärgericht gestellt werden; die Strafen reichen von Dienst in einem „Schtrafbat“-Bataillon über Haft im Gulag bis hin zur Hinrichtung.",
+      "source_url": "https://wikipedia.org/wiki/World_War_II"
+    },
+    {
+      "id": "ml-29",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1960,
+      "text": "Das deutsche Volkswagen-Gesetz tritt in Kraft.",
+      "text_de": "Das deutsche Volkswagen-Gesetz tritt in Kraft.",
+      "source_url": "https://wikipedia.org/wiki/Volkswagen_Act"
+    },
+    {
+      "id": "ml-44",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 2018,
+      "text": "Die Australierin Wendy Tuck ist die erste Skipperin, die das Clipper Round the World Yacht Race gewonnen hat.",
+      "text_de": "Die Australierin Wendy Tuck ist die erste Skipperin, die das Clipper Round the World Yacht Race gewonnen hat.",
+      "source_url": "https://wikipedia.org/wiki/Wendy_Tuck"
+    },
+    {
+      "id": "ml-38",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 2002,
+      "text": "Neun Bergleute, die in der überfluteten Quecreek-Mine im Somerset County, Pennsylvania, eingeschlossen waren, werden nach 77 Stunden unter Tage gerettet.",
+      "text_de": "Neun Bergleute, die in der überfluteten Quecreek-Mine im Somerset County, Pennsylvania, eingeschlossen waren, werden nach 77 Stunden unter Tage gerettet.",
+      "source_url": "https://wikipedia.org/wiki/Coal_mining"
+    }
+  ]
+}
