@@ -19,10 +19,10 @@ Datum, als Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
    ```
    python3 curate_server.py
    ```
-   `http://localhost:8420` öffnen, Kandidaten anklicken (Reihenfolge der
-   Klicks = spätere Slide-Reihenfolge, max. 9 pro Tag), „Speichern & weiter"
-   springt automatisch zum nächsten unkuratierten Tag. Schreibt
-   `curate/2026-08/01.json` … `31.json`.
+   `http://localhost:8420` öffnen, Kandidaten anklicken (max. 9 pro Tag),
+   „Speichern & weiter" springt automatisch zum nächsten unkuratierten Tag.
+   Die ausgewählten Fakten werden automatisch aufsteigend nach Jahr sortiert
+   gespeichert. Schreibt `curate/2026-08/01.json` … `31.json`.
 
 3. **Rendern**: erzeugt die fertigen Bilder + Captions (Jinja2-Template + Playwright-
    Screenshot, ein Bild pro kuratiertem Fakt)
@@ -78,12 +78,32 @@ selbst ist die Freigabe.
 prüfen, dass Push aus der `--user`-Session heraus ohne Passphrase-Eingabe klappt (SSH-Agent
 erreichbar bzw. Deploy-Key ohne Passphrase), sonst scheitert der Timer täglich still im Log.
 
+### Robustheit (optional)
+
+Seit dem Robustheit-Update:
+
+- `post_today.sh` merkt sich erfolgreiche Posts in `state/posted/YYYY-MM-DD.json`
+  (lokal, nicht im Git) und postet denselben Tag nie doppelt.
+- `post_instagram.py` wiederholt temporäre API-Fehler (HTTP 5xx, Netzwerkfehler)
+  bis zu 3 Mal mit exponentiellem Backoff.
+- Bei Erfolg oder Fehler wird eine E-Mail an `philippdschmidt@outlook.com` geschickt,
+  sofern SMTP in `.env` konfiguriert ist (siehe `.env.example`).
+- `health_check.py` prüft täglich um 02:00 Uhr, ob Kandidaten, Kuratierung und alle
+  Timer in Ordnung sind, und verschickt bei Problemen eine E-Mail.
+
+Aktivieren:
+```bash
+systemctl --user enable --now ig-health.timer
+```
+
 Testen / nachschauen:
 ```bash
 systemctl --user start ig-fetch.service      # manuell antriggern
 journalctl --user -u ig-fetch -f             # Log verfolgen
 systemctl --user start ig-post.service       # Posting manuell antriggern
 journalctl --user -u ig-post -f              # Log verfolgen
+systemctl --user start ig-health.service   # Health-Check manuell antriggern
+journalctl --user -u ig-health -f            # Health-Log verfolgen
 systemctl --user list-timers                 # Timer-Übersicht
 ```
 
