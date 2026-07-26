@@ -101,6 +101,25 @@ def test_notify_post_logs_warning_when_config_missing(caplog):
     assert "SMTP nicht konfiguriert" in caplog.text
 
 
+@patch("notify.smtplib.SMTP_SSL")
+def test_send_email_uses_ssl_on_port_465(mock_smtp_ssl):
+    config = {
+        "host": "mail.your-server.de",
+        "port": 465,
+        "user": "software@withphil.de",
+        "password": "secret",
+        "from": "software@withphil.de",
+        "to": "to@example.com",
+    }
+    notify.send_email("Test Subject", "Test Body", config)
+
+    mock_smtp_ssl.assert_called_once_with("mail.your-server.de", 465)
+    server = mock_smtp_ssl.return_value.__enter__.return_value
+    server.login.assert_called_once_with("software@withphil.de", "secret")
+    server.send_message.assert_called_once()
+    server.starttls.assert_not_called()
+
+
 def test_notify_post_catches_smtp_exception():
     with patch("notify.send_email", side_effect=smtplib.SMTPException("boom")), patch("notify.load_smtp_config") as mock_load:
         mock_load.return_value = {"to": "to@example.com", "from": "from@example.com"}

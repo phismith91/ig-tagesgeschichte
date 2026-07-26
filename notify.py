@@ -41,17 +41,23 @@ def load_smtp_config(env_path: str = ".env") -> dict | None:
 
 
 def send_email(subject: str, body: str, config: dict) -> None:
-    """Sendet eine E-Mail über SMTP."""
+    """Sendet eine E-Mail über SMTP (STARTTLS oder SSL)."""
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = config["from"]
     msg["To"] = config["to"]
     msg.set_content(body)
 
-    with smtplib.SMTP(config["host"], config["port"]) as server:
-        server.starttls()
-        server.login(config["user"], config["password"])
-        server.send_message(msg)
+    # Port 465 erwartet SSL/TLS sofort (z. B. Hetzner), Port 587 STARTTLS.
+    if config["port"] == 465:
+        with smtplib.SMTP_SSL(config["host"], config["port"]) as server:
+            server.login(config["user"], config["password"])
+            server.send_message(msg)
+    else:
+        with smtplib.SMTP(config["host"], config["port"]) as server:
+            server.starttls()
+            server.login(config["user"], config["password"])
+            server.send_message(msg)
 
 
 def notify_post_result(date_str: str, success: bool, **kwargs) -> None:
