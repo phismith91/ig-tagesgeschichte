@@ -2,22 +2,58 @@
   "date": "2026-07-25",
   "facts": [
     {
-      "id": "ml-0",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 306,
-      "text": "Constantine I is proclaimed Roman emperor by his troops.",
-      "text_de": "Konstantin I. wird von seinen Truppen zum römischen Kaiser ausgerufen.",
-      "source_url": "https://wikipedia.org/wiki/Constantine_the_Great"
+      "id": "wp-3",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1195,
+      "text": "Herrad von Landsberg (Bild), Äbtissin des elsässischen Klosters Hohenburg und Autorin der Enzyklopädie Hortus Deliciarum, stirbt.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Herrad_von_Landsberg"
     },
     {
-      "id": "ml-1",
+      "id": "ml-6",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 315,
-      "text": "The Arch of Constantine is completed near the Colosseum in Rome to commemorate Constantine I's victory over Maxentius at the Milvian Bridge.",
-      "text_de": "Der Konstantinsbogen wird in der Nähe des Kolosseums in Rom fertiggestellt, um an den Sieg Konstantins I. über Maxentius an der Milvischen Brücke zu erinnern.",
-      "source_url": "https://wikipedia.org/wiki/Arch_of_Constantine"
+      "year": 1139,
+      "text": "Schlacht von Ourique: Die Almoraviden unter der Führung von Ali ibn Yusuf werden von Prinz Afonso Henriques besiegt, der zum König von Portugal ausgerufen wird.",
+      "text_de": "Schlacht von Ourique: Die Almoraviden unter der Führung von Ali ibn Yusuf werden von Prinz Afonso Henriques besiegt, der zum König von Portugal ausgerufen wird.",
+      "source_url": "https://wikipedia.org/wiki/Battle_of_Ourique"
+    },
+    {
+      "id": "ml-5",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1137,
+      "text": "Eleonore von Aquitanien heiratet Prinz Ludwig, den späteren König Ludwig VII. von Frankreich, in der Kathedrale Saint-André in Bordeaux.",
+      "text_de": "Eleonore von Aquitanien heiratet Prinz Ludwig, den späteren König Ludwig VII. von Frankreich, in der Kathedrale Saint-André in Bordeaux.",
+      "source_url": "https://wikipedia.org/wiki/Eleanor_of_Aquitaine"
+    },
+    {
+      "id": "ml-4",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 918,
+      "text": "Wang Geon wird König von Goryeo, nachdem er am Vortag Gung Ye durch einen Staatsstreich gestürzt hat",
+      "text_de": "Wang Geon wird König von Goryeo, nachdem er am Vortag Gung Ye durch einen Staatsstreich gestürzt hat",
+      "source_url": "https://wikipedia.org/wiki/Wang_Geon"
+    },
+    {
+      "id": "ml-3",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 864,
+      "text": "Das Edikt von Pistres unter Karl dem Kahlen ordnet Abwehrmaßnahmen gegen die Wikinger an.",
+      "text_de": "Das Edikt von Pistres unter Karl dem Kahlen ordnet Abwehrmaßnahmen gegen die Wikinger an.",
+      "source_url": "https://wikipedia.org/wiki/Edict_of_Pistres"
+    },
+    {
+      "id": "ml-2",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 677,
+      "text": "Höhepunkt der Belagerung von Thessaloniki durch die Slawen: ein dreitägiger Angriff auf die Stadtmauern.",
+      "text_de": "Höhepunkt der Belagerung von Thessaloniki durch die Slawen: ein dreitägiger Angriff auf die Stadtmauern.",
+      "source_url": "https://wikipedia.org/wiki/Siege_of_Thessalonica_(676%E2%80%93678)"
     },
     {
       "id": "wp-4",
@@ -29,59 +65,22 @@
       "source_url": "https://de.wikipedia.org/wiki/Erstes_Konzil_von_Nic%C3%A4a"
     },
     {
-      "id": "ml-2",
+      "id": "ml-1",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 677,
-      "text": "Climax of the Siege of Thessalonica by the Slavs in a three-day assault on the city walls.",
-      "text_de": "Höhepunkt der Belagerung von Thessaloniki durch die Slawen: ein dreitägiger Angriff auf die Stadtmauern.",
-      "source_url": "https://wikipedia.org/wiki/Siege_of_Thessalonica_(676%E2%80%93678)"
+      "year": 315,
+      "text": "Der Konstantinsbogen wird in der Nähe des Kolosseums in Rom fertiggestellt, um an den Sieg Konstantins I. über Maxentius an der Milvischen Brücke zu erinnern.",
+      "text_de": "Der Konstantinsbogen wird in der Nähe des Kolosseums in Rom fertiggestellt, um an den Sieg Konstantins I. über Maxentius an der Milvischen Brücke zu erinnern.",
+      "source_url": "https://wikipedia.org/wiki/Arch_of_Constantine"
     },
     {
-      "id": "ml-3",
+      "id": "ml-0",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 864,
-      "text": "The Edict of Pistres of Charles the Bald orders defensive measures against the Vikings.",
-      "text_de": "Das Edikt von Pistres unter Karl dem Kahlen ordnet Abwehrmaßnahmen gegen die Wikinger an.",
-      "source_url": "https://wikipedia.org/wiki/Edict_of_Pistres"
-    },
-    {
-      "id": "ml-4",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 918,
-      "text": "Wang Geon becomes King of Goryeo after overthrowing Gung Ye in a coup the previous day",
-      "text_de": "Wang Geon wird König von Goryeo, nachdem er am Vortag Gung Ye durch einen Staatsstreich gestürzt hat",
-      "source_url": "https://wikipedia.org/wiki/Wang_Geon"
-    },
-    {
-      "id": "ml-5",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1137,
-      "text": "Eleanor of Aquitaine marries Prince Louis, later King Louis VII of France, at the Cathedral of Saint-André in Bordeaux.",
-      "text_de": "Eleonore von Aquitanien heiratet Prinz Ludwig, den späteren König Ludwig VII. von Frankreich, in der Kathedrale Saint-André in Bordeaux.",
-      "source_url": "https://wikipedia.org/wiki/Eleanor_of_Aquitaine"
-    },
-    {
-      "id": "ml-6",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1139,
-      "text": "Battle of Ourique: The Almoravids, led by Ali ibn Yusuf, are defeated by Prince Afonso Henriques who is proclaimed King of Portugal.",
-      "text_de": "Schlacht von Ourique: Die Almoraviden unter der Führung von Ali ibn Yusuf werden von Prinz Afonso Henriques besiegt, der zum König von Portugal ausgerufen wird.",
-      "source_url": "https://wikipedia.org/wiki/Battle_of_Ourique"
-    },
-    {
-      "id": "wp-3",
-      "source": "wikipedia",
-      "lang": "de",
-      "year": 1195,
-      "text": "Herrad von Landsberg (Bild), Äbtissin des elsässischen Klosters Hohenburg und Autorin der Enzyklopädie Hortus Deliciarum, stirbt.",
-      "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Herrad_von_Landsberg"
+      "year": 306,
+      "text": "Konstantin I. wird von seinen Truppen zum römischen Kaiser ausgerufen.",
+      "text_de": "Konstantin I. wird von seinen Truppen zum römischen Kaiser ausgerufen.",
+      "source_url": "https://wikipedia.org/wiki/Constantine_the_Great"
     }
-  ],
-  "caption_intro": "Vom Jahr 306 bis 1195: Dieser Tag hat Geschichte geschrieben — 9 Ereignisse, die man kennen sollte."
+  ]
 }

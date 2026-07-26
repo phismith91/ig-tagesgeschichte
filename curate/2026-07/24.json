@@ -11,6 +11,15 @@
       "source_url": "https://de.wikipedia.org/wiki/B%C3%BCrgerkrieg_in_Sri_Lanka"
     },
     {
+      "id": "ml-26",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1950,
+      "text": "Die Cape Canaveral Air Force Station nimmt mit dem Start einer „Bumper“-Rakete ihren Betrieb auf.",
+      "text_de": "Die Cape Canaveral Air Force Station nimmt mit dem Start einer „Bumper“-Rakete ihren Betrieb auf.",
+      "source_url": "https://wikipedia.org/wiki/Cape_Canaveral_Air_Force_Station"
+    },
+    {
       "id": "wp-2",
       "source": "wikipedia",
       "lang": "de",
@@ -18,15 +27,6 @@
       "text": "Eine Expedition unter Leitung von Hiram Bingham entdeckt in den peruanischen Anden die Ruinen der von den Inka im 15. Jahrhundert erbauten Stadt Machu Picchu.",
       "text_de": null,
       "source_url": "https://de.wikipedia.org/wiki/Hiram_Bingham_III."
-    },
-    {
-      "id": "ml-4",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1411,
-      "text": "Die Schlacht von Harlaw, eine der blutigsten Schlachten in Schottland, findet statt.",
-      "text_de": "Die Schlacht von Harlaw, eine der blutigsten Schlachten in Schottland, findet statt.",
-      "source_url": "https://wikipedia.org/wiki/Battle_of_Harlaw"
     },
     {
       "id": "ml-14",
@@ -38,13 +38,13 @@
       "source_url": "https://wikipedia.org/wiki/Reconstruction_Era"
     },
     {
-      "id": "ml-26",
+      "id": "ml-4",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1950,
-      "text": "Die Cape Canaveral Air Force Station nimmt mit dem Start einer „Bumper“-Rakete ihren Betrieb auf.",
-      "text_de": "Die Cape Canaveral Air Force Station nimmt mit dem Start einer „Bumper“-Rakete ihren Betrieb auf.",
-      "source_url": "https://wikipedia.org/wiki/Cape_Canaveral_Air_Force_Station"
+      "year": 1411,
+      "text": "Die Schlacht von Harlaw, eine der blutigsten Schlachten in Schottland, findet statt.",
+      "text_de": "Die Schlacht von Harlaw, eine der blutigsten Schlachten in Schottland, findet statt.",
+      "source_url": "https://wikipedia.org/wiki/Battle_of_Harlaw"
     }
   ]
 }

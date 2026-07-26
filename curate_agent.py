@@ -32,18 +32,17 @@ def _facts_with_year(candidates: list[dict]) -> list[dict]:
 
 
 def _fallback_curation(candidates: list[dict]) -> tuple[list[dict], str]:
-    """Regelbasierte Auswahl: aufsteigend nach Jahr, max. 9 Fakten."""
-    facts = sorted(_facts_with_year(candidates), key=lambda c: c["year"])
+    """Regelbasierte Auswahl: absteigend nach Jahr (neuestes zuerst), max. 9 Fakten."""
+    facts = sorted(_facts_with_year(candidates), key=lambda c: c["year"], reverse=True)
     selected = facts[:MAX_FACTS]
 
     if not selected:
         return [], ""
 
-    years = [f"{f['year']}" for f in selected]
     if len(selected) == 1:
         intro = f"Am diesem Tag im Jahr {selected[0]['year']} geschah etwas, das man sich merken sollte."
     else:
-        year_range = f"{selected[0]['year']} bis {selected[-1]['year']}"
+        year_range = f"{selected[-1]['year']} bis {selected[0]['year']}"
         intro = (
             f"Vom Jahr {year_range}: Dieser Tag hat Geschichte geschrieben — "
             f"{len(selected)} Ereignisse, die man kennen sollte."

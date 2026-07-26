@@ -21,8 +21,8 @@ Datum, als Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
    ```
    `http://localhost:8420` öffnen, Kandidaten anklicken (max. 9 pro Tag),
    „Speichern & weiter" springt automatisch zum nächsten unkuratierten Tag.
-   Die ausgewählten Fakten werden automatisch aufsteigend nach Jahr sortiert
-   gespeichert. Schreibt `curate/2026-08/01.json` … `31.json`.
+    Die ausgewählten Fakten werden automatisch absteigend nach Jahr sortiert
+    gespeichert (neuestes Ereignis zuerst). Schreibt `curate/2026-08/01.json` … `31.json`.
 
 3. **Rendern**: erzeugt die fertigen Bilder + Captions (Jinja2-Template + Playwright-
    Screenshot, ein Bild pro kuratiertem Fakt)

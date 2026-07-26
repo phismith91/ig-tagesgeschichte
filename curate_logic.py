@@ -43,7 +43,7 @@ def save_selection(curate_dir: Path, date_str: str, candidates: list[dict], sele
         {**c, "text": c["text_de"]} if c.get("text_de") else c
         for c in resolve_selection(candidates, selected_ids)
     ]
-    facts.sort(key=lambda f: f.get("year") or 0)
+    facts.sort(key=lambda f: f.get("year") or 0, reverse=True)
     path = _day_path(curate_dir, date_str)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(

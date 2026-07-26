@@ -2,40 +2,13 @@
   "date": "2026-07-26",
   "facts": [
     {
-      "id": "ml-33",
+      "id": "ml-72",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1936,
-      "text": "Spanischer Bürgerkrieg: Deutschland und Italien beschließen, zur Unterstützung von Francisco Franco und der nationalistischen Seite in den Krieg einzugreifen.",
-      "text_de": "Spanischer Bürgerkrieg: Deutschland und Italien beschließen, zur Unterstützung von Francisco Franco und der nationalistischen Seite in den Krieg einzugreifen.",
-      "source_url": "https://wikipedia.org/wiki/Spanish_Civil_War"
-    },
-    {
-      "id": "wp-1",
-      "source": "wikipedia",
-      "lang": "de",
-      "year": 1965,
-      "text": "Die Malediven, seit dem 18. Jahrhundert unter britischer Fremdherrschaft, erlangen die Unabhängigkeit.",
-      "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Malediven"
-    },
-    {
-      "id": "ml-58",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1971,
-      "text": "Apollo-Programm: Start von Apollo 15 im Rahmen der ersten Apollo-„J-Mission“ und erster Einsatz eines Mondfahrzeugs.",
-      "text_de": "Apollo-Programm: Start von Apollo 15 im Rahmen der ersten Apollo-„J-Mission“ und erster Einsatz eines Mondfahrzeugs.",
-      "source_url": "https://wikipedia.org/wiki/Apollo_program"
-    },
-    {
-      "id": "ml-62",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1990,
-      "text": "Das Gesetz zur Gleichstellung von Menschen mit Behinderungen (Americans with Disabilities Act) von 1990 wird von Präsident George H. W. Bush unterzeichnet.",
-      "text_de": "Das Gesetz zur Gleichstellung von Menschen mit Behinderungen (Americans with Disabilities Act) von 1990 wird von Präsident George H. W. Bush unterzeichnet.",
-      "source_url": "https://wikipedia.org/wiki/Americans_with_Disabilities_Act_of_1990"
+      "year": 2016,
+      "text": "Die „Solar Impulse 2“ ist das erste solarbetriebene Flugzeug, das die Erde umrundet hat.",
+      "text_de": "Die „Solar Impulse 2“ ist das erste solarbetriebene Flugzeug, das die Erde umrundet hat.",
+      "source_url": "https://wikipedia.org/wiki/Solar_Impulse_2"
     },
     {
       "id": "wp-0",
@@ -56,13 +29,40 @@
       "source_url": "https://wikipedia.org/wiki/Mumbai"
     },
     {
-      "id": "ml-72",
+      "id": "ml-62",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 2016,
-      "text": "Die „Solar Impulse 2“ ist das erste solarbetriebene Flugzeug, das die Erde umrundet hat.",
-      "text_de": "Die „Solar Impulse 2“ ist das erste solarbetriebene Flugzeug, das die Erde umrundet hat.",
-      "source_url": "https://wikipedia.org/wiki/Solar_Impulse_2"
+      "year": 1990,
+      "text": "Das Gesetz zur Gleichstellung von Menschen mit Behinderungen (Americans with Disabilities Act) von 1990 wird von Präsident George H. W. Bush unterzeichnet.",
+      "text_de": "Das Gesetz zur Gleichstellung von Menschen mit Behinderungen (Americans with Disabilities Act) von 1990 wird von Präsident George H. W. Bush unterzeichnet.",
+      "source_url": "https://wikipedia.org/wiki/Americans_with_Disabilities_Act_of_1990"
+    },
+    {
+      "id": "ml-58",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1971,
+      "text": "Apollo-Programm: Start von Apollo 15 im Rahmen der ersten Apollo-„J-Mission“ und erster Einsatz eines Mondfahrzeugs.",
+      "text_de": "Apollo-Programm: Start von Apollo 15 im Rahmen der ersten Apollo-„J-Mission“ und erster Einsatz eines Mondfahrzeugs.",
+      "source_url": "https://wikipedia.org/wiki/Apollo_program"
+    },
+    {
+      "id": "wp-1",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1965,
+      "text": "Die Malediven, seit dem 18. Jahrhundert unter britischer Fremdherrschaft, erlangen die Unabhängigkeit.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Malediven"
+    },
+    {
+      "id": "ml-33",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1936,
+      "text": "Spanischer Bürgerkrieg: Deutschland und Italien beschließen, zur Unterstützung von Francisco Franco und der nationalistischen Seite in den Krieg einzugreifen.",
+      "text_de": "Spanischer Bürgerkrieg: Deutschland und Italien beschließen, zur Unterstützung von Francisco Franco und der nationalistischen Seite in den Krieg einzugreifen.",
+      "source_url": "https://wikipedia.org/wiki/Spanish_Civil_War"
     }
   ]
 }
