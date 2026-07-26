@@ -65,15 +65,6 @@
       "source_url": "https://wikipedia.org/wiki/Apollo_program"
     },
     {
-      "id": "ml-40",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 2003,
-      "text": "In Mexiko rollt der letzte Volkswagen Käfer im „alten Stil“ vom Band.",
-      "text_de": "In Mexiko rollt der letzte Volkswagen Käfer im „alten Stil“ vom Band.",
-      "source_url": "https://wikipedia.org/wiki/Volkswagen_Beetle"
-    },
-    {
       "id": "ml-35",
       "source": "muffinlabs",
       "lang": "en",
@@ -81,6 +72,15 @@
       "text": "Die 730: Die Präfektur Okinawa stellt den Verkehr von der rechten auf die linke Straßenseite um.",
       "text_de": "Die 730: Die Präfektur Okinawa stellt den Verkehr von der rechten auf die linke Straßenseite um.",
       "source_url": "https://wikipedia.org/wiki/730_(transport)"
+    },
+    {
+      "id": "ml-40",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 2003,
+      "text": "In Mexiko rollt der letzte Volkswagen Käfer im „alten Stil“ vom Band.",
+      "text_de": "In Mexiko rollt der letzte Volkswagen Käfer im „alten Stil“ vom Band.",
+      "source_url": "https://wikipedia.org/wiki/Volkswagen_Beetle"
     }
   ]
 }

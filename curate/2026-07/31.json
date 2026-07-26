@@ -2,31 +2,13 @@
   "date": "2026-07-31",
   "facts": [
     {
-      "id": "wp-0",
+      "id": "wp-4",
       "source": "wikipedia",
       "lang": "de",
-      "year": 1941,
-      "text": "Reichsmarschall Göring erteilt Reinhard Heydrich den Auftrag zur Planung der „angestrebten Endlösung der Judenfrage“ im deutschen Einflussgebiet in Europa.",
+      "year": 1526,
+      "text": "Der Albertiner August, von 1553 bis 1586 Kurfürst von Sachsen, kommt zur Welt.",
       "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Hermann_G%C3%B6ring"
-    },
-    {
-      "id": "wp-1",
-      "source": "wikipedia",
-      "lang": "de",
-      "year": 1901,
-      "text": "Im Zuge der Berliner wissenschaftlichen Luftfahrten erreichen die Meteorologen Arthur Berson und Reinhard Süring mit dem Gasballon Preussen als erste Menschen eine Höhe von mehr als 10.000 Metern.",
-      "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Berliner_wissenschaftliche_Luftfahrten"
-    },
-    {
-      "id": "wp-2",
-      "source": "wikipedia",
-      "lang": "de",
-      "year": 1856,
-      "text": "Christchurch, heute die größte Stadt der Südinsel von Neuseeland, wird zur Stadt erhoben.",
-      "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Christchurch"
+      "source_url": "https://de.wikipedia.org/wiki/Albertiner"
     },
     {
       "id": "wp-3",
@@ -38,13 +20,31 @@
       "source_url": "https://de.wikipedia.org/wiki/Ignatius_von_Loyola"
     },
     {
-      "id": "wp-4",
+      "id": "wp-2",
       "source": "wikipedia",
       "lang": "de",
-      "year": 1526,
-      "text": "Der Albertiner August, von 1553 bis 1586 Kurfürst von Sachsen, kommt zur Welt.",
+      "year": 1856,
+      "text": "Christchurch, heute die größte Stadt der Südinsel von Neuseeland, wird zur Stadt erhoben.",
       "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Albertiner"
+      "source_url": "https://de.wikipedia.org/wiki/Christchurch"
+    },
+    {
+      "id": "wp-1",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1901,
+      "text": "Im Zuge der Berliner wissenschaftlichen Luftfahrten erreichen die Meteorologen Arthur Berson und Reinhard Süring mit dem Gasballon Preussen als erste Menschen eine Höhe von mehr als 10.000 Metern.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Berliner_wissenschaftliche_Luftfahrten"
+    },
+    {
+      "id": "wp-0",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 1941,
+      "text": "Reichsmarschall Göring erteilt Reinhard Heydrich den Auftrag zur Planung der „angestrebten Endlösung der Judenfrage“ im deutschen Einflussgebiet in Europa.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Hermann_G%C3%B6ring"
     }
   ]
 }

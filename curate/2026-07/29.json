@@ -2,22 +2,13 @@
   "date": "2026-07-29",
   "facts": [
     {
-      "id": "wp-0",
+      "id": "wp-4",
       "source": "wikipedia",
       "lang": "de",
-      "year": 2000,
-      "text": "Im früheren sowjetischen Atomwaffentestgelände Semipalatinsk in Kasachstan wird der letzte Tunnel gesprengt.",
+      "year": 1735,
+      "text": "Sophie Luise zu Mecklenburg-Schwerin (Bild), ab 1708 Königin in Preußen, stirbt in Schwerin; nach ihr wurde die gleichnamige Berliner Kirche benannt.",
       "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Sowjetunion"
-    },
-    {
-      "id": "wp-1",
-      "source": "wikipedia",
-      "lang": "de",
-      "year": 1975,
-      "text": "Der nigerianische Diktator Yakubu Gowon, der sich auf einem Gipfel der OAU befindet, wird in einem unblutigen Putsch durch General Murtala Mohammed gestürzt.",
-      "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Yakubu_Gowon"
+      "source_url": "https://de.wikipedia.org/wiki/Sophie_Luise_zu_Mecklenburg-Schwerin"
     },
     {
       "id": "wp-2",
@@ -38,13 +29,22 @@
       "source_url": "https://de.wikipedia.org/wiki/Zeitschrift_f%C3%BCr_Physik"
     },
     {
-      "id": "wp-4",
+      "id": "wp-1",
       "source": "wikipedia",
       "lang": "de",
-      "year": 1735,
-      "text": "Sophie Luise zu Mecklenburg-Schwerin (Bild), ab 1708 Königin in Preußen, stirbt in Schwerin; nach ihr wurde die gleichnamige Berliner Kirche benannt.",
+      "year": 1975,
+      "text": "Der nigerianische Diktator Yakubu Gowon, der sich auf einem Gipfel der OAU befindet, wird in einem unblutigen Putsch durch General Murtala Mohammed gestürzt.",
       "text_de": null,
-      "source_url": "https://de.wikipedia.org/wiki/Sophie_Luise_zu_Mecklenburg-Schwerin"
+      "source_url": "https://de.wikipedia.org/wiki/Yakubu_Gowon"
+    },
+    {
+      "id": "wp-0",
+      "source": "wikipedia",
+      "lang": "de",
+      "year": 2000,
+      "text": "Im früheren sowjetischen Atomwaffentestgelände Semipalatinsk in Kasachstan wird der letzte Tunnel gesprengt.",
+      "text_de": null,
+      "source_url": "https://de.wikipedia.org/wiki/Sowjetunion"
     }
   ]
 }

@@ -39,6 +39,18 @@ def test_save_selection_writes_facts(tmp_path):
     assert [f["id"] for f in data["facts"]] == ["b", "a"]
 
 
+def test_save_selection_sorts_facts_by_year(tmp_path):
+    candidates = [
+        {"id": "a", "year": 2000, "text": "x"},
+        {"id": "b", "year": 1990, "text": "y"},
+        {"id": "c", "year": 2010, "text": "z"},
+    ]
+    curate_logic.save_selection(tmp_path, "2026-07-17", candidates, ["a", "b", "c"])
+    out = tmp_path / "2026-07" / "17.json"
+    data = json.loads(out.read_text(encoding="utf-8"))
+    assert [f["id"] for f in data["facts"]] == ["b", "a", "c"]
+
+
 def test_save_selection_prefers_text_de_over_original(tmp_path):
     candidates = [{"id": "a", "year": 1941, "text": "Germany invades the Soviet Union.", "text_de": "Deutschland fällt in die Sowjetunion ein."}]
     curate_logic.save_selection(tmp_path, "2026-07-17", candidates, ["a"])

@@ -11,31 +11,13 @@
       "source_url": "https://wikipedia.org/wiki/Friedrich_Barbarossa"
     },
     {
-      "id": "ml-45",
+      "id": "ml-18",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 2002,
-      "text": "Flugshow-Katastrophe in der Ukraine: Ein Kampfflugzeug vom Typ Suchoi Su-27 stürzt während einer Flugshow in Lemberg (Ukraine) ab. Dabei kommen 77 Menschen ums Leben und mehr als 500 weitere werden verletzt – damit ist dies die tödlichste Flugshow-Katastrophe der Geschichte.",
-      "text_de": "Flugshow-Katastrophe in der Ukraine: Ein Kampfflugzeug vom Typ Suchoi Su-27 stürzt während einer Flugshow in Lemberg (Ukraine) ab. Dabei kommen 77 Menschen ums Leben und mehr als 500 weitere werden verletzt – damit ist dies die tödlichste Flugshow-Katastrophe der Geschichte.",
-      "source_url": "https://wikipedia.org/wiki/Ukraine_airshow_disaster"
-    },
-    {
-      "id": "ml-35",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1964,
-      "text": "Vietnamkrieg: Weitere 5.000 amerikanische Militärberater werden nach Südvietnam entsandt, wodurch sich die Gesamtzahl der US-Streitkräfte in Vietnam auf 21.000 erhöht.",
-      "text_de": "Vietnamkrieg: Weitere 5.000 amerikanische Militärberater werden nach Südvietnam entsandt, wodurch sich die Gesamtzahl der US-Streitkräfte in Vietnam auf 21.000 erhöht.",
-      "source_url": "https://wikipedia.org/wiki/Vietnam_War"
-    },
-    {
-      "id": "ml-24",
-      "source": "muffinlabs",
-      "lang": "en",
-      "year": 1921,
-      "text": "Forscher der Universität Toronto unter der Leitung des Biochemikers Frederick Banting weisen nach, dass das Hormon Insulin den Blutzuckerspiegel reguliert.",
-      "text_de": "Forscher der Universität Toronto unter der Leitung des Biochemikers Frederick Banting weisen nach, dass das Hormon Insulin den Blutzuckerspiegel reguliert.",
-      "source_url": "https://wikipedia.org/wiki/University_of_Toronto"
+      "year": 1866,
+      "text": "Das erste permanente transatlantische Telegrafenkabel, das von Valentia Island in Irland bis nach Heart’s Content in Neufundland verläuft, wird erfolgreich fertiggestellt.",
+      "text_de": "Das erste permanente transatlantische Telegrafenkabel, das von Valentia Island in Irland bis nach Heart’s Content in Neufundland verläuft, wird erfolgreich fertiggestellt.",
+      "source_url": "https://wikipedia.org/wiki/Transatlantic_telegraph_cable"
     },
     {
       "id": "ml-20",
@@ -47,13 +29,13 @@
       "source_url": "https://wikipedia.org/wiki/Vincent_van_Gogh"
     },
     {
-      "id": "ml-18",
+      "id": "ml-24",
       "source": "muffinlabs",
       "lang": "en",
-      "year": 1866,
-      "text": "Das erste permanente transatlantische Telegrafenkabel, das von Valentia Island in Irland bis nach Heart’s Content in Neufundland verläuft, wird erfolgreich fertiggestellt.",
-      "text_de": "Das erste permanente transatlantische Telegrafenkabel, das von Valentia Island in Irland bis nach Heart’s Content in Neufundland verläuft, wird erfolgreich fertiggestellt.",
-      "source_url": "https://wikipedia.org/wiki/Transatlantic_telegraph_cable"
+      "year": 1921,
+      "text": "Forscher der Universität Toronto unter der Leitung des Biochemikers Frederick Banting weisen nach, dass das Hormon Insulin den Blutzuckerspiegel reguliert.",
+      "text_de": "Forscher der Universität Toronto unter der Leitung des Biochemikers Frederick Banting weisen nach, dass das Hormon Insulin den Blutzuckerspiegel reguliert.",
+      "source_url": "https://wikipedia.org/wiki/University_of_Toronto"
     },
     {
       "id": "ml-25",
@@ -72,6 +54,24 @@
       "text": "Erstflug der de Havilland Comet, des ersten Düsenverkehrsflugzeugs.",
       "text_de": "Erstflug der de Havilland Comet, des ersten Düsenverkehrsflugzeugs.",
       "source_url": "https://wikipedia.org/wiki/De_Havilland_Comet"
+    },
+    {
+      "id": "ml-35",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 1964,
+      "text": "Vietnamkrieg: Weitere 5.000 amerikanische Militärberater werden nach Südvietnam entsandt, wodurch sich die Gesamtzahl der US-Streitkräfte in Vietnam auf 21.000 erhöht.",
+      "text_de": "Vietnamkrieg: Weitere 5.000 amerikanische Militärberater werden nach Südvietnam entsandt, wodurch sich die Gesamtzahl der US-Streitkräfte in Vietnam auf 21.000 erhöht.",
+      "source_url": "https://wikipedia.org/wiki/Vietnam_War"
+    },
+    {
+      "id": "ml-45",
+      "source": "muffinlabs",
+      "lang": "en",
+      "year": 2002,
+      "text": "Flugshow-Katastrophe in der Ukraine: Ein Kampfflugzeug vom Typ Suchoi Su-27 stürzt während einer Flugshow in Lemberg (Ukraine) ab. Dabei kommen 77 Menschen ums Leben und mehr als 500 weitere werden verletzt – damit ist dies die tödlichste Flugshow-Katastrophe der Geschichte.",
+      "text_de": "Flugshow-Katastrophe in der Ukraine: Ein Kampfflugzeug vom Typ Suchoi Su-27 stürzt während einer Flugshow in Lemberg (Ukraine) ab. Dabei kommen 77 Menschen ums Leben und mehr als 500 weitere werden verletzt – damit ist dies die tödlichste Flugshow-Katastrophe der Geschichte.",
+      "source_url": "https://wikipedia.org/wiki/Ukraine_airshow_disaster"
     }
   ]
 }
