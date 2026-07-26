@@ -10,5 +10,8 @@ def load_env_var(key: str, env_path: str = ".env") -> str | None:
         line = line.strip()
         if line.startswith(f"{key}="):
             value = line.split("=", 1)[1].strip()
+            # Umfassende Anfuehrungszeichen entfernen, damit Werte mit # funktionieren.
+            if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
+                value = value[1:-1]
             return value or None
     return None
