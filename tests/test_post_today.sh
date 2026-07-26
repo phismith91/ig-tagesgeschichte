@@ -17,6 +17,14 @@ chmod +x "$TMP/git"
 
 cat > "$TMP/python3" <<'EOF'
 #!/bin/bash
+# State-Check liefert "noch nicht gepostet" (Exit 1) im Default.
+if [[ "$*" == *"post_state.is_posted"* ]]; then
+  exit 1
+fi
+# post_instagram.py-Stub simuliert erfolgreichen Post.
+if [[ "$*" == *"post_instagram.py"* ]]; then
+  echo "gepostet: media-123"
+fi
 echo "python3 $*" >> "$PYTHON_CALLS_LOG"
 exit 0
 EOF
@@ -46,10 +54,15 @@ if ! grep -q "^git push$" "$GIT_CALLS_LOG"; then
   echo "FAIL: git push wurde nicht aufgerufen"
   exit 1
 fi
-PYCALL="$(cat "$PYTHON_CALLS_LOG")"
+PYCALL="$(head -n1 "$PYTHON_CALLS_LOG")"
 if [[ "$PYCALL" != *post_instagram.py\ output/2099-01/15/caption.txt\ *2099-01/15/01.png*2099-01/15/02.png*2099-01/15/03.png ]]; then
   echo "FAIL: post_instagram.py wurde nicht mit caption zuerst + allen 3 URLs aufgerufen"
   echo "GOT: $PYCALL"
+  exit 1
+fi
+if ! grep -q "post_state.mark_posted" "$PYTHON_CALLS_LOG"; then
+  echo "FAIL: post_state.mark_posted wurde nicht aufgerufen"
+  cat "$PYTHON_CALLS_LOG"
   exit 1
 fi
 rm -rf "output/2099-01"
@@ -63,7 +76,37 @@ if [ -s "$GIT_CALLS_LOG" ] || [ -s "$PYTHON_CALLS_LOG" ]; then
   exit 1
 fi
 
-# Testfall 3: "nichts zu committen" darf das Skript NICHT abbrechen (Diff-Guard, siehe
+# Testfall 3: Bereits gepostet -> kein git/push/python-Aufruf.
+: > "$GIT_CALLS_LOG"
+: > "$PYTHON_CALLS_LOG"
+
+cat > "$TMP/python3" <<'EOF'
+#!/bin/bash
+# Nur Aufrufe außer der State-Check protokollieren.
+if [[ "$*" == *"post_state.is_posted"* ]]; then
+  exit 0
+fi
+echo "python3 $*" >> "$PYTHON_CALLS_LOG"
+exit 0
+EOF
+chmod +x "$TMP/python3"
+
+mkdir -p "output/2099-01/15"
+echo "fake" > "output/2099-01/15/01.png"
+echo "Testcaption" > "output/2099-01/15/caption.txt"
+
+REFERENCE_DATE="2099-01-15" ./post_today.sh
+
+if [ -s "$GIT_CALLS_LOG" ] || [ -s "$PYTHON_CALLS_LOG" ]; then
+  echo "FAIL: bei bereits gepostetem Tag dürfen git/python nicht aufgerufen werden"
+  cat "$GIT_CALLS_LOG"
+  cat "$PYTHON_CALLS_LOG"
+  rm -rf "output/2099-01"
+  exit 1
+fi
+rm -rf "output/2099-01"
+
+# Testfall 4: "nichts zu committen" darf das Skript NICHT abbrechen (Diff-Guard, siehe
 # Commit 47547c1 aus Phase 1 — Regression-Test bleibt relevant, jetzt mit 2 Slides).
 cat > "$TMP/git" <<'EOF'
 #!/bin/bash
@@ -74,6 +117,21 @@ case "$1" in
 esac
 EOF
 chmod +x "$TMP/git"
+
+# Default-Python-Stub wiederherstellen (State-Check = nicht gepostet).
+cat > "$TMP/python3" <<'EOF'
+#!/bin/bash
+if [[ "$*" == *"post_state.is_posted"* ]]; then
+  exit 1
+fi
+# post_instagram.py-Stub simuliert erfolgreichen Post.
+if [[ "$*" == *"post_instagram.py"* ]]; then
+  echo "gepostet: media-123"
+fi
+echo "python3 $*" >> "$PYTHON_CALLS_LOG"
+exit 0
+EOF
+chmod +x "$TMP/python3"
 
 mkdir -p "output/2099-03/01"
 echo "fake1" > "output/2099-03/01/01.png"
