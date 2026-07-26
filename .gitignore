@@ -4,3 +4,4 @@ __pycache__/
 candidates/
 .superpowers/
 state/
+.state/

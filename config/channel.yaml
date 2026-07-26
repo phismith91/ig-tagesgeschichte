@@ -1,0 +1,40 @@
+name: heute.today
+description: >
+  Täglich bis zu 9 historische Ereignisse zum aktuellen Datum als
+  Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
+
+sources:
+  wikipedia:
+    kind: wikipedia
+    lang: de
+  wikidata:
+    kind: wikidata
+  muffinlabs:
+    kind: muffinlabs
+    lang: en
+  numbersapi:
+    kind: numbersapi
+    lang: en
+
+curation:
+  max_facts: 9
+
+render:
+  width: 1080
+  height: 1080
+  font_family: "Inter"
+  template: templates/post_card.html.j2
+
+post:
+  platform: instagram
+  caption_template: "{intro}\n\n{text}\n\n{hashtags}"
+  hashtags:
+    - heute
+    - history
+    - geschichte
+    - wusstestdu
+    - tagesgeschichte
+
+notify:
+  to_addr:
+    - philippdschmidt@outlook.com

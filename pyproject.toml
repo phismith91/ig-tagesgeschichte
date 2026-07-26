@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ig-tagesgeschichte"
+version = "0.1.0"
+description = "heute.today faceless Instagram channel, powered by ig-faceless."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ig-faceless @ git+https://github.com/phismith91/ig-faceless.git@v0.1.0",
+    "requests",
+    "jinja2",
+    "playwright",
+]
+authors = [{ name = "Philipp" }]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["."]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]

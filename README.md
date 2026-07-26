@@ -1,5 +1,9 @@
 # ig-tagesgeschichte
 
+> This repository is now a **channel repo** powered by the
+> [`ig-faceless`](https://github.com/phismith91/ig-faceless) framework.
+> Channel-specific configuration lives in `config/channel.yaml`.
+
 Faceless-Instagram-Channel: täglich bis zu 9 historische Ereignisse zum aktuellen
 Datum, als Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
 
