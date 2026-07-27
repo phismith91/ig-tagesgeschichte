@@ -1,127 +1,92 @@
 # ig-tagesgeschichte
 
-> This repository is now a **channel repo** powered by the
+> This repository is a **channel repo** powered by the
 > [`ig-faceless`](https://github.com/phismith91/ig-faceless) framework.
 > Channel-specific configuration lives in `config/channel.yaml`.
 
 Faceless-Instagram-Channel: täglich bis zu 9 historische Ereignisse zum aktuellen
 Datum, als Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
 
-## Workflow
-
-> **Hinweis:** Dieses Repo wurde auf das [`ig-faceless`](https://github.com/phismith91/ig-faceless)-Framework umgestellt. Die folgenden Befehle (`fetch_candidates.py`, `curate_server.py`, `render.py`, `post_instagram.py`) sind die Legacy-Scripts, die in der nächsten Phase durch `ig-faceless fetch|curate|render|post` ersetzt werden. Solange die alten Scripts noch im Repo liegen, funktionieren sie weiterhin.
-
-1. **Kandidaten holen** (einmal pro Monat, im Voraus): zieht Kandidaten aus
-   4 Quellen (Wikipedia, Wikidata, muffinlabs, numbersapi), übersetzt
-   nicht-deutsche Kandidaten automatisch per DeepL
-   ```
-   python3 fetch_candidates.py 2026 8
-   ```
-   Schreibt `candidates/2026-08/01.json` … `31.json`. Braucht `DEEPL_API_KEY`
-   in `.env` (Vorlage: `.env.example`), sonst bleiben englische Kandidaten
-   unübersetzt.
-
-2. **Kuratieren im Browser**:
-   ```
-   python3 curate_server.py
-   ```
-   `http://localhost:8420` öffnen, Kandidaten anklicken (max. 9 pro Tag),
-   „Speichern & weiter" springt automatisch zum nächsten unkuratierten Tag.
-    Die ausgewählten Fakten werden automatisch absteigend nach Jahr sortiert
-    gespeichert (neuestes Ereignis zuerst). Schreibt `curate/2026-08/01.json` … `31.json`.
-
-3. **Rendern**: erzeugt die fertigen Bilder + Captions (Jinja2-Template + Playwright-
-   Screenshot, ein Bild pro kuratiertem Fakt)
-   ```
-   python3 render.py curate/2026-08          # ganzer Monat
-   python3 render.py curate/2026-08/17.json  # einzelner Tag
-   ```
-   Ergebnis in `output/2026-08/17/`: `01.png` … `NN.png` (1080×1080, eins pro
-   Fakt, bis zu 9) + `caption.txt`. Rendering nutzt Playwright (headless
-   Chromium) statt eines reinen Python-Zeichners — Setup siehe unten.
-
-4. **Posten**: läuft automatisch als Instagram-Carousel, siehe
-   „Automatisierung" unten (`ig-post.timer`). Kuratierung ist der einzige
-   manuelle Schritt, danach läuft alles von selbst.
-
-## Automatisierung (optional)
-
-Fetch, Render und der Kuratier-Server lassen sich als systemd-`--user`-Units
-laufen lassen, dann bleibt als manueller Schritt nur noch das Kuratieren im
-Browser (Schritt 2). Einmaliges Setup:
+## Setup
 
 ```bash
-mkdir -p ~/.config/systemd/user
-cp systemd/*.service systemd/*.timer ~/.config/systemd/user/
-chmod +x fetch_next_month.sh render_today.sh post_today.sh
-loginctl enable-linger $USER
-systemctl --user daemon-reload
-systemctl --user enable --now ig-curate-server.service
-systemctl --user enable --now ig-fetch.timer
-systemctl --user enable --now ig-render.timer
-systemctl --user enable --now ig-post.timer
+pip install --user --break-system-packages -r requirements.txt
+# oder, falls das Framework-Repo lokal vorliegt:
+pip install -e /path/to/ig-faceless
+python3 -m playwright install chromium
 ```
+
+Kopiere `.env.example` nach `.env` und fülle die Werte aus:
+
+- `META_ACCESS_TOKEN` — long-lived Instagram-Graph-API-Token
+- `IG_USER_ID` — App-Scoped Instagram-User-ID
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`, `SMTP_TO`
+
+## Workflow (mit ig-faceless)
+
+1. **Kandidaten holen** (einmal pro Monat, im Voraus):
+   ```bash
+   ig-faceless fetch 2026-08-01
+   ```
+   Schreibt `candidates/2026-08/01.json` … `31.json`.
+
+2. **Kuratieren im Browser**:
+   ```bash
+   ig-faceless curate
+   ```
+   Öffnet `http://localhost:8420`, Kandidaten anklicken (max. 9 pro Tag),
+   „Speichern & weiter" springt automatisch zum nächsten unkuratierten Tag.
+   Die ausgewählten Fakten werden automatisch absteigend nach Jahr sortiert
+   gespeichert (neuestes Ereignis zuerst). Schreibt `curate/2026-08/01.json` … `31.json`.
+
+3. **Rendern**: erzeugt die fertigen Bilder + Captions:
+   ```bash
+   ig-faceless render 2026-08-17
+   ```
+   Ergebnis in `output/2026-08/17/`: `01.png` … `NN.png` (1080×1080, eins pro
+   Fakt, bis zu 9) + `caption.txt`.
+
+4. **Posten**: läuft automatisch als Instagram-Carousel, siehe „Automatisierung".
+   Kuratierung ist der einzige manuelle Schritt, danach läuft alles von selbst.
+
+## Automatisierung
+
+Das Framework generiert passende systemd-Units:
+
+```bash
+ig-faceless systemd generate > /tmp/ig-faceless-tagesgeschichte.units
+```
+
+Die Units landen in `~/.config/systemd/user/` (siehe Framework-Dokumentation).
 
 `loginctl enable-linger $USER` ist nötig, damit die Dienste auch ohne aktive
 Login-Session weiterlaufen (z.B. nach Neustart ohne Einloggen).
 
-Fetch läuft am 25. jeden Monats (holt den Folgemonat), Render täglich um
-06:00 Uhr für den aktuellen Tag — überspringt still, falls der Tag noch
-nicht kuratiert wurde. Posten läuft täglich um 06:10 Uhr (10 Minuten nach
-dem Rendern) und lädt das Ergebnis automatisch auf Instagram hoch —
-überspringt still, falls für heute noch nichts gerendert wurde.
-
 ### Instagram-Posting
 
-Voraussetzung: `.env` enthält `META_ACCESS_TOKEN` (long-lived Access-Token) und `IG_USER_ID`
-(App-Scoped Instagram-User-ID, siehe Meta-App-Dashboard → Instagram API → Generate access
-tokens). Das Repo muss ein public GitHub-Repo mit Remote `origin` sein — Bilder werden über
+Voraussetzung: `.env` enthält `META_ACCESS_TOKEN` und `IG_USER_ID`.
+Das Repo muss ein public GitHub-Repo mit Remote `origin` sein — Bilder werden über
 `raw.githubusercontent.com` öffentlich gehostet, da die Instagram Graph API eine öffentliche
 HTTPS-Bild-URL verlangt (kein Datei-Upload). Kein manueller Freigabe-Schritt — die Kuratierung
 selbst ist die Freigabe.
 
-`post_today.sh` macht `git push` — vor dem Aktivieren von `ig-post.timer` einmal manuell
-prüfen, dass Push aus der `--user`-Session heraus ohne Passphrase-Eingabe klappt (SSH-Agent
-erreichbar bzw. Deploy-Key ohne Passphrase), sonst scheitert der Timer täglich still im Log.
+### Robustheit
 
-### Robustheit (optional)
+Das Framework übernimmt:
 
-Seit dem Robustheit-Update:
+- State-Tracking der bereits geposteten Tage in `.state/`
+- Retry bei temporären Instagram-API-Fehlern
+- E-Mail-Benachrichtigungen bei Erfolg oder Fehler
+- Tägliche Health-Checks
 
-- `post_today.sh` merkt sich erfolgreiche Posts in `state/posted/YYYY-MM-DD.json`
-  (lokal, nicht im Git) und postet denselben Tag nie doppelt.
-- `post_instagram.py` wiederholt temporäre API-Fehler (HTTP 5xx, Netzwerkfehler)
-  bis zu 3 Mal mit exponentiellem Backoff.
-- Bei Erfolg oder Fehler wird eine E-Mail an `philippdschmidt@outlook.com` geschickt,
-  sofern SMTP in `.env` konfiguriert ist (siehe `.env.example`).
-- `health_check.py` prüft täglich um 02:00 Uhr, ob Kandidaten, Kuratierung und alle
-  Timer in Ordnung sind, und verschickt bei Problemen eine E-Mail.
+## Legacy-Scripts
 
-Aktivieren:
-```bash
-systemctl --user enable --now ig-health.timer
-```
-
-Testen / nachschauen:
-```bash
-systemctl --user start ig-fetch.service      # manuell antriggern
-journalctl --user -u ig-fetch -f             # Log verfolgen
-systemctl --user start ig-post.service       # Posting manuell antriggern
-journalctl --user -u ig-post -f              # Log verfolgen
-systemctl --user start ig-health.service   # Health-Check manuell antriggern
-journalctl --user -u ig-health -f            # Health-Log verfolgen
-systemctl --user list-timers                 # Timer-Übersicht
-```
+Während der Migration liegen noch die alten Scripts (`fetch_candidates.py`,
+`curate_server.py`, `render.py`, `post_instagram.py`, etc.) im Repo. Sie
+funktionieren weiterhin, werden aber durch das Framework abgelöst.
 
 ## Design ändern
 
 Layout, Farben und Typografie stehen in `templates/post_card.html.j2`
 (HTML/CSS, Jinja2-Platzhalter für Tag/Monat/Fakt). Fonts liegen als woff2
 unter `fonts/`.
-
-## Setup
-
-```bash
-pip install --user --break-system-packages -r requirements.txt
-python3 -m playwright install chromium
-```
