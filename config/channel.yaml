@@ -1,32 +1,34 @@
 name: heute.today
+slug: tagesgeschichte
+language: de
+timezone: Europe/Berlin
 description: >
   Täglich bis zu 9 historische Ereignisse zum aktuellen Datum als
   Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
 
 sources:
-  wikipedia:
-    kind: wikipedia
+  - type: wikipedia
     lang: de
-  wikidata:
-    kind: wikidata
-  muffinlabs:
-    kind: muffinlabs
+  - type: wikidata
+  - type: muffinlabs
     lang: en
-  numbersapi:
-    kind: numbersapi
+  - type: numbersapi
     lang: en
 
 curation:
   max_facts: 9
+  sort_by: year
+  sort_order: desc
 
 render:
+  template: templates/post_card.html.j2
   width: 1080
   height: 1080
-  font_family: "Inter"
-  template: templates/post_card.html.j2
+  font_family: Inter
 
 post:
   platform: instagram
+  schedule_time: "06:10"
   caption_template: "{intro}\n\n{text}\n\n{hashtags}"
   hashtags:
     - heute
@@ -36,5 +38,11 @@ post:
     - tagesgeschichte
 
 notify:
-  to_addr:
+  smtp_host: "${SMTP_HOST}"
+  smtp_port: "${SMTP_PORT}"
+  smtp_user: "${SMTP_USER}"
+  smtp_from: "${SMTP_FROM}"
+  smtp_to:
     - philippdschmidt@outlook.com
+  smtp_password: "${SMTP_PASSWORD}"
+  use_tls: true
