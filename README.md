@@ -9,6 +9,8 @@ Datum, als Instagram-Carousel (ein Bild pro Ereignis) + Caption-Text.
 
 ## Workflow
 
+> **Hinweis:** Dieses Repo wurde auf das [`ig-faceless`](https://github.com/phismith91/ig-faceless)-Framework umgestellt. Die folgenden Befehle (`fetch_candidates.py`, `curate_server.py`, `render.py`, `post_instagram.py`) sind die Legacy-Scripts, die in der nächsten Phase durch `ig-faceless fetch|curate|render|post` ersetzt werden. Solange die alten Scripts noch im Repo liegen, funktionieren sie weiterhin.
+
 1. **Kandidaten holen** (einmal pro Monat, im Voraus): zieht Kandidaten aus
    4 Quellen (Wikipedia, Wikidata, muffinlabs, numbersapi), übersetzt
    nicht-deutsche Kandidaten automatisch per DeepL

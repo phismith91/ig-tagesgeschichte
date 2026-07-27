@@ -43,6 +43,6 @@ notify:
   smtp_user: "${SMTP_USER}"
   smtp_from: "${SMTP_FROM}"
   smtp_to:
-    - philippdschmidt@outlook.com
+    - "${SMTP_TO}"
   smtp_password: "${SMTP_PASSWORD}"
   use_tls: true

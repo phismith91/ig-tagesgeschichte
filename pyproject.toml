@@ -10,9 +10,6 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "ig-faceless @ git+https://github.com/phismith91/ig-faceless.git@v0.1.0",
-    "requests",
-    "jinja2",
-    "playwright",
 ]
 authors = [{ name = "Philipp" }]
 
@@ -28,6 +25,3 @@ src = ["."]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]
-
-[tool.hatch.build.targets.wheel]
-packages = ["."]
