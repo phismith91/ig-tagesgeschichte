@@ -23,14 +23,22 @@ fi
 
 IMAGES=("$DAY_DIR"/*.png)
 
-git add "${IMAGES[@]}" "$CAPTION"
+# ponytail: git-Fehler (z.B. push ohne Upstream, weil versehentlich ein
+# Feature-Branch statt master ausgecheckt ist) müssen genauso benachrichtigen
+# wie ein Instagram-Fehler, sonst bricht das Skript still ab und niemand merkt's.
+notify_git_failure() {
+  python3 -c "import notify; notify.notify_post_result('$DATE_STR', success=False, error='$1', step='git')"
+  exit 1
+}
+
+git add "${IMAGES[@]}" "$CAPTION" || notify_git_failure "git add fehlgeschlagen"
 # ponytail: no-op commit ("nothing to commit") darf das Skript nicht abbrechen —
 # sonst kann ein Operator nach fehlgeschlagenem Instagram-Post nicht neu
 # anstoßen, wenn der Git-Teil beim ersten Versuch schon durchgelaufen war.
-git diff --staged --quiet || git commit -m "post: $MONTH/$DAY"
-# ponytail: set -e sorgt dafür, dass ein fehlgeschlagener push hier abbricht —
-# kein Post ohne öffentlich erreichbare Bild-URLs.
-git push
+if ! git diff --staged --quiet; then
+  git commit -m "post: $MONTH/$DAY" || notify_git_failure "git commit fehlgeschlagen"
+fi
+git push || notify_git_failure "git push fehlgeschlagen (falscher Branch/kein Upstream?)"
 
 IMAGE_URLS=()
 for img in "${IMAGES[@]}"; do

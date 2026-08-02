@@ -157,4 +157,48 @@ if [ ! -s "$PYTHON_CALLS_LOG" ]; then
   exit 1
 fi
 
+# Testfall 5: git push schlägt fehl (z.B. Branch ohne Upstream) -> Skript darf NICHT
+# still abbrechen, sondern muss notify.notify_post_result(success=False) aufrufen und
+# mit Exit != 0 enden. Regression für den Bug, der die Posts vom 28.07.-02.08.2026
+# lautlos verschluckt hat (git push scheiterte, aber set -e brach ab, bevor notify lief).
+cat > "$TMP/git" <<'EOF'
+#!/bin/bash
+echo "git $*" >> "$GIT_CALLS_LOG"
+case "$1" in
+  push) exit 128 ;;
+  *) exit 0 ;;
+esac
+EOF
+chmod +x "$TMP/git"
+
+cat > "$TMP/python3" <<'EOF'
+#!/bin/bash
+if [[ "$*" == *"post_state.is_posted"* ]]; then
+  exit 1
+fi
+echo "python3 $*" >> "$PYTHON_CALLS_LOG"
+exit 0
+EOF
+chmod +x "$TMP/python3"
+
+mkdir -p "output/2099-01/15"
+echo "fake" > "output/2099-01/15/01.png"
+echo "Testcaption" > "output/2099-01/15/caption.txt"
+: > "$GIT_CALLS_LOG"
+: > "$PYTHON_CALLS_LOG"
+
+RC=0
+REFERENCE_DATE="2099-01-15" ./post_today.sh || RC=$?
+rm -rf "output/2099-01"
+
+if [ "$RC" -eq 0 ]; then
+  echo "FAIL: post_today.sh muss bei fehlgeschlagenem git push mit Fehler enden"
+  exit 1
+fi
+if ! grep -q "notify.notify_post_result.*success=False" "$PYTHON_CALLS_LOG"; then
+  echo "FAIL: notify.notify_post_result(success=False) wurde bei git-push-Fehler nicht aufgerufen"
+  cat "$PYTHON_CALLS_LOG"
+  exit 1
+fi
+
 echo "PASS"
