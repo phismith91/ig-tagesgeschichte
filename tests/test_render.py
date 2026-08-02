@@ -59,6 +59,29 @@ def test_build_caption_omits_year_when_missing():
     assert "None" not in caption
 
 
+def test_build_caption_lists_sources_once_each():
+    data = {
+        "date": "2026-08-07",
+        "facts": [
+            {"year": 1926, "text": "Fakt A.", "source": "wikipedia"},
+            {"year": 1930, "text": "Fakt B.", "source": "muffinlabs"},
+            {"year": 1940, "text": "Fakt C.", "source": "wikipedia"},
+        ],
+    }
+    caption = build_caption(data)
+    assert "Quellen: Wikipedia, history.muffinlabs.com (CC BY-SA)" in caption
+    assert caption.index("Quellen:") < caption.index("#aufdenTag")
+
+
+def test_build_caption_no_quellen_line_without_source_field():
+    data = {
+        "date": "2026-08-07",
+        "facts": [{"year": 1926, "text": "Fakt ohne Quelle."}],
+    }
+    caption = build_caption(data)
+    assert "Quellen:" not in caption
+
+
 def test_render_day_no_leftover_render_html_in_templates_dir():
     # ponytail: die temporäre Render-HTML wird in templates/ geschrieben (Font-Pfad-Fix,
     # siehe Plan-Kopf) — dieser Test stellt sicher, dass sie danach wieder aufgeräumt wird.

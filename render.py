@@ -24,6 +24,16 @@ _env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 _template = _env.get_template("post_card.html.j2")
 
 
+# ponytail: Namensnennung erfüllt die CC-BY-SA-Pflicht von Wikipedia/muffinlabs
+# (beide CC BY-SA, Fakten-Text ist ein abgeleitetes Werk der Wikipedia-Sätze).
+SOURCE_NAMES = {
+    "wikipedia": "Wikipedia",
+    "muffinlabs": "history.muffinlabs.com",
+    "wikidata": "Wikidata",
+    "numbersapi": "numbersapi.com",
+}
+
+
 def build_caption(data: dict) -> str:
     year, month, day = (int(x) for x in data["date"].split("-"))
     intro = data.get("caption_intro", "").strip()
@@ -33,11 +43,19 @@ def build_caption(data: dict) -> str:
     else:
         lines = [f"📅 {day}. {MONTHS_DE[month - 1]} {year} — was an diesem Tag geschah:", ""]
 
+    used_sources = []
     for fact in data["facts"]:
         year_label = f"{fact['year']}: " if fact.get("year") else ""
         text = fact.get("text_de") or fact["text"]
         lines.append(f"• {year_label}{text}")
-    lines += ["", "#aufdenTag #geschichte #onthisday #wissen"]
+        name = SOURCE_NAMES.get(fact.get("source"))
+        if name and name not in used_sources:
+            used_sources.append(name)
+
+    lines.append("")
+    if used_sources:
+        lines.append(f"Quellen: {', '.join(used_sources)} (CC BY-SA)")
+    lines.append("#aufdenTag #geschichte #onthisday #wissen")
     return "\n".join(lines)
 
 
